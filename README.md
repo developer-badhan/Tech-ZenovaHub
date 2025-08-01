@@ -24,4 +24,3 @@ This project is being developed using the **Django web framework**, and it's aim
 ---
 
 
-<!-- jkcdskjfd  jdfhsfdjh f gjhd fjhgdhfjdv  -->
