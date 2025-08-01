@@ -1,4 +1,4 @@
-.venv
+.venv/
 venv/
 .env
 env/
@@ -6,8 +6,7 @@ __pycache__
 db.sqlite3
 migrations
 *.log
-
-
+.idea
 
 
 
