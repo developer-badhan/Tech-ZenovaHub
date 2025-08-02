@@ -1,11 +1,38 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container">
-    <h2>Edit Your Profile</h2>
-    <form method="post">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="/static/css/user.css">
+</head>
+<body>
+    <h1>Update Your Profile</h1>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="profile-image-wrapper">
+            <img id="profilePreview" class="profile-img" src="{{ user.profile_photo|default:'/static/images/default-avatar.png' }}" alt="Profile Image">
+            <label for="imageUpload" class="upload-btn">+</label>
+            <input type="file" id="imageUpload" name="profile_photo" accept="image/*" style="display: none;">
+        </div>
         {{ form.as_p }}
         <button type="submit">Save Changes</button>
     </form>
-</div>
-{% endblock %}
+
+    <script>
+        const imageInput = document.getElementById('imageUpload');
+        const preview = document.getElementById('profilePreview');
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
+
