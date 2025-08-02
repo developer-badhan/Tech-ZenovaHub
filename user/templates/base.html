@@ -1,0 +1,36 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tech-ZenovaHub</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 8px 16px;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+</body>
+</html> {% endcomment %}

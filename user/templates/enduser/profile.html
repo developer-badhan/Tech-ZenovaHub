@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>DOB:</strong> {{ user.dob }}</p>
+    <p><strong>Gender:</strong> {{ user.get_gender_display }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+    <p><strong>Role:</strong> {{ user.get_role_display }}</p>
+
+    <a href="{% url 'user_profile_updation' user.id %}">
+        <button>Edit Profile</button> 
+    </a>
+
+    <!-- Modal Trigger -->
+    <button onclick="document.getElementById('deleteModal').style.display='block'">Delete Account</button>
+
+    <!-- Modal -->
+    <div id="deleteModal" style="display:none;">
+        <div class="modal-content">
+            <h3>Are you sure you want to delete your account?</h3>
+            <form method="post" action="{% url 'user_profile_deletion' user.id %}">
+                {% csrf_token %}
+                <button type="submit">Yes, Delete</button>
+                <button type="button" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
