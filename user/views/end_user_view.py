@@ -45,3 +45,8 @@ class UserProfileDeleteView(View):
         enduser_service.delete_user(user_id)
         messages.success(request, "Profile deleted successfully.")
         return redirect('user_profile_creation')
+
+
+class Home(View):
+    def get(self,request):
+        return render(request,'base.html')
