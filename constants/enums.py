@@ -10,13 +10,16 @@ class Gender(IntEnum):
         return [(member.value, member.name.capitalize()) for member in cls]
 
 
+
 class Role(IntEnum):
-    ADMIN = 1
-    ENDUSER = 2
+    ENDUSER_CUSTOMER = 1
+    ENDUSER_STAFF = 2
+    ADMIN = 3
 
     @classmethod
     def choices(cls):
-        return [(member.value, member.name.capitalize()) for member in cls]
+        return [(key.value, key.name.replace("_", " ").title()) for key in cls]
+
 
 
 

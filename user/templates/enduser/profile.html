@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    <h1>{{ user.first_name }} {{ user.last_name }}'s Profile</h1>
-    <div class="profile-image-wrapper">
-        <img class="profile-img" src="{{ user.profile_photo|default:'/static/images/default-avatar.png' }}" alt="Profile Image">
-    </div>
-    <ul>
-        <li>Name : {{user.first_name}}  {{ user.middle_name }} {{user.last_name}}</li>
-        <li>Email: {{ user.email }}</li>
-        <li>Phone: {{ user.phone }}</li>
-        <li>Date of Birth: {{ user.dob }}</li>
-        <li>Gender: {{ user.gender }}</li>
-    </ul>
-    <a href="{% url 'user_profile_update' user_id=user.id %}">Edit Profile</a>
-    <form method="post" action="{% url 'user_profile_delete' user_id=user.id %}">
-        {% csrf_token %}
-        <button type="submit">Delete Profile</button>
-    </form>
-</body>
-</html>
+
+
+<h2>{{ user.first_name }} {{ user.last_name }}'s Profile</h2>
+
+<ul>
+    <li>Email: {{ user.email }}</li>
+    <li>DOB: {{ user.dob }}</li>
+    <li>Phone: {{ user.phone }}</li>
+    <li>Gender: {{ user.get_gender_display }}</li>
+    <li>Role: {{ user.get_role_display }}</li>
+</ul>
+
+<p><a href="{% url 'user_profile_update' user_id=user.id %}">Edit Profile</a></p>
+<p><a href="{% url 'user_address_list' user_id=user.id %}">Manage Addresses</a></p>
+    
+
+
+

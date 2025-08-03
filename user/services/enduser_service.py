@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from user.models import User
-from constants import Role
+
 
 
 def create_user(data):
@@ -13,7 +13,7 @@ def create_user(data):
         phone=data.get('phone'),
         gender=data.get('gender'),
         profile_photo=data.get('profile_photo'),
-        role=Role.ENDUSER
+        role=int(data.get('role'))
     )
     return user
 
@@ -38,3 +38,8 @@ def delete_user(user_id):
 def get_user_by_id(user_id):
     return get_object_or_404(User, pk=user_id)
 
+
+from django.contrib.auth import authenticate
+
+def authenticate_user(email, password):
+    return authenticate(email=email, password=password)

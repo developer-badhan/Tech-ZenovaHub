@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render,redirect
 from django.views import View
 from django.contrib import messages
-from user.forms import UserRegistrationForm, UserUpdateForm
+from constants.enums import Role
+from user.forms import UserRegistrationForm,UserUpdateForm
 from user.services import enduser_service
 
 
@@ -47,6 +48,54 @@ class UserProfileDeleteView(View):
         return redirect('user_profile_creation')
 
 
-class Home(View):
-    def get(self,request):
-        return render(request,'base.html')
+# user/views/enduser_view.py (append at bottom)
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from user.forms.login_form import EndUserLoginForm
+from django.utils.decorators import method_decorator
+
+class EndUserLoginView(View):
+    def get(self, request):
+        form = EndUserLoginForm()
+        return render(request, 'enduser/login.html', {'form': form})
+
+    def post(self, request):
+        form = EndUserLoginForm(request.POST)
+        if form.is_valid():
+            user = enduser_service.authenticate_user(
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
+            if user is not None:
+                if user.role == Role.ADMIN:
+                    messages.error(request, "Admins must use a separate login.")
+                    return redirect('user_login')
+
+                login(request, user)
+                if user.role == Role.ENDUSER_CUSTOMER:
+                    return redirect('customer_dashboard')
+                elif user.role == Role.ENDUSER_STAFF:
+                    return redirect('staff_dashboard')
+            else:
+                messages.error(request, "Invalid credentials.")
+        return render(request, 'enduser/login.html', {'form': form})
+
+
+
+# user/views/enduser_view.py
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from constants import Role
+
+class CustomerDashboardView(LoginRequiredMixin, View):
+    def get(self, request):
+        if request.user.role != Role.ENDUSER_CUSTOMER:
+            return redirect('user_login')
+        return render(request, 'enduser/customer_dashboard.html')
+
+
+class StaffDashboardView(LoginRequiredMixin, View):
+    def get(self, request):
+        if request.user.role != Role.ENDUSER_STAFF:
+            return redirect('user_login')
+        return render(request, 'enduser/staff_dashboard.html')

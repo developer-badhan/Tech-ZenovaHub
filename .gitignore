@@ -1,3 +1,5 @@
+#  For avoid unwanted files and folders
+
 .venv/
 venv/
 .env
@@ -8,6 +10,9 @@ migrations
 *.log
 .idea
 
+
 shop
 
+user
 
+constants
