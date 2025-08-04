@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Tech-ZenovaHub{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Tech-ZenovaHub</h1>
+        <!-- Add navigation here if needed -->
+    </header>
+    <main>
+        {% block content %}
+        <!-- Page content goes here -->
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Tech-ZenovaHub</p>
+    </footer>
+</body>
+</html>

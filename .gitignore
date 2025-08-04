@@ -1,4 +1,5 @@
 #  For avoid unwanted files and folders
+#  from being not tracked by git
 
 .venv/
 venv/
@@ -11,8 +12,12 @@ migrations
 .idea
 
 
-shop
+shop/
+*.pyc
+*.pyo
 
-user
 
-constants
+user/
+*.pyc   
+*.pyo
+

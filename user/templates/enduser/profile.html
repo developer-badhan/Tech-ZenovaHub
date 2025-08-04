@@ -1,6 +1,7 @@
-
-
-<h2>{{ user.first_name }} {{ user.last_name }}'s Profile</h2>
+ {% extends "enduser/base.html" %}
+ {% comment %}  
+{% block content %}
+<h1>{{ user.first_name }} {{ user.last_name }}'s Profile</h1>
 
 <ul>
     <li>Email: {{ user.email }}</li>
@@ -12,7 +13,22 @@
 
 <p><a href="{% url 'user_profile_update' user_id=user.id %}">Edit Profile</a></p>
 <p><a href="{% url 'user_address_list' user_id=user.id %}">Manage Addresses</a></p>
+{% endblock %} {% endcomment %}
     
 
 
 
+
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<h2>Profile Details</h2>
+<ul>
+  <li>Name: {{ user.first_name }} {{ user.last_name }}</li>
+  <li>DOB: {{ user.dob }}</li>
+  <li>Email: {{ user.email }}</li>
+  <li>Phone: {{ user.phone }}</li>
+  <li>Role: {{ user.get_role_display }}</li>
+</ul>
+{% endblock %}

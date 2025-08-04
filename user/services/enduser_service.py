@@ -4,18 +4,21 @@ from user.models import User
 
 
 def create_user(data):
-    user = User.objects.create(
+    user = User(
+        email=data['email'],
         first_name=data['first_name'],
-        middle_name=data.get('middle_name'),
+        middle_name=data.get('middle_name', ''),
         last_name=data['last_name'],
         dob=data['dob'],
-        email=data['email'],
         phone=data.get('phone'),
         gender=data.get('gender'),
         profile_photo=data.get('profile_photo'),
-        role=int(data.get('role'))
+        role=data['role'],
     )
+    user.set_password(data['password'])  # ✅ Secure password storage
+    user.save()
     return user
+
 
 
 def update_user(user, data):
