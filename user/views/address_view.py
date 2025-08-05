@@ -65,26 +65,26 @@ class AddressUpdateView(View):
         form = AddressForm(instance=address)
         return render(request, 'address/address_update.html', {'form': form, 'address': address})
 
-@signin_required
-def post(self, request, user_id, address_id):
-    if request.session.get('user_id') != user_id:
-        return redirect('user_login')
+    @signin_required
+    def post(self, request, user_id, address_id):
+        if request.session.get('user_id') != user_id:
+            return redirect('user_login')
 
-    address = address_service.get_address_by_id(address_id)
-    if address.user.id != user_id:
-        return redirect('user_login')
+        address = address_service.get_address_by_id(address_id)
+        if address.user.id != user_id:
+            return redirect('user_login')
 
-    form = AddressForm(request.POST, instance=address)
-    if form.is_valid():
-        address_service.update_address(address, form.cleaned_data)
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            address_service.update_address(address, form.cleaned_data)
 
-        role = request.session.get('user_role')
-        if role == Role.ENDUSER_CUSTOMER:
-            return redirect('customer_dashboard')
-        elif role == Role.ENDUSER_STAFF:
-            return redirect('staff_dashboard')
+            role = request.session.get('user_role')
+            if role == Role.ENDUSER_CUSTOMER:
+                return redirect('customer_dashboard')
+            elif role == Role.ENDUSER_STAFF:
+                return redirect('staff_dashboard')
 
-    return render(request, 'address/address_update.html', {'form': form, 'address': address})
+        return render(request, 'address/address_update.html', {'form': form, 'address': address})
 
     
 

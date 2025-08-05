@@ -183,3 +183,6 @@ class UserDeleteView(View):
             return redirect('user_profile', user_id=user_id)
 
 
+
+
+
