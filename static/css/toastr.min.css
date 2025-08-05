@@ -1,0 +1,177 @@
+/*!
+ * toastr
+ * Copyright 2012-2024 John Papa, Hans Fjällemark, and Tim Ferrell
+ * Licensed under MIT (https://github.com/CodeSeven/toastr/blob/master/LICENSE)
+ */
+
+#toast-container * {
+    box-sizing: border-box;
+}
+
+#toast-container > div {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 6px;
+    padding: 15px 15px 15px 50px;
+    width: 300px;
+    border-radius: 3px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    background-size: 24px auto;
+    color: #fff;
+    opacity: 0.9;
+}
+
+#toast-container > div.rtl {
+    direction: rtl;
+    padding: 15px 50px 15px 15px;
+    background-position: right 15px center;
+}
+
+#toast-container > div:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Toast Type Styles */
+#toast-container > div.toast-info {
+    background-color: #17a2b8;
+}
+
+#toast-container > div.toast-success {
+    background-color: #28a745;
+}
+
+#toast-container > div.toast-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+#toast-container > div.toast-error {
+    background-color: #dc3545;
+}
+
+/* Close Button Colors per Toast Type */
+#toast-container > div.toast-info .toast-close-button {
+    color: #fff;
+}
+
+#toast-container > div.toast-success .toast-close-button {
+    color: #fff;
+}
+
+#toast-container > div.toast-warning .toast-close-button {
+    color: #000;
+}
+
+#toast-container > div.toast-error .toast-close-button {
+    color: #fff;
+}
+
+/* Close Button Base */
+.toast-close-button {
+    position: absolute;
+    right: 0.75em;
+    top: 0.75em;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.8;
+}
+
+button.toast-close-button {
+    background: none;
+    border: none;
+}
+
+button.toast-close-button:focus {
+    outline: none;
+}
+
+/* Toast Container Positions */
+#toast-container {
+    position: fixed;
+    z-index: 999999;
+    pointer-events: none;
+}
+
+#toast-container > div {
+    pointer-events: auto;
+}
+
+#toast-container.toast-top-right {
+    top: 12px;
+    right: 12px;
+}
+
+#toast-container.toast-top-left {
+    top: 12px;
+    left: 12px;
+}
+
+#toast-container.toast-top-center {
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#toast-container.toast-bottom-right {
+    bottom: 12px;
+    right: 12px;
+}
+
+#toast-container.toast-bottom-left {
+    bottom: 12px;
+    left: 12px;
+}
+
+#toast-container.toast-bottom-center {
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#toast-container.toast-center-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Mobile Responsiveness */
+@media all and (max-width: 240px) {
+    #toast-container > div {
+        width: 100% !important;
+    }
+}
+
+/* Progress Bar */
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: #000;
+    opacity: 0.2;
+}
+
+/* Title and Message */
+.toast-title {
+    font-weight: 700;
+}
+
+.toast-message {
+    word-wrap: break-word;
+}
+
+/* Links inside Toasts */
+.toast-message a,
+.toast-message label {
+    color: #fff;
+}
+
+.toast-message a:hover {
+    color: #ccc;
+    text-decoration: none;
+}

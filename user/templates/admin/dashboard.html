@@ -1,0 +1,6 @@
+<h2>Welcome, {{ request.user.first_name }} (Admin)</h2>
+
+<ul>
+  <li><a href="{% url 'admin:admin_user_list' %}">View Users</a></li>
+  <!-- Future: Add product/order/payment/notification links -->
+</ul>

@@ -1,0 +1,18 @@
+<!-- enduser/address_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Address</title>
+</head>
+<body>
+    <h1>Create Address for {{ user }}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Address</button>
+    </form>
+
+    <a href="{% url 'user_address_list' user.id %}">Back to Address List</a>
+</body>
+</html>

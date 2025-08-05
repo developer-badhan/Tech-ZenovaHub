@@ -1,0 +1,22 @@
+<h2>All End Users</h2>
+
+<table border="1" cellpadding="8">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Joined</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.first_name }} {{ user.last_name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.get_role_display }}</td>
+    <td>{{ user.date_joined }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<p><a href="{% url 'admin:admin_dashboard' %}">Back to Dashboard</a></p>

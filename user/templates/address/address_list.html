@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Address List</title>
+</head>
+<body>
+
+    {% if addresses %}
+        <h1>Addresses for {{ addresses.0.user }}</h1>
+        <ul>
+            {% for address in addresses %}
+                <li>
+                    {{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.zip_code }}
+                    {% if address.is_default %}
+                        <strong>(Default)</strong>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'user_address_create' user_id=addresses.0.user.id %}">Add New Address</a>
+    {% else %}
+        <h1>No addresses found.</h1>
+        <a href="{% url 'user_address_create' user_id=user.id %}">Add New Address</a>
+    {% endif %}
+
+</body>
+</html>

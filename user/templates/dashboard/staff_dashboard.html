@@ -1,0 +1,19 @@
+{% extends "enduser/base.html" %}
+
+{% block title %}Staff Dashboard{% endblock %}
+
+<h2>Welcome, {{ request.user.first_name }} (Staff)</h2>
+<p>Manage your assigned deliveries and orders.</p>
+<a href="/shop/orders/">View Assigned Orders</a>
+
+
+
+
+
+
+
+
+{% block content %}
+<h2>Welcome, {{ request.session.user_role|title }}</h2>
+<p>This is your customer dashboard.</p>
+{% endblock %}

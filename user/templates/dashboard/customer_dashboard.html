@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Customer Dashboard - Tech-ZenovaHub{% endblock %}
+
+{% block content %}
+    {% if request.session.is_authenticated %}
+        <nav>
+            <a href="{% url 'customer_dashboard' %}">Dashboard</a> |
+            <a href="{% url 'user_profile' user_id=request.session.user_id %}">Profile</a> |
+            <a href="{% url 'user_profile_update' user_id=request.session.user_id %}">Update Profile</a> |
+            <a href="{% url 'user_address_list' user_id=request.session.user_id %}">My Addresses</a> |
+            <a href="{% url 'user_address_update' user_id=request.session.user_id address_id=1 %}">Update Address</a> |
+            <a href="{% url 'user_delete' user_id=request.session.user_id %}">Delete Account</a> |
+            <a href="{% url 'user_logout' %}">Sign Out</a>
+        </nav>
+        <hr>
+    {% endif %}
+<h2>Welcome, {{ request.session.user_role|title }}</h2>
+<p>This is your customer dashboard.</p>
+<p>Here you can manage your profile, view orders, and access other features.</p>
+{% endblock %}
