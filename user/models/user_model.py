@@ -5,7 +5,6 @@ from constants import Gender, Role
 class User(AbstractUser):
     username = models.CharField(max_length=128, blank=True, null=True)  
     password = models.CharField(max_length=128)  
-
     first_name = models.CharField(max_length=50, blank=False, null=False)
     middle_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=False, null=False)

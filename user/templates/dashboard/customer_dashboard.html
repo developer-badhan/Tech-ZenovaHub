@@ -1,20 +1,90 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Customer Dashboard - Tech-ZenovaHub{% endblock %}
 
 {% block content %}
-    {% if request.session.is_authenticated %}
-        <nav>
-            <a href="{% url 'customer_dashboard' %}">Dashboard</a> |
-            <a href="{% url 'user_profile' user_id=request.session.user_id %}">Profile</a> |
-            <a href="{% url 'user_profile_update' user_id=request.session.user_id %}">Update Profile</a> |
-            <a href="{% url 'user_address_list' user_id=request.session.user_id %}">My Addresses</a> |
-            <a href="{% url 'user_address_update' user_id=request.session.user_id address_id=1 %}">Update Address</a> |
-            <a href="{% url 'user_delete' user_id=request.session.user_id %}">Delete Account</a> |
-            <a href="{% url 'user_logout' %}">Sign Out</a>
+
+<!-- Theme Toggle Button -->
+<div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm btn-secondary" id="theme-toggle">
+        <i class="fas fa-moon" id="theme-icon"></i> Toggle Theme
+    </button>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        {% if request.session.is_authenticated %}
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar p-3 border rounded" id="sidebar">
+            <h5 class="text-center mb-4"><i class="fas fa-user-circle"></i> Dashboard</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="{% url 'customer_dashboard' %}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="{% url 'user_profile' user_id=request.session.user_id %}">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="{% url 'user_profile_update' user_id=request.session.user_id %}">
+                        <i class="fas fa-user-edit"></i> Update Profile
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="{% url 'user_address_update' user_id=request.session.user_id address_id=1 %}">
+                        <i class="fas fa-map-marker-alt"></i> Update Address
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-danger" href="{% url 'user_delete' user_id=request.session.user_id %}">
+                        <i class="fas fa-user-times"></i> Delete Account
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-primary" href="{% url 'user_logout' %}">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </a>
+                </li>
+            </ul>
         </nav>
-        <hr>
-    {% endif %}
-<h2>Welcome, {{ request.session.user_role|title }}</h2>
-<p>This is your customer dashboard.</p>
-<p>Here you can manage your profile, view orders, and access other features.</p>
+        {% endif %}
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="pt-3 pb-2 mb-3 border-bottom">
+                <h2>Welcome, {{ request.session.user_role|title }}</h2>
+                <p>This is your customer dashboard.</p>
+                <p>Here you can manage your profile, view orders, and access other features.</p>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Dark Mode Script -->
+<script>
+    const toggle = document.getElementById("theme-toggle");
+    const body = document.body;
+    const sidebar = document.getElementById("sidebar");
+    const icon = document.getElementById("theme-icon");
+
+    toggle.addEventListener("click", () => {
+        body.classList.toggle("bg-dark");
+        body.classList.toggle("text-light");
+        sidebar.classList.toggle("bg-dark");
+        sidebar.classList.toggle("text-light");
+
+        if (icon.classList.contains("fa-moon")) {
+            icon.classList.remove("fa-moon");
+            icon.classList.add("fa-sun");
+        } else {
+            icon.classList.remove("fa-sun");
+            icon.classList.add("fa-moon");
+        }
+    });
+</script>
+
 {% endblock %}

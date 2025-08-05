@@ -8,6 +8,10 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
 
@@ -27,12 +31,15 @@
         </div>
     </header>
 
+
     <!-- Main Content -->
     <main class="container mt-4">
         {% block content %}
         <!-- Page content goes here -->
         {% endblock %}
     </main>
+
+
 
     <!-- Footer -->
     <footer class="bg-light text-center py-3 mt-5">

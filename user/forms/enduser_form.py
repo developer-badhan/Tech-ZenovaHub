@@ -4,7 +4,7 @@ from constants import Gender,Role
 
 
 class UserRegistrationForm(forms.ModelForm):
-    profile_photo = forms.URLField(max_length=200, required=False)
+    profile_photo = forms.ImageField(max_length=200, required=False)
     first_name = forms.CharField(max_length=50, required=True)
     middle_name = forms.CharField(max_length=50, required=False)
     last_name = forms.CharField(max_length=50, required=True)
@@ -57,7 +57,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    profile_photo = forms.URLField(max_length=200,required=False)
+    profile_photo = forms.ImageField(max_length=200,required=False)
     first_name = forms.CharField(max_length=50, required=True)
     middle_name = forms.CharField(max_length=50, required=False)
     last_name = forms.CharField(max_length=50, required=True)
