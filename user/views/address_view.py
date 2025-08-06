@@ -4,7 +4,7 @@ from decorators.auth_decorators import signin_required
 from user.forms import AddressForm
 from user.services import enduser_service, address_service
 from constants import Role
-from user.models import Address
+
 
 
 # ────── CREATE ADDRESS ──────
@@ -37,17 +37,6 @@ class AddressCreateView(View):
         return render(request, 'address/address_form.html', {'form': form, 'user': user})
 
 
-# ────── LIST USER ADDRESSES ──────
-
-class AddressListView(View):
-    @signin_required
-    def get(self, request, user_id):
-        if request.session.get('user_id') != user_id:
-            return redirect('user_login')
-
-        user = enduser_service.get_user_by_id(user_id)
-        addresses = address_service.get_user_addresses(user)
-        return render(request, 'address/address_list.html', {'addresses': addresses})
 
 
 # ────── UPDATE ADDRESS ──────

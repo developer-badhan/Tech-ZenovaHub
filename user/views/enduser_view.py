@@ -86,7 +86,7 @@ class StaffDashboardView(View):
 
 # ────── USER PROFILE ──────
 
-class UserProfileCreateView(View):
+class EndUserProfileCreateView(View):
     def get(self, request):
         try:
             if request.session.get('is_authenticated'):
@@ -115,7 +115,7 @@ class UserProfileCreateView(View):
             return redirect('user_login')
 
 
-class UserProfileView(View):
+class EndUserProfileView(View):
     @signin_required
     def get(self, request, user_id):
         try:
@@ -128,7 +128,7 @@ class UserProfileView(View):
             return redirect('user_login')
 
 
-class UserProfileUpdateView(View):
+class EndUserProfileUpdateView(View):
     @signin_required
     def get(self, request, user_id):
         try:
@@ -158,7 +158,7 @@ class UserProfileUpdateView(View):
             return redirect('user_profile', user_id=user_id)
 
 
-class UserDeleteView(View):
+class EndUserDeleteView(View):
     @signin_required
     def get(self, request, user_id):
         try:
