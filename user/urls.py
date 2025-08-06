@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
 
     # ────── Auth Routes ──────
@@ -25,4 +28,6 @@ urlpatterns = [
     path('user/<int:user_id>/addresses/create/', views.AddressCreateView.as_view(), name='user_address_create'),
     path('user/<int:user_id>/addresses/update/<int:address_id>/', views.AddressUpdateView.as_view(), name='user_address_update'),
 
-]
+] 
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

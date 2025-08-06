@@ -102,7 +102,7 @@ class UserProfileCreateView(View):
             if request.session.get('is_authenticated'):
                 return redirect('customer_dashboard')
 
-            form = UserRegistrationForm(request.POST)
+            form = UserRegistrationForm(request.POST, request.FILES)
             if form.is_valid():
                 user = enduser_service.create_user(form.cleaned_data)
                 request.session['user_id'] = user.id
@@ -147,7 +147,7 @@ class UserProfileUpdateView(View):
             if request.session.get('user_id') != user_id:
                 return redirect('user_login')
             user = enduser_service.get_user_by_id(user_id)
-            form = UserUpdateForm(request.POST, instance=user)
+            form = UserUpdateForm(request.POST, request.FILES, instance=user)
             if form.is_valid():
                 enduser_service.update_user(user, form.cleaned_data)
                 messages.success(request, "Profile updated successfully.")
