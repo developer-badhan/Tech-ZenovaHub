@@ -33,7 +33,7 @@ build/          # Build directory
 *.DS_Store
 
 
-shop/
+
 
 # Media files (user-uploaded content)
 media/
