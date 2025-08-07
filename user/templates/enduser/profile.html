@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block title %}My Profile{% endblock %}
+{% load static %}
 
 {% block content %}
 <h2>Profile Details</h2>
+
+<img 
+  src="{% if user.profile_photo %}{{ user.profile_photo.url }}{% else %}{% static 'media/app/userimg.png' %}{% endif %}" 
+  class="img-thumbnail" 
+  width="150" 
+  height="150">
+
 <ul>
   <li>Name: {{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</li>
   <li>DOB: {{ user.dob }}</li>
@@ -10,11 +18,11 @@
   <li>Phone: {{ user.phone }}</li>
 
   {% if user.gender == 1 %}
-  <li>Gender: Male</li>
+    <li>Gender: Male</li>
   {% elif user.gender == 2 %}
-  <li>Gender: Female</li>
+    <li>Gender: Female</li>
   {% else %}
-  <li>Gender: Other</li>
+    <li>Gender: Other</li>
   {% endif %}
 
   <li>Addresses:

@@ -4,8 +4,8 @@
     <title>Create Address</title>
 </head>
 <body>
-    <h1>Create Address for {{ user }}</h1>
-    
+    <h1>Create Address for {{ user.first_name }}</h1>
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

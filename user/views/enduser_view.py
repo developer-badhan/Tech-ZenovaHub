@@ -85,7 +85,13 @@ class StaffDashboardView(View):
     @staff_required
     def get(self, request):
         try:
-            return render(request, 'dashboard/staff_dashboard.html')
+            user_id = request.session.get('user_id')
+            user = enduser_service.get_user_by_id(user_id)
+            addresses = address_service.get_user_addresses(user)
+            default_address = addresses.first() 
+            return render(request, 'dashboard/staff_dashboard.html', {
+                'default_address': default_address
+            })
         except Exception as e:
             messages.error(request, f"Error loading dashboard: {str(e)}")
             return redirect('user_login')
