@@ -1,34 +1,39 @@
- {% extends "enduser/base.html" %}
- {% comment %}  
-{% block content %}
-<h1>{{ user.first_name }} {{ user.last_name }}'s Profile</h1>
-
-<ul>
-    <li>Email: {{ user.email }}</li>
-    <li>DOB: {{ user.dob }}</li>
-    <li>Phone: {{ user.phone }}</li>
-    <li>Gender: {{ user.get_gender_display }}</li>
-    <li>Role: {{ user.get_role_display }}</li>
-</ul>
-
-<p><a href="{% url 'user_profile_update' user_id=user.id %}">Edit Profile</a></p>
-<p><a href="{% url 'user_address_list' user_id=user.id %}">Manage Addresses</a></p>
-{% endblock %} {% endcomment %}
-    
-
-
-
-
-
+{% extends "base.html" %}
 {% block title %}My Profile{% endblock %}
 
 {% block content %}
 <h2>Profile Details</h2>
 <ul>
-  <li>Name: {{ user.first_name }} {{ user.last_name }}</li>
+  <li>Name: {{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</li>
   <li>DOB: {{ user.dob }}</li>
   <li>Email: {{ user.email }}</li>
   <li>Phone: {{ user.phone }}</li>
-  <li>Role: {{ user.get_role_display }}</li>
+
+  {% if user.gender == 1 %}
+  <li>Gender: Male</li>
+  {% elif user.gender == 2 %}
+  <li>Gender: Female</li>
+  {% else %}
+  <li>Gender: Other</li>
+  {% endif %}
+
+  <li>Addresses:
+    <ul>
+      {% for addr in address %}
+        <li>{{ addr.address_line1 }}, {{ addr.city }}</li>
+      {% empty %}
+        <li>No addresses found.</li>
+      {% endfor %}
+    </ul>
+  </li>
 </ul>
+
+<a href="{% url 'user_profile_update' user_id=request.session.user_id %}">Update Profile</a> |
+
+{% if user.role == 1 %}
+  <a class="nav-link" href="{% url 'customer_dashboard' %}">Return</a>
+{% elif user.role == 2 %}
+  <a class="nav-link" href="{% url 'staff_dashboard' %}">Return</a>
+{% endif %}
+
 {% endblock %}

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from user.forms.login_form import EndUserLoginForm
 from user.forms import UserRegistrationForm, UserUpdateForm
 from constants.enums import Role
-from user.services import enduser_service
+from user.services import enduser_service,address_service
 from decorators.auth_decorators import signin_required, customer_required, staff_required
 
 
@@ -67,7 +67,14 @@ class CustomerDashboardView(View):
     @customer_required
     def get(self, request):
         try:
-            return render(request, 'dashboard/customer_dashboard.html')
+            user_id = request.session.get('user_id')
+            user = enduser_service.get_user_by_id(user_id)
+            addresses = address_service.get_user_addresses(user)
+            default_address = addresses.first() 
+
+            return render(request, 'dashboard/customer_dashboard.html', {
+                'default_address': default_address
+            })
         except Exception as e:
             messages.error(request, f"Error loading dashboard: {str(e)}")
             return redirect('user_login')
@@ -122,7 +129,12 @@ class EndUserProfileView(View):
             if request.session.get('user_id') != user_id:
                 return redirect('user_login')
             user = enduser_service.get_user_by_id(user_id)
-            return render(request, 'enduser/profile.html', {'user': user})
+            address = address_service.get_user_addresses(user)
+            context = {
+                'user': user,
+                'address': address
+            }
+            return render(request, 'enduser/profile.html', context)
         except Exception as e:
             messages.error(request, f"Failed to load profile: {str(e)}")
             return redirect('user_login')

@@ -8,7 +8,6 @@
         <nav>
             <a href="{% url 'customer_dashboard' %}">Dashboard</a> |
             <a href="{% url 'user_profile' user_id=request.session.user_id %}">Profile</a> |
-            <a href="{% url 'user_profile_update' user_id=request.session.user_id %}">Update Profile</a> |
             <a href="{% url 'user_address_update' user_id=request.session.user_id address_id=1 %}">Update Address</a> |
             <a href="{% url 'user_delete' user_id=request.session.user_id %}">Delete Account</a> |
             <a href="{% url 'user_logout' %}">Sign Out</a>

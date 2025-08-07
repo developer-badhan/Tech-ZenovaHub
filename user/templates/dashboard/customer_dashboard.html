@@ -20,25 +20,17 @@
             <h5 class="text-center mb-4"><i class="fas fa-user-circle"></i> Dashboard</h5>
             <ul class="nav flex-column">
                 <li class="nav-item mb-2">
-                    <a class="nav-link" href="{% url 'customer_dashboard' %}">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
                     <a class="nav-link" href="{% url 'user_profile' user_id=request.session.user_id %}">
                         <i class="fas fa-user"></i> Profile
                     </a>
                 </li>
+            {% if default_address %}
                 <li class="nav-item mb-2">
-                    <a class="nav-link" href="{% url 'user_profile_update' user_id=request.session.user_id %}">
-                        <i class="fas fa-user-edit"></i> Update Profile
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="{% url 'user_address_update' user_id=request.session.user_id address_id=1 %}">
+                    <a class="nav-link" href="{% url 'user_address_update' user_id=request.session.user_id address_id=default_address.id %}">
                         <i class="fas fa-map-marker-alt"></i> Update Address
                     </a>
                 </li>
+            {% endif %}
                 <li class="nav-item mb-2">
                     <a class="nav-link text-danger" href="{% url 'user_delete' user_id=request.session.user_id %}">
                         <i class="fas fa-user-times"></i> Delete Account

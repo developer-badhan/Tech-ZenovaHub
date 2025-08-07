@@ -1,8 +1,6 @@
-<h2>Edit Profile</h2>
+<h2>Update Profile</h2>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Update</button>
 </form>
-
-<p><a href="{% url 'user_profile' user_id=user.id %}">Back to Profile</a></p>
