@@ -4,10 +4,10 @@ from decorators.auth_decorators import signin_required
 from user.forms import AddressForm
 from user.services import enduser_service, address_service
 from constants import Role
+from django.urls import reverse
 
 
-
-# ────── CREATE ADDRESS ──────
+#  User Address Management Views
 
 class AddressCreateView(View):
     @signin_required
@@ -16,6 +16,12 @@ class AddressCreateView(View):
             return redirect('user_login')
 
         user = enduser_service.get_user_by_id(user_id)
+        existing_addresses = address_service.get_user_addresses(user)
+
+        if existing_addresses.exists():
+            address = existing_addresses.first()
+            return redirect(reverse('user_address_update', args=[user_id, address.id]))
+
         form = AddressForm()
         return render(request, 'address/address_form.html', {'form': form, 'user': user})
 
@@ -25,6 +31,12 @@ class AddressCreateView(View):
             return redirect('user_login')
 
         user = enduser_service.get_user_by_id(user_id)
+        existing_addresses = address_service.get_user_addresses(user)
+
+        if existing_addresses.exists():
+            address = existing_addresses.first()
+            return redirect(reverse('user_address_update', args=[user_id, address.id]))
+
         form = AddressForm(request.POST)
         if form.is_valid():
             address_service.create_address(user, form.cleaned_data)
@@ -37,9 +49,6 @@ class AddressCreateView(View):
         return render(request, 'address/address_form.html', {'form': form, 'user': user})
 
 
-
-
-# ────── UPDATE ADDRESS ──────
 
 class AddressUpdateView(View):
     @signin_required
@@ -75,7 +84,7 @@ class AddressUpdateView(View):
 
         return render(request, 'address/address_update.html', {'form': form, 'address': address})
 
-    
+
 
 
 

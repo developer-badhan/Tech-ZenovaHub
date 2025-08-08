@@ -8,7 +8,7 @@ from user.services import enduser_service,address_service
 from decorators.auth_decorators import signin_required, customer_required, staff_required
 
 
-# ────── AUTH: Sign In / Sign Out ──────
+# User Authentication Views
 
 class EndUserLoginView(View):
     def get(self, request):
@@ -60,7 +60,8 @@ class EndUserLogoutView(View):
         return redirect('user_login')
 
 
-# ────── DASHBOARDS ──────
+
+# User Dashboard Views
 
 class CustomerDashboardView(View):
     @signin_required
@@ -97,8 +98,10 @@ class StaffDashboardView(View):
             return redirect('user_login')
 
 
-# ────── USER PROFILE ──────
 
+
+
+# User Profile Management Views
 class EndUserProfileCreateView(View):
     def get(self, request):
         try:
