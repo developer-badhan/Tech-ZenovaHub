@@ -5,11 +5,11 @@
 {% block content %}
 <h2>Profile Details</h2>
 
-<img 
-  src="{% if user.profile_photo %}{{ user.profile_photo.url }}{% else %}{% static 'media/app/userimg.png' %}{% endif %}" 
-  class="img-thumbnail" 
-  width="150" 
-  height="150">
+{% if user.profile_photo %}
+  <img src="{{ user.profile_photo.url }}" alt="Profile Photo">
+{% else %}
+  <img src="{% static 'images/user.png' %}" alt="Default Profile">
+{% endif %}
 
 <ul>
   <li>Name: {{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</li>

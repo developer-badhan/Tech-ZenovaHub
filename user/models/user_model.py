@@ -12,7 +12,7 @@ class User(AbstractUser):
     email = models.EmailField(null=False, unique=True, blank=False)
     phone = models.CharField(max_length=15, blank=True, null=True)
     gender = models.IntegerField(choices=Gender.choices(), blank=True, null=True)
-    profile_photo = models.ImageField(max_length=200, null=True, blank=True)
+    profile_photo = models.ImageField(upload_to='profile_pictures/', max_length=200, null=True, blank=True)
     role = models.IntegerField(choices=Role.choices(), blank=False, null=False, db_default=Role.ENDUSER_CUSTOMER)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
