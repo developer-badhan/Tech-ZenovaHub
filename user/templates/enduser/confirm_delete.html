@@ -1,8 +1,21 @@
-<h2>Confirm Account Deletion</h2>
-<p>Are you sure you want to delete your account? This action cannot be undone.</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
-    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
-</form>
+{% extends "base.html" %}
+{% block title %}Confirm Delete{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="tzh-card text-center">
+        <h4 class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Account Deletion</h4>
+        <p class="tzh-muted">Are you sure you want to delete your account? This action cannot be undone.</p>
+
+        <form method="post" class="d-flex justify-content-center gap-2 mt-3">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+          <a href="javascript:history.back()" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
