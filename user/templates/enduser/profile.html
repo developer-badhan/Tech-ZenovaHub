@@ -3,45 +3,60 @@
 {% load static %}
 
 {% block content %}
-<h2>Profile Details</h2>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="tzh-card">
+        <div class="d-flex align-items-center mb-3">
+          <div class="me-3">
+            {% if user.profile_photo %}
+              <img src="{{ user.profile_photo.url }}" alt="Profile Photo" class="rounded-circle" width="90" height="90">
+            {% else %}
+              <img src="{% static 'images/user.png' %}" alt="Default Profile" class="rounded-circle" width="90" height="90">
+            {% endif %}
+          </div>
+          <div>
+            <h5 class="mb-0">{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</h5>
+            <small class="tzh-muted">{{ user.email }}</small>
+          </div>
+        </div>
 
-{% if user.profile_photo %}
-  <img src="{{ user.profile_photo.url }}" alt="Profile Photo">
-{% else %}
-  <img src="{% static 'images/user.png' %}" alt="Default Profile">
-{% endif %}
+        <ul class="list-unstyled">
+          <li><strong>DOB:</strong> {{ user.dob }}</li>
+          <li><strong>Phone:</strong> {{ user.phone }}</li>
+          <li><strong>Gender:</strong>
+            {% if user.gender == 1 %}
+              Male
+            {% elif user.gender == 2 %}
+              Female
+            {% else %}
+              Other
+            {% endif %}
+          </li>
+          <li><strong>Addresses:</strong>
+            <ul>
+              {% for addr in address %}
+                <li>{{ addr.address_line1 }}, {{ addr.city }}</li>
+              {% empty %}
+                <li class="tzh-muted">No addresses found.</li>
+              {% endfor %}
+            </ul>
+          </li>
+        </ul>
 
-<ul>
-  <li>Name: {{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</li>
-  <li>DOB: {{ user.dob }}</li>
-  <li>Email: {{ user.email }}</li>
-  <li>Phone: {{ user.phone }}</li>
+        <div class="d-flex justify-content-between mt-3">
+          <a class="btn btn-outline-primary" href="{% url 'user_profile_update' user_id=request.session.user_id %}">
+            <i class="fas fa-edit me-1"></i>Update Profile
+          </a>
 
-  {% if user.gender == 1 %}
-    <li>Gender: Male</li>
-  {% elif user.gender == 2 %}
-    <li>Gender: Female</li>
-  {% else %}
-    <li>Gender: Other</li>
-  {% endif %}
-
-  <li>Addresses:
-    <ul>
-      {% for addr in address %}
-        <li>{{ addr.address_line1 }}, {{ addr.city }}</li>
-      {% empty %}
-        <li>No addresses found.</li>
-      {% endfor %}
-    </ul>
-  </li>
-</ul>
-
-<a href="{% url 'user_profile_update' user_id=request.session.user_id %}">Update Profile</a> |
-
-{% if user.role == 1 %}
-  <a class="nav-link" href="{% url 'customer_dashboard' %}">Return</a>
-{% elif user.role == 2 %}
-  <a class="nav-link" href="{% url 'staff_dashboard' %}">Return</a>
-{% endif %}
-
+          {% if user.role == 1 %}
+            <a class="btn btn-outline-secondary" href="{% url 'customer_dashboard' %}">Return</a>
+          {% elif user.role == 2 %}
+            <a class="btn btn-outline-secondary" href="{% url 'staff_dashboard' %}">Return</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
