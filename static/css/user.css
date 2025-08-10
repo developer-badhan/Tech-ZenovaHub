@@ -1,3 +1,70 @@
-h1{
-    color: red;
+/* static/css/user.css */
+/* Variables for light (default) and dark (via [data-theme="dark"]) */
+:root{
+  --tzh-bg: #ffffff;
+  --tzh-surface: #f7f9fc;
+  --tzh-text: #0b1220;
+  --tzh-muted: #6c757d;
+  --tzh-primary: #0b3d91;
+  --tzh-radius: 8px;
+  --tzh-card-shadow: 0 6px 18px rgba(11,61,145,0.06);
 }
+
+/* dark theme */
+[data-theme="dark"]{
+  --tzh-bg: #071021;
+  --tzh-surface: #0b1220;
+  --tzh-text: #e6eef8;
+  --tzh-muted: #9aa7bf;
+  --tzh-primary: #3b82f6;
+  --tzh-card-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+html,body{height:100%;background:var(--tzh-bg);color:var(--tzh-text);font-family:Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;}
+.tzh-navbar{background:linear-gradient(90deg,var(--tzh-primary), rgba(11,61,145,0.8));box-shadow: 0 2px 6px rgba(0,0,0,0.08);}
+.tzh-main{min-height:70vh;padding:1.25rem 1rem;}
+.tzh-footer{background:transparent;border-top:1px solid rgba(0,0,0,0.05);color:var(--tzh-muted);}
+
+/* Cards */
+.tzh-card {
+  background: var(--tzh-surface);
+  border-radius: var(--tzh-radius);
+  box-shadow: var(--tzh-card-shadow);
+  padding: 1rem;
+}
+
+/* Sidebar (used on dashboards) */
+.tzh-sidebar {
+  background: var(--tzh-surface);
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 200px;
+}
+
+/* Form helpers */
+.tzh-form .form-control{
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+/* Buttons */
+.btn-primary{
+  background: var(--tzh-primary);
+  border-color: var(--tzh-primary);
+}
+.btn-primary:hover{filter:brightness(0.95)}
+
+/* Small helpers */
+.tzh-muted{color:var(--tzh-muted);font-size:0.9rem;}
+.tzh-section-title{font-size:1.25rem;font-weight:600;margin-bottom:0.75rem}
+
+/* Accents used in pages */
+.tzh-accent{color:var(--tzh-primary)}
+
+/* Responsive tweaks */
+@media (max-width: 767px){
+  .tzh-main{padding:0.75rem}
+  .tzh-navbar .navbar-brand { font-size: 0.95rem; }
+}
+
+/* End of responsive tweaks */
