@@ -1,15 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Address</title>
-</head>
-<body>
-    <h1>Create Address for {{ user.first_name }}</h1>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Add Address{% endblock %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Address</button>
-    </form>
-</body>
-</html>
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <div class="tzh-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0 tzh-section-title"><i class="fas fa-map-marker-alt me-2"></i>Add Address</h5>
+          <small class="tzh-muted">for {{ user.first_name }}</small>
+        </div>
+
+        <form method="post" class="tzh-form">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          {% for field in form %}
+            <div class="mb-3">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+              {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
+            </div>
+          {% endfor %}
+
+          <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save me-1"></i>Save Address
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
