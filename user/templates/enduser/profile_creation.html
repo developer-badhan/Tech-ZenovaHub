@@ -1,38 +1,42 @@
 {% extends "base.html" %}
-{% block title %}Sign Up{% endblock %}
 {% load static %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
-                    <h4>Sign Up</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="form-group">
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                                {% endif %}
-                                {% if field.errors %}
-                                    <div class="text-danger small">{{ field.errors|join:", " }}</div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-                    </form>
-                </div>
-                <div class="card-footer text-center">
-                    <small>Already have an account? <a href="{% url 'user_login' %}">Login here</a></small>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="tzh-card">
+        <div class="card-header pb-0 mb-3 border-0">
+          <h4 class="text-center tzh-section-title mb-0">Create your account</h4>
+          <p class="text-center tzh-muted small">It takes just a minute to sign up.</p>
         </div>
+
+        <form method="post" enctype="multipart/form-data" class="tzh-form">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          <div class="row">
+            {% for field in form %}
+              <div class="col-12 mb-2">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 mt-3">Sign Up</button>
+        </form>
+
+        <div class="text-center mt-3">
+          <small>Already have an account? <a href="{% url 'user_login' %}">Login here</a></small>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
