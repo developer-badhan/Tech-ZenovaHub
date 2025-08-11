@@ -1,5 +1,7 @@
 from enum import Enum
 
+# Success messages for user-related actions
+
 class SuccessMessage(Enum):
     S0001 = 'User successfully created.'
     S0002 = 'User successfully updated.'

@@ -1,5 +1,7 @@
 from enum import Enum
 
+# Error messages for user-related actions
+
 class ErrorMessage(Enum):
     E0001 = 'User creation failed.'
     E0002 = 'User update failed.'
