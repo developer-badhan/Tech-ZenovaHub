@@ -18,3 +18,5 @@ class AddressForm(forms.ModelForm):
         self.fields['state'].widget.attrs.update({'placeholder': 'State / Region'})
         self.fields['postal_code'].widget.attrs.update({'placeholder': 'ZIP / Postal Code'})
         self.fields['country'].widget.attrs.update({'placeholder': 'Country'})
+        self.fields['is_default'].widget.attrs.update({'class': 'form-check-input'})
+        self.fields['is_default'].label = 'Set as default address'
