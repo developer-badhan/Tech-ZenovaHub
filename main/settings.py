@@ -92,6 +92,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Define custom user model
 AUTH_USER_MODEL = 'user.User'
 
+# Cookie settings for handling sessions
+SESSION_COOKIE_NAME = env('SESSION_COOKIE_NAME')
+SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE')
+SESSION_COOKIE_HTTPONLY = env('SESSION_COOKIE_HTTPONLY')
+SESSION_COOKIE_SAMESITE = env('SESSION_COOKIE_SAMESITE')
+
 # # Email settings
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = env('EMAIL_HOST')
@@ -99,5 +105,4 @@ AUTH_USER_MODEL = 'user.User'
 # EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 # EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-
 

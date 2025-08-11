@@ -14,6 +14,11 @@ env = environ.Env(
     PGSQL_PASSWORD=(str, ''),           # Database password
     PGSQL_HOST=(str, ''),               # Database host
     PGSQL_PORT=(str, ''),               # Database port
+
+    SESSION_COOKIE_NAME=(str, 'zenovahub_sessionid'), # Session cookie name
+    SESSION_COOKIE_SECURE=(bool, True), # Whether to use HTTPS for the session cookie
+    SESSION_COOKIE_HTTPONLY=(bool, True), # Whether to make the session cookie HTTP-only
+    SESSION_COOKIE_SAMESITE=(str, 'Lax') # SameSite attribute for the session cookie
 )
 
 # Read variables from a .env file located at the project root
