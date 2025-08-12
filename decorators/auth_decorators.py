@@ -1,11 +1,9 @@
-'''decorators/auth_decorators.py
-This module contains decorators for authentication-related checks.
-'''
-
 from functools import wraps
 from django.shortcuts import redirect
 from django.urls import resolve
 from constants.enums import Role
+
+# This module contains decorators for authentication-related checks.
 
 def signin_required(view_func):
     @wraps(view_func)

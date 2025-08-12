@@ -3,6 +3,9 @@ from . import views
 
 urlpatterns = [
 
+    # Home Route
+    path('', views.HomeView.as_view(), name='home'),
+
     # Product Routes
     path('tech-zenovahub/products/', views.ProductListView.as_view(), name='product_list'),
     path('tech-zenovahub/products/create/', views.ProductCreateView.as_view(), name='product_create'),
@@ -59,7 +62,9 @@ urlpatterns = [
     path('tech-zenovahub/shipments/<int:order_id>/mark-shipped/', views.ShipmentMarkShippedView.as_view(), name='shipment_mark_shipped'),
     path('tech-zenovahub/shipments/<int:order_id>/mark-delivered/', views.ShipmentMarkDeliveredView.as_view(), name='shipment_mark_delivered'),
 
+
 ]
+
 
 
 
