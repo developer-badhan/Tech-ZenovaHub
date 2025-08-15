@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Admin Account</title>
+    <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Delete Account</h2>
+    <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/toastr.min.js' %}"></script>
+<script src="{% static 'js/toaster_helper.js' %}"></script>
+{% if toast_status and toast_message %}
+<script>
+    showToast("{{ toast_status }}", "{{ toast_message }}");
+</script>
+{% endif %}
+</body>
+</html>
