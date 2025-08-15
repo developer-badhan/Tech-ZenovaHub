@@ -33,17 +33,12 @@
               Other
             {% endif %}
           </li>
-          <li><strong>Addresses:</strong>
-            <ul>
-              {% for addr in address %}
-                <li>{{ addr.address_line1 }}, {{ addr.city }}</li>
-              {% empty %}
-                <li class="tzh-muted">No addresses found.</li>
-              {% endfor %}
-            </ul>
-          </li>
+          {% for addr in address %}
+            <li><strong>Address:</strong> {{ addr.address_line1 }}, {{ addr.city }}</li>
+          {% empty %}
+            <li class="tzh-muted">No addresses found.</li>
+          {% endfor %}
         </ul>
-
         <div class="d-flex justify-content-between mt-3">
           <a class="btn btn-outline-primary" href="{% url 'user_profile_update' user_id=request.session.user_id %}">
             <i class="fas fa-edit me-1"></i>Update Profile
