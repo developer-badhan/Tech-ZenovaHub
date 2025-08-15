@@ -5,6 +5,12 @@ from . import views
 
 urlpatterns = [
 
+    # Admin User Routes
+    path('admin/signin/',views.AdminUserLoginView.as_view(),name='admin_login'),
+    path('admin/signup/',views.AdminUserSignupView.as_view(),name='admin_signup'),
+    path('admin/signout/',views.AdminUserLogoutView.as_view(),name='admin_logout'),
+    path('admin/dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
+
     # User Authentication Routes
     path('signin/', views.EndUserLoginView.as_view(), name='user_login'),
     path('signout/', views.EndUserLogoutView.as_view(), name='user_logout'),
@@ -21,11 +27,15 @@ urlpatterns = [
     path('user/update/<int:user_id>/', views.EndUserProfileUpdateView.as_view(), name='user_profile_update'),
     path('user/delete/<int:user_id>/', views.EndUserDeleteView.as_view(), name='user_delete'),
 
-
     # User Address Routes
     path('user/<int:user_id>/addresses/create/', views.AddressCreateView.as_view(), name='user_address_create'),
     path('user/<int:user_id>/addresses/update/<int:address_id>/', views.AddressUpdateView.as_view(), name='user_address_update'),
 
 ] 
+
+
+
+
+
 
 
