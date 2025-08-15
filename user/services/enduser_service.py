@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from user.models import User
 
 
-# ────── AUTHENTICATION ──────
+# Authentication
 
 def authenticate_user(email, password):
     try:
@@ -13,7 +13,7 @@ def authenticate_user(email, password):
         raise Exception(f"Authentication failed: {str(e)}")
 
 
-# ────── USER RETRIEVAL ──────
+# User Retrieval
 
 def get_user_by_id(user_id):
     try:
@@ -22,7 +22,7 @@ def get_user_by_id(user_id):
         raise Exception(f"User with ID {user_id} not found. Error: {str(e)}")
 
 
-# ────── USER CREATION ──────
+# User Create
 
 def create_user(data):
     try:
@@ -44,7 +44,7 @@ def create_user(data):
         raise Exception(f"Failed to create user. Error: {str(e)}")
 
 
-# ────── USER UPDATE ──────
+# User Update
 
 def update_user(user, data):
     try:
@@ -61,7 +61,7 @@ def update_user(user, data):
         raise Exception(f"Failed to update user with ID {user.id}. Error: {str(e)}")
 
 
-# ────── USER DELETION ──────
+# User Delete
 
 def delete_user(user_id):
     try:
