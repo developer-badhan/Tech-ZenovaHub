@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% block title %}All Categories{% endblock %}
+
+{% block content %}
+<div class="col-md-10 offset-md-1">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Category List</h3>
+        <a href="{% url 'category_create' %}" class="btn btn-primary">+ Add New Category</a>
+    </div>
+
+    {% if categories %}
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Description</th>
+                <th scope="col" style="width: 150px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'category_update' category.id %}" class="btn btn-sm btn-warning">Edit</a>
+<a href="{% url 'category_delete' category.id %}" class="btn btn-danger">
+    Delete
+</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">No categories available.</div>
+    {% endif %}
+</div>
+{% endblock %}

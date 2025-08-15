@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% block title %}Delete Category{% endblock %}
+
+{% block content %}
+<div class="col-md-8 offset-md-2">
+    <div class="card border-danger shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title text-danger">Delete Category</h4>
+            <p class="card-text">
+                Are you sure you want to permanently delete the category
+                <strong>"{{ category.name }}"</strong>?
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{% url 'category_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
