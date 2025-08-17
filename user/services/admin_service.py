@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 # Admin Create
 def create_admin(data):
     user = User.objects.create_user(
-        username=data['email'],  # ← Add this line so username isn't missing
+        username=data['email'], 
         email=data['email'],
         first_name=data['first_name'],
         last_name=data['last_name'],

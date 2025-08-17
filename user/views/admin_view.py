@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from urllib.parse import urlencode
 from user.forms import AdminUserForm
 from user.services import create_admin, authenticate_admin
@@ -32,7 +31,7 @@ class AdminUserSignupView(View):
             data["password"] = password
             create_admin(data)
             query = urlencode({"status": "success", "message": "Admin account created successfully. Please log in."})
-            return redirect(f"/admin/signin/?{query}")
+            return redirect("admin_login")
         else:
             return render(request, "admin/admin_signup.html", {
                 "form": form,
