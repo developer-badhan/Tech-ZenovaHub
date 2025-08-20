@@ -1,5 +1,42 @@
 {% extends "admin/admin_base.html" %}
 {% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 border-0">
+            <h3 class="text-center mb-4">Admin Login</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{% url 'admin_signup' %}">Don't have an account? Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% comment %} 
+{% extends "admin/admin_base.html" %}
+{% block title %}Admin Login{% endblock %}
 {% block content %}
 <h2>Admin Login</h2>
 <form method="post">
@@ -17,4 +54,4 @@
 <p>
     <a href="{% url 'admin_signup' %}">Don't have an account? Sign Up</a>
 </p>
-{% endblock %}
+{% endblock %} {% endcomment %}

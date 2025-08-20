@@ -37,7 +37,7 @@ def create_user(data):
             profile_photo=data.get('profile_photo'),
             role=data['role'],
         )
-        user.set_password(data['password'])  # ✅ Secure password storage
+        user.set_password(data['password']) 
         user.save()
         return user
     except Exception as e:
