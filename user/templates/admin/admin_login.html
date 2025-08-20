@@ -26,32 +26,3 @@
 </div>
 {% endblock %}
 
-
-
-
-
-
-
-
-
-{% comment %} 
-{% extends "admin/admin_base.html" %}
-{% block title %}Admin Login{% endblock %}
-{% block content %}
-<h2>Admin Login</h2>
-<form method="post">
-    {% csrf_token %}
-    <p>
-        <label>Email:</label><br>
-        <input type="email" name="email" required>
-    </p>
-    <p>
-        <label>Password:</label><br>
-        <input type="password" name="password" required>
-    </p>
-    <button type="submit">Login</button>
-</form>
-<p>
-    <a href="{% url 'admin_signup' %}">Don't have an account? Sign Up</a>
-</p>
-{% endblock %} {% endcomment %}

@@ -33,35 +33,3 @@
 </div>
 {% endblock %}
 
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} {% extends "admin/admin_base.html" %}
-{% block title %}Admin Signup{% endblock %}
-{% block content %}
-<h2>Admin Signup</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p>
-        <label>Password:</label><br>
-        <input type="password" name="password" required>
-    </p>
-    <p>
-        <label>Confirm Password:</label><br>
-        <input type="password" name="confirm_password" required>
-    </p>
-    <button type="submit">Sign Up</button>
-</form>
-<p>
-    <a href="{% url 'admin_login' %}">Already have an account? Login</a>
-</p>
-{% endblock %} {% endcomment %}
