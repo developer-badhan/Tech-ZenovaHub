@@ -46,3 +46,16 @@ def admin_required(view_func):
         return view_func(view_self, request, *args, **kwargs)
     return wrapper
 
+
+'''
+def login_admin_required(view_func):
+    @wraps(view_func)
+    def wrapper(view_self, request, *args, **kwargs):
+        if not request.user.is_authenticated or request.user.role != Role.ADMIN:
+            current_view_name = resolve(request.path_info).url_name
+            if current_view_name != 'admin_login':
+                return redirect('admin_login')
+        return view_func(view_self, request, *args, **kwargs)
+    return wrapper
+
+'''

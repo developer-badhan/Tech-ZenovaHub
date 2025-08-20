@@ -35,3 +35,4 @@ build/          # Build directory
 # Media files (user-uploaded content)
 media/
 
+shop/

@@ -2,6 +2,7 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import  HttpResponseNotFound, HttpResponseServerError
+from decorators.auth_decorators import admin_required
 from shop.services import product_service
 from shop.models import Category
 
@@ -104,6 +105,7 @@ class ProductDetailView(View):
             return render(request, 'product/product_detail.html', {'product': product})
         return HttpResponseNotFound("Product not found.")
 
+
 class ProductCreateView(View):
     def get(self, request):
         categories = Category.objects.all()
@@ -148,6 +150,7 @@ class ProductUpdateView(View):
         
         messages.error(request, "Failed to update product.")
         return redirect('product_update', product_id=product_id)
+
 
 
 class ProductDeleteView(View):

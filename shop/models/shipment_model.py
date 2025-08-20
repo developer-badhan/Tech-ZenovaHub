@@ -11,8 +11,4 @@ class Shipment(models.Model):
     status = models.CharField(max_length=50, default='processing')
 
     def __str__(self):
-        return f"Shipment for Order #{self.order.id}"
-        return f"The shipment was {self.carrier} and tracking number {self.tracking_number}"                    
-
-
-            
+        return f"Shipment for Order #{self.order.id} via {self.carrier} (Tracking: {self.tracking_number})"
