@@ -123,13 +123,19 @@ class AdminUserUpdateView(View):
             })
 
 
+   
+
 @method_decorator(login_required(login_url='admin_login'), name='dispatch')
 class AdminUserDeleteView(View):
+    def get(self, request, pk):
+        if request.user.role != Role.ADMIN or request.user.pk != pk:
+            return redirect('admin_dashboard')
+        return render(request, "admin/admin_delete.html", {"admin_user": request.user})
+
     def post(self, request, pk):
         if request.user.role != Role.ADMIN or request.user.pk != pk:
             return redirect('admin_dashboard')
 
         delete_admin(pk)
         logout(request)
-        messages.success(request, "Your account has been deleted.")
         return redirect("admin_signup")

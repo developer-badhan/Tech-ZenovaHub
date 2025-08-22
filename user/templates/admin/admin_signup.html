@@ -8,10 +8,7 @@
             <h3 class="text-center mb-4">Admin Signup</h3>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-
-                <!-- Render Django form fields (e.g., image, phone, etc.) -->
                 {{ form.as_p }}
-
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" name="password" id="password" class="form-control" placeholder="Create Password" required>

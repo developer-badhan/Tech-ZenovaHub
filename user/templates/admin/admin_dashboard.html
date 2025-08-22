@@ -17,18 +17,15 @@
 
     <!-- Main Dashboard -->
     <div class="col-md-10">
-        <!-- Top Navbar -->
-<!-- Top Navbar -->
-<div class="d-flex justify-content-end align-items-center p-3 border-bottom">
-    <span class="me-3"><i class="fa fa-user-circle"></i> {{ request.user.first_name }}</span>
-    <a href="{% url 'admin_update' request.user.pk %}" class="btn btn-outline-primary btn-sm me-2">Update Profile</a>
-    <form method="POST" action="{% url 'admin_delete' request.user.pk %}" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-danger btn-sm me-2" onclick="return confirm('Are you sure you want to delete your account?');">Delete Account</button>
-    </form>
-    <a href="{% url 'admin_logout' %}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-sign-out-alt"></i> Logout</a>
-</div>
 
+        <!-- Top Navbar -->
+        <div class="d-flex justify-content-end align-items-center p-3 border-bottom">
+            <span class="me-3"><i class="fa fa-user-circle"></i> {{ request.user.first_name }}</span>
+            <a href="{% url 'admin_update' request.user.pk %}" class="btn btn-outline-primary btn-sm me-2">Update Profile</a>
+            <a href="{% url 'admin_delete' request.user.pk %}" class="btn btn-outline-danger btn-sm me-2">Delete Account</a>
+            <a href="{% url 'admin_logout' %}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-sign-out-alt"></i> Logout</a>
+        </div>
+                
         <!-- Dashboard Content -->
         <div class="p-4">
             <h3>Welcome, {{ request.user.first_name }}</h3>
