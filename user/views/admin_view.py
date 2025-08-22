@@ -73,3 +73,63 @@ class AdminDashboardView(View):
         if request.user.role != Role.ADMIN:
             return redirect("admin_signup")
         return render(request, "admin/admin_dashboard.html")
+
+
+
+
+
+
+# user/views.py
+
+from django.views import View
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.urls import reverse
+from user.forms import AdminUserUpdateForm
+from user.services import update_admin, delete_admin
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from constants import Role
+from user.models import User
+
+
+@method_decorator(login_required(login_url='admin_login'), name='dispatch')
+class AdminUserUpdateView(View):
+    def get(self, request, pk):
+        if request.user.role != Role.ADMIN or request.user.pk != pk:
+            return redirect('admin_dashboard')
+
+        admin_user = get_object_or_404(User, pk=pk)
+        form = AdminUserUpdateForm(instance=admin_user)
+        return render(request, "admin/admin_update.html", {"form": form, "admin_user": admin_user})
+
+    def post(self, request, pk):
+        if request.user.role != Role.ADMIN or request.user.pk != pk:
+            return redirect('admin_dashboard')
+
+        admin_user = get_object_or_404(User, pk=pk)
+        form = AdminUserUpdateForm(request.POST, request.FILES, instance=admin_user)
+
+        if form.is_valid():
+            update_admin(pk, form.cleaned_data)
+            messages.success(request, "Profile updated successfully.")
+            return redirect(reverse("admin_dashboard"))
+        else:
+            return render(request, "admin/admin_update.html", {
+                "form": form,
+                "admin_user": admin_user,
+                "toast_status": "error",
+                "toast_message": "Please correct the errors below."
+            })
+
+
+@method_decorator(login_required(login_url='admin_login'), name='dispatch')
+class AdminUserDeleteView(View):
+    def post(self, request, pk):
+        if request.user.role != Role.ADMIN or request.user.pk != pk:
+            return redirect('admin_dashboard')
+
+        delete_admin(pk)
+        logout(request)
+        messages.success(request, "Your account has been deleted.")
+        return redirect("admin_signup")

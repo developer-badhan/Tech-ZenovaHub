@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Delete Account</h2>
-    <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+    <h2>Delete Admin Profile</h2>
+    <p>Are you sure you want to delete the admin profile for {{ user.username }}? This action cannot be undone.</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Delete</button>
-        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        <a href="{% url 'admin_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 

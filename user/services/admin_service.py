@@ -28,3 +28,23 @@ def authenticate_admin(email, password):
     if user and user.role == Role.ADMIN:
         return user
     return None
+
+
+
+# user/services.py
+
+from django.shortcuts import get_object_or_404
+
+# Admin Update
+def update_admin(user_id, data):
+    user = get_object_or_404(User, pk=user_id, role=Role.ADMIN)
+    for field, value in data.items():
+        setattr(user, field, value)
+    user.save()
+    return user
+
+# Admin Delete
+def delete_admin(user_id):
+    user = get_object_or_404(User, pk=user_id, role=Role.ADMIN)
+    user.delete()
+    return True

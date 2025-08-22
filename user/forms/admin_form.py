@@ -23,3 +23,24 @@ class AdminUserForm(forms.ModelForm):
         self.fields['dob'].widget.attrs.update({'placeholder': 'Enter date of birth'})
         self.fields['email'].widget.attrs.update({'placeholder': 'Enter email'})
         self.fields['is_active'].initial = True
+
+
+
+# user/forms.py
+
+from django import forms
+from user.models import User
+
+class AdminUserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'dob', 'email', 'is_active']
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AdminUserUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({'placeholder': 'Enter first name'})
+        self.fields['last_name'].widget.attrs.update({'placeholder': 'Enter last name'})
+        self.fields['email'].widget.attrs.update({'placeholder': 'Enter email'})

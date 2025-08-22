@@ -1,32 +1,18 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update Admin Profile</title>
-    <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-<div class="container mt-5">
-    <h2>Update Profile</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-group">
-            <label>New Password (leave blank to keep current)</label>
-            <input type="password" name="password" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-success">Update</button>
-    </form>
-</div>
+<!-- templates/admin/admin_update.html -->
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+<h2>Update Admin Account</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/toastr.min.js' %}"></script>
-<script src="{% static 'js/toaster_helper.js' %}"></script>
-{% if toast_status and toast_message %}
-<script>
-    showToast("{{ toast_status }}", "{{ toast_message }}");
-</script>
-{% endif %}
-</body>
-</html>
+    <button type="submit">Update</button>
+</form>
+<form method="POST" action="{% url 'admin_delete' admin_user.id %}">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Are you sure you want to delete your account?');">
+        Delete Account
+    </button>
+</form>
+<a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+{% endblock %}

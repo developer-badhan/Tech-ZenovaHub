@@ -9,6 +9,8 @@ urlpatterns = [
     path('admin/signin/',views.AdminUserLoginView.as_view(),name='admin_login'),
     path('admin/signup/',views.AdminUserSignupView.as_view(),name='admin_signup'),
     path('admin/signout/',views.AdminUserLogoutView.as_view(),name='admin_logout'),
+    path('admin/update/<int:pk>/', views.AdminUserUpdateView.as_view(), name='admin_update'),
+    path('admin/delete/<int:pk>/', views.AdminUserDeleteView.as_view(), name='admin_delete'),
     path('admin/dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
 
     # User Authentication Routes
