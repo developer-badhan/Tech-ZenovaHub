@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Shopping Cart</h2>
+
+    {% if cart_items %}
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Price (₹)</th>
+                    <th>Quantity</th>
+                    <th>Total (₹)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_price }}</td>
+                    <td>
+                        <form method="post" action="{% url 'remove_from_cart' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Grand Total:</strong></td>
+                    <td colspan="2"><strong>₹{{ total_price }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-end">
+        <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+    </div>
+
+    {% else %}
+    <div class="alert alert-info text-center">
+        Your cart is currently empty. <a href="{% url 'product_list' %}">Shop now</a>.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

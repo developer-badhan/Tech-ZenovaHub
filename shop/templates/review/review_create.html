@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% block title %}Write a Review{% endblock %}
+
+{% block content %}
+<div class="col-md-8 offset-md-2">
+    <h3 class="mb-4">Write a Review for <span class="text-primary">{{ product.name }}</span></h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating</label>
+            <select name="rating" id="rating" class="form-select" required>
+                <option value="">-- Select Rating --</option>
+                {% for i in "12345"|make_list %}
+                <option value="{{ i }}" {% if form.rating.value == i|stringformat:"s" %}selected{% endif %}>
+                    {{ i }} Star{% if i != "1" %}s{% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label>
+            <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Write your review..." style="resize: vertical;">{{ form.comment.value }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+        <a href="{% url 'shop:product_detail' product.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

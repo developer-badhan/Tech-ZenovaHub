@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+
+{% block content %}
+{% if reviews %}
+    <div class="list-group">
+        {% for review in reviews %}
+        <div class="list-group-item mb-2 border rounded shadow-sm">
+            <div class="d-flex justify-content-between">
+                <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
+                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+            </div>
+            <div class="text-warning mt-1" style="font-size: 14px;">
+                {% for i in "12345"|slice:":review.rating"|make_list %}★{% endfor %}
+                {% for i in "12345"|slice:"review.rating:"|make_list %}<span class="text-secondary">★</span>{% endfor %}
+            </div>
+            {% if review.comment %}
+            <p class="mb-1 mt-2">{{ review.comment }}</p>
+            {% endif %}
+            <div>
+                <a href="{% url 'review_update' review.product.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                <a href="{% url 'review_delete' review.product.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No reviews yet. Be the first to review!</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+{% block title %}Add to Cart{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="col-md-6 offset-md-3">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add to Cart</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="card-title">{{ product.name }}</h6>
+                <p class="card-text"><strong>Price:</strong> ₹{{ product.price }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add to Cart</button>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

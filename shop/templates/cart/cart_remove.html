@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% block title %}Remove from Cart{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="col-md-6 offset-md-3">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Confirm Removal</h5>
+            </div>
+            <div class="card-body text-center">
+                <p>Are you sure you want to remove <strong>{{ cart_item.product.name }}</strong> (Qty: {{ cart_item.quantity }}) from your cart?</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Remove</button>
+                    <a href="{% url 'cart_detail' %}" class="btn btn-secondary ms-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

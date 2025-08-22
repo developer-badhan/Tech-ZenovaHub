@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Order #{{ order.id }}</h3>
+
+<div class="row">
+    <div class="col-md-8">
+        <h5 class="mb-3">Items Ordered</h5>
+
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td class="text-center">{{ item.quantity }}</td>
+                    <td class="text-end">₹{{ item.price }}</td>
+                    <td class="text-end">₹{{ item.quantity|floatformat:2|add:""|add:item.price|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-4">
+        <h5 class="mb-3">Order Summary</h5>
+        <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Order ID</span>
+                <strong>{{ order.id }}</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Created At</span>
+                <span>{{ order.created_at|date:"M d, Y H:i" }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Payment Status</span>
+                {% if order.is_paid %}
+                <span class="text-success">Paid</span>
+                {% else %}
+                <span class="text-danger">Unpaid</span>
+                {% endif %}
+            </li>
+            {% if order.coupon %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Coupon</span>
+                <span>{{ order.coupon.code }} ({{ order.coupon.discount_percent }}%)</span>
+            </li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Total</span>
+                <strong>₹{{ order.total_amount }}</strong>
+            </li>
+        </ul>
+
+        {% if order.shipment %}
+        <a href="{% url 'shipment_detail' order.id %}" class="btn btn-outline-primary w-100 mb-2">Track Shipment</a>
+        {% else %}
+        <div class="alert alert-info">Shipment not created yet.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+{% block title %}Confirm Your Order{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h3 class="mb-4">Confirm Your Order</h3>
+
+        {% if cart.items.all %}
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-end">Unit Price</th>
+                    <th class="text-end">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td class="text-center">{{ item.quantity }}</td>
+                    <td class="text-end">₹{{ item.product.price }}</td>
+                    <td class="text-end">₹{{ item.quantity|floatformat:2|add:""|add:item.product.price|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Your cart is empty.</p>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <h4 class="mb-3">Delivery Address</h4>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Full Address</label>
+                <textarea name="address" id="address" class="form-control" rows="4" required placeholder="Enter your shipping address here...">{{ address }}</textarea>
+            </div>
+
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Subtotal</span>
+                    <strong>₹{{ total_price }}</strong>
+                </li>
+                {% if discount %}
+                <li class="list-group-item d-flex justify-content-between text-success">
+                    <span>Discount</span>
+                    <span>- ₹{{ discount }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Total</span>
+                    <strong>₹{{ discounted_price }}</strong>
+                </li>
+                {% endif %}
+            </ul>
+
+            <button type="submit" class="btn btn-success w-100">Place Order</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+{% block title %}Shipment Details{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Shipment for Order #{{ shipment.order.id }}</h3>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Shipping Information</h5>
+        <p class="mb-2">
+            <strong>Address:</strong><br>
+            {{ shipment.address }}
+        </p>
+
+        {% if shipment.carrier %}
+        <p class="mb-1">
+            <strong>Carrier:</strong> {{ shipment.carrier }}
+        </p>
+        {% endif %}
+
+        {% if shipment.tracking_number %}
+        <p class="mb-1">
+            <strong>Tracking Number:</strong> {{ shipment.tracking_number }}
+        </p>
+        {% endif %}
+
+        <p class="mb-1">
+            <strong>Shipped At:</strong>
+            {% if shipment.shipped_at %}
+                {{ shipment.shipped_at|date:"M d, Y H:i" }}
+            {% else %}
+                <span class="text-muted">Not shipped yet</span>
+            {% endif %}
+        </p>
+
+        <p class="mb-0">
+            <strong>Delivered At:</strong>
+            {% if shipment.delivered_at %}
+                {{ shipment.delivered_at|date:"M d, Y H:i" }}
+            {% else %}
+                <span class="text-muted">Not delivered yet</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<a href="{% url 'shop:order_detail' shipment.order.id %}" class="btn btn-outline-secondary">Back to Order</a>
+{% endblock %}

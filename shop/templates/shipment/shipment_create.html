@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% block title %}Create Shipment{% endblock %}
+
+{% block content %}
+<div class="col-md-8 offset-md-2">
+    <h3 class="mb-4">Create Shipment for Order #{{ order.id }}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Shipping Address</label>
+            <textarea name="address" id="address" class="form-control" rows="4" placeholder="Enter delivery address..." required>{{ form.address.value }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="carrier" class="form-label">Carrier</label>
+            <input type="text" name="carrier" id="carrier" class="form-control" placeholder="e.g. BlueDart, Delhivery" value="{{ form.carrier.value }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="tracking_number" class="form-label">Tracking Number</label>
+            <input type="text" name="tracking_number" id="tracking_number" class="form-control" placeholder="Enter tracking ID" value="{{ form.tracking_number.value }}">
+        </div>
+
+        <button type="submit" class="btn btn-success">Create Shipment</button>
+        <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
