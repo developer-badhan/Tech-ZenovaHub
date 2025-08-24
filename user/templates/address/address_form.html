@@ -12,6 +12,7 @@
           <small class="tzh-muted">for {{ user.first_name }}</small>
         </div>
 
+        <!--Address Form-->
         <form method="post" class="tzh-form">
           {% csrf_token %}
           {% if form.non_field_errors %}
@@ -33,7 +34,6 @@
             </button>
           </div>
         </form>
-
       </div>
     </div>
   </div>

@@ -12,6 +12,7 @@
           <p class="text-center tzh-muted small">It takes just a minute to sign up.</p>
         </div>
 
+        <!--Form for creating profile-->
         <form method="post" enctype="multipart/form-data" class="tzh-form">
           {% csrf_token %}
           {% if form.non_field_errors %}
@@ -28,10 +29,8 @@
               </div>
             {% endfor %}
           </div>
-
           <button type="submit" class="btn btn-primary w-100 mt-3">Sign Up</button>
         </form>
-
         <div class="text-center mt-3">
           <small>Already have an account? <a href="{% url 'user_login' %}">Login here</a></small>
         </div>

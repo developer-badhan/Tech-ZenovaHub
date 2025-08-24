@@ -9,6 +9,7 @@
       <div class="tzh-card">
         <h5 class="tzh-section-title"><i class="fas fa-edit me-2"></i>Update Address</h5>
 
+        <!--Address Update Form-->
         <form method="post" class="tzh-form">
           {% csrf_token %}
           {% if form.non_field_errors %}
@@ -23,13 +24,11 @@
               {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
             </div>
           {% endfor %}
-
           <div class="d-flex justify-content-between mt-4">
             <a href="javascript:history.back()" class="btn btn-danger">Cancel</a>
             <button type="submit" class="btn btn-primary">Update</button>
           </div>
         </form>
-
       </div>
     </div>
   </div>
