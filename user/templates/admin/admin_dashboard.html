@@ -12,6 +12,8 @@
             <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-tags"></i> Categories</a></li>
             <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-star"></i> Reviews</a></li>
             <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-truck"></i> Shipments</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i> Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-heart"></i> Wishlists</a></li>
         </ul>
     </div>
 
@@ -59,6 +61,20 @@
                         <i class="fa fa-truck fa-2x text-danger"></i>
                         <h5 class="mt-2">{{ stats.total_shipments }}</h5>
                         <p class="text-muted">Shipments</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm text-center">
+                        <i class="fa fa-shopping-cart fa-2x text-primary"></i>
+                        <h5 class="mt-2">{{ stats.total_orders }}</h5>
+                        <p class="text-muted">Orders</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm text-center">
+                        <i class="fa fa-heart fa-2x text-primary"></i>
+                        <h5 class="mt-2">{{ stats.total_wishlists }}</h5>
+                        <p class="text-muted">Wishlists</p>
                     </div>
                 </div>
             </div>

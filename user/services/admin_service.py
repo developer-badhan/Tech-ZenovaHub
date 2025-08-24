@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from user.models import User
 from constants.enums import Role
-from shop.models import Product, Category, Review, Shipment,Order
+from shop.models import Product, Category, Review, Shipment,Order,Wishlist
 
 
 # Admin Create
@@ -78,33 +78,24 @@ def delete_admin(pk: int):
 
 
 # Admin Dashboard
-def get_dashboard_data():
+def get_dashboard_data(request):
     try:
-        # Admin Details
-        admin = get_object_or_404(User, pk=request.session['user_id'], role=Role.ADMIN)
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return None, "User not authenticated."
 
-        # Users
-        total_admins = User.objects.filter(role=Role.ADMIN).count()
-        total_staff = User.objects.filter(role=Role.ENDUSER_STAFF).count()
-        total_customers = User.objects.filter(role=Role.ENDUSER_CUSTOMER).count()
-
-        # Business Objects
-        total_products = Product.objects.count()
-        total_categories = Category.objects.count()
-        total_reviews = Review.objects.count()
-        total_shipments = Shipment.objects.count()
-        total_orders = Order.objects.count()
-
+        admin = get_object_or_404(User, pk=user_id, role=Role.ADMIN)
         return {
             "admin": admin,
-            "total_admins": total_admins,
-            "total_staff": total_staff,
-            "total_customers": total_customers,
-            "total_products": total_products,
-            "total_categories": total_categories,
-            "total_reviews": total_reviews,
-            "total_shipments": total_shipments,
-            "total_orders": total_orders,
+            "total_admins": User.objects.filter(role=Role.ADMIN).count(),
+            "total_staff": User.objects.filter(role=Role.ENDUSER_STAFF).count(),
+            "total_customers": User.objects.filter(role=Role.ENDUSER_CUSTOMER).count(),
+            "total_products": Product.objects.count(),
+            "total_categories": Category.objects.count(),
+            "total_reviews": Review.objects.count(),
+            "total_shipments": Shipment.objects.count(),
+            "total_orders": Order.objects.count(),
+            "total_wishlists": Wishlist.objects.count(),
         }, None
     except Exception as e:
         return None, str(e)

@@ -90,11 +90,10 @@ class AdminUserDeleteView(View):
 class AdminDashboardView(View):
     @login_admin_required
     def get(self, request):
-        data, error = admin_service.get_dashboard_data()
+        data, error = admin_service.get_dashboard_data(request)
         if error:
-            return render(request, "admin/admin_dashboard.html", {"error": error})
+            return render(request, "admin/admin_dashboard.html", {"error": error})    
         return render(request, "admin/admin_dashboard.html", {
-            "admin": request.user,
+            "admin_user": data["admin"],
             "stats": data,
         })
-
