@@ -20,61 +20,60 @@
 
         <!-- Top Navbar -->
         <div class="d-flex justify-content-end align-items-center p-3 border-bottom">
-            <span class="me-3"><i class="fa fa-user-circle"></i> {{ request.user.first_name }}</span>
-            <a href="{% url 'admin_update' request.user.pk %}" class="btn btn-outline-primary btn-sm me-2">Update Profile</a>
-            <a href="{% url 'admin_delete' request.user.pk %}" class="btn btn-outline-danger btn-sm me-2">Delete Account</a>
+            <span class="me-3"><i class="fa fa-user-circle"></i> {{ admin.first_name }}</span>
+            <a href="{% url 'admin_update' request.session.user_id %}" class="btn btn-warning btn-sm">Update</a>
+            <a href="{% url 'admin_delete' request.session.user_id %}" class="btn btn-danger btn-sm">Delete</a>
             <a href="{% url 'admin_logout' %}" class="btn btn-outline-secondary btn-sm"><i class="fa fa-sign-out-alt"></i> Logout</a>
         </div>
                 
         <!-- Dashboard Content -->
         <div class="p-4">
-            <h3>Welcome, {{ request.user.first_name }}</h3>
-            <p class="text-muted">Role: {{ request.user.role }}</p>
+            <h3>Welcome, {{ admin_user.first_name }}</h3>
+            <p class="text-muted">Role: {{ admin_user.role }}</p>
 
             <!-- Dashboard Cards -->
             <div class="row">
                 <div class="col-md-3">
                     <div class="card p-3 shadow-sm text-center">
                         <i class="fa fa-box fa-2x text-primary"></i>
-                        <h5 class="mt-2">120</h5>
+                        <h5 class="mt-2">{{ stats.total_products }}</h5>
                         <p class="text-muted">Products</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card p-3 shadow-sm text-center">
-                        <i class="fa fa-users fa-2x text-success"></i>
-                        <h5 class="mt-2">85</h5>
-                        <p class="text-muted">Users</p>
+                        <i class="fa fa-tags fa-2x text-success"></i>
+                        <h5 class="mt-2">{{ stats.total_categories }}</h5>
+                        <p class="text-muted">Categories</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card p-3 shadow-sm text-center">
                         <i class="fa fa-star fa-2x text-warning"></i>
-                        <h5 class="mt-2">320</h5>
+                        <h5 class="mt-2">{{ stats.total_reviews }}</h5>
                         <p class="text-muted">Reviews</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card p-3 shadow-sm text-center">
                         <i class="fa fa-truck fa-2x text-danger"></i>
-                        <h5 class="mt-2">45</h5>
+                        <h5 class="mt-2">{{ stats.total_shipments }}</h5>
                         <p class="text-muted">Shipments</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>  
+</div>
+
+
 
 <!-- Toast Notifications -->
 <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/toastr.min.js' %}"></script>
 <script src="{% static 'js/toaster_helper.js' %}"></script>
-{% if toast_status and toast_message %}
-<script>
-    showToast("{{ toast_status }}", "{{ toast_message }}");
-</script>
-{% endif %}
+
+
 {% endblock %}
 

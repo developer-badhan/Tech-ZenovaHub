@@ -1,4 +1,42 @@
 {% extends "admin/admin_base.html" %}
+{% load static %}
+
+{% block title %}Delete Admin Account{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">Delete Admin Account</h4>
+        </div>
+        <div class="card-body">
+
+            <!-- Error Handling -->
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            <p class="mb-3">
+                Are you sure you want to <strong>delete</strong> your admin account (ID: {{ admin_id }})? 
+                <br>This action <span class="text-danger">cannot be undone</span>.
+            </p>
+
+            <!-- Confirmation Form -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% comment %} {% extends "admin/admin_base.html" %}
 {% block title %}Delete Admin Account{% endblock %}
 
 {% block content %}
@@ -16,4 +54,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}

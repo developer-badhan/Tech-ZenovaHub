@@ -2,7 +2,7 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import  HttpResponseNotFound, HttpResponseServerError
-from decorators.auth_decorators import admin_required
+# from decorators.auth_decorators import admin_required
 from shop.services import product_service
 from shop.models import Category
 
