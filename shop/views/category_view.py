@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from shop.services import category_service
+from decorators.auth_decorators import login_admin_required
 
 # class CategoryListView(View):
 #     def get(self, request):
@@ -88,9 +89,11 @@ class CategoryDetailView(View):
 
 
 class CategoryCreateView(View):
+    @login_admin_required
     def get(self, request):
         return render(request, 'category/category_create.html')
 
+    @login_admin_required
     def post(self, request):
         data = {
             'name': request.POST.get('name'),
@@ -109,12 +112,14 @@ class CategoryCreateView(View):
 
 
 class CategoryUpdateView(View):
+    @login_admin_required
     def get(self, request, category_id):
         category = category_service.get_category_by_id(category_id)
         if category:
             return render(request, 'category/category_update.html', {'category': category})
         return HttpResponseNotFound("Category not found.")
 
+    @login_admin_required
     def post(self, request, category_id):
         data = {
             'name': request.POST.get('name'),
@@ -133,12 +138,14 @@ class CategoryUpdateView(View):
 
 
 class CategoryDeleteView(View):
+    @login_admin_required
     def get(self, request, category_id):
         category = category_service.get_category_by_id(category_id)
         if category:
             return render(request, 'category/category_delete.html', {'category': category})
         return HttpResponseNotFound("Category not found.")
 
+    @login_admin_required
     def post(self, request, category_id):
         try:
             success = category_service.delete_category(category_id)

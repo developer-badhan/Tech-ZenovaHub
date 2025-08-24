@@ -1,7 +1,7 @@
 from shop.models import Product
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
-
+from shop.models import Category
 def get_all_products(active_only=True):
     try:
         if active_only:
@@ -18,19 +18,31 @@ def get_all_products(active_only=True):
 
 def get_product_by_id(product_id):
     try:
-        return Product.objects.get(id=product_id)
+        product = Product.objects.get(id=product_id)
+        print(f"[get_product_by_id] Found product {product.id} - {product.name}")
+        return product
     except ObjectDoesNotExist:
-        print(f"Product with ID {product_id} not found.")
+        print(f"[get_product_by_id] Product with ID {product_id} not found.")
         return None
     except Exception as e:
-        print(f"Error retrieving product: {e}")
+        print(f"[get_product_by_id] Error retrieving product {product_id}: {e}")
         return None
 
-from shop.models import Category
-def create_product(data, user, files=None):
+from user.models import User
+
+
+
+
+def create_product(data, request, files=None):
     try:
         category_id = data.get('category')
         category = Category.objects.get(id=category_id)
+
+        user_id = request.session.get('user_id')
+        if not user_id:
+            raise ValueError("No user_id in session. Ensure login sets session values.")
+
+        created_by = User.objects.get(id=user_id)
 
         product = Product.objects.create(
             category=category,
@@ -41,18 +53,22 @@ def create_product(data, user, files=None):
             image=files.get('image') if files else None,
             sku=data.get('sku'),
             tags=data.get('tags', ''),
-            created_by=user
+            created_by=created_by
         )
         return product
     except Category.DoesNotExist:
         print(f"Category with ID {category_id} not found.")
+        return None
+    except User.DoesNotExist:
+        print(f"User with ID {user_id} not found in DB.")
         return None
     except Exception as e:
         print(f"Error creating product: {e}")
         return None
 
 
-def update_product(product_id, data, files=None):
+from user.models import User
+def update_product(product_id, data, request, files=None):
     try:
         product = Product.objects.get(id=product_id)
 
@@ -63,7 +79,9 @@ def update_product(product_id, data, files=None):
         product.stock = data.get('stock', product.stock)
         product.sku = data.get('sku', product.sku)
         product.tags = data.get('tags', product.tags)
-        product.is_active = data.get('is_active', product.is_active)
+
+        # ✅ Handle checkbox safely
+        product.is_active = bool(data.get('is_active'))
 
         if 'category' in data:
             try:
@@ -74,6 +92,14 @@ def update_product(product_id, data, files=None):
         if files and files.get('image'):
             product.image = files.get('image')
 
+        # Track updater
+        user_id = request.session.get('user_id')
+        if user_id:
+            try:
+                product.updated_by = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                print(f"User with ID {user_id} not found. Skipping updated_by.")
+
         product.save()
         return product
     except Product.DoesNotExist:
@@ -82,6 +108,7 @@ def update_product(product_id, data, files=None):
     except Exception as e:
         print(f"Error updating product: {e}")
         return None
+
 
 
 def delete_product(product_id):

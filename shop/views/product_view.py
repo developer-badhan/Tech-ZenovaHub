@@ -1,10 +1,11 @@
+from urllib import request
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import  HttpResponseNotFound, HttpResponseServerError
-# from decorators.auth_decorators import admin_required
 from shop.services import product_service
 from shop.models import Category
+from decorators.auth_decorators import login_admin_required
 
 # class ProductListView(View):
 #     def get(self, request):
@@ -107,15 +108,19 @@ class ProductDetailView(View):
 
 
 class ProductCreateView(View):
+    @login_admin_required
     def get(self, request):
         categories = Category.objects.all()
         return render(request, 'product/product_create.html', {'categories': categories})
 
+    @login_admin_required
     def post(self, request):
         try:
             data = request.POST.copy()
             files = request.FILES
-            product = product_service.create_product(data, request.user, files=files)
+            print("DEBUG session:", request.session.items())
+            print("DEBUG request.user:", request.user)
+            product = product_service.create_product(data, request, files=files)
             if product:
                 messages.success(request, "Product created successfully.")
                 return redirect('product_list')
@@ -127,6 +132,7 @@ class ProductCreateView(View):
 
 
 class ProductUpdateView(View):
+    @login_admin_required
     def get(self, request, product_id):
         product = product_service.get_product_by_id(product_id)
         categories = Category.objects.all()
@@ -137,11 +143,12 @@ class ProductUpdateView(View):
             })
         return HttpResponseNotFound("Product not found.")
 
+    @login_admin_required
     def post(self, request, product_id):
         try:
             data = request.POST.copy()
             files = request.FILES
-            product = product_service.update_product(product_id, data, files=files)
+            product = product_service.update_product(product_id, data, request, files=files)
             if product:
                 messages.success(request, "Product updated successfully.")
                 return redirect('product_detail', product_id=product.id)
@@ -154,6 +161,14 @@ class ProductUpdateView(View):
 
 
 class ProductDeleteView(View):
+    @login_admin_required
+    def get(self, request, product_id):
+        product = product_service.get_product_by_id(product_id)
+        if not product:
+            return HttpResponseNotFound("Product not found.")
+        return render(request, 'product/product_delete.html', {'product': product})
+
+    @login_admin_required
     def post(self, request, product_id):
         try:
             success = product_service.delete_product(product_id)
@@ -162,9 +177,10 @@ class ProductDeleteView(View):
             else:
                 messages.error(request, "Product not found or could not be deleted.")
         except Exception as e:
-            print(f"[ProductDeleteView] Error: {e}")
+            print(f"[ProductDeleteView] Error (POST): {e}")
             messages.error(request, "An unexpected error occurred.")
         return redirect('product_list')
+
 
 '''
 class ProductSearchView(View):
