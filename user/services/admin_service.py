@@ -1,57 +1,3 @@
-# from user.models import User
-# from constants import Role
-# from django.contrib.auth import authenticate
-
-# # Admin Create
-# def create_admin(data):
-#     user = User.objects.create_user(
-#         username=data['email'], 
-#         email=data['email'],
-#         first_name=data['first_name'],
-#         last_name=data['last_name'],
-#         dob=data['dob'],
-#         phone=data.get('phone'),
-#         gender=data.get('gender'),
-#         profile_photo=data.get('profile_photo'),
-#         role=Role.ADMIN,
-#         is_staff=True,
-#         is_superuser=True
-#     )
-#     user.set_password(data['password'])
-#     user.save()
-#     return user
-
-
-# # Admin Authentication
-# def authenticate_admin(email, password):
-#     user = authenticate(email=email, password=password)
-#     if user and user.role == Role.ADMIN:
-#         return user
-#     return None
-
-
-
-# # user/services.py
-
-# from django.shortcuts import get_object_or_404
-
-# # Admin Update
-# def update_admin(user_id, data):
-#     user = get_object_or_404(User, pk=user_id, role=Role.ADMIN)
-#     for field, value in data.items():
-#         setattr(user, field, value)
-#     user.save()
-#     return user
-
-# # Admin Delete
-# def delete_admin(user_id):
-#     user = get_object_or_404(User, pk=user_id, role=Role.ADMIN)
-#     user.delete()
-#     return True
-
-
-
-
 from urllib import request
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth import logout
@@ -59,12 +5,11 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from user.models import User
 from constants.enums import Role
+from shop.models import Product, Category, Review, Shipment,Order
 
 
-# ────────────── ADMIN SERVICES (FUNCTIONAL) ──────────────
-
+# Admin Create
 def create_admin(data: dict):
-    """Signup new admin"""
     try:
         admin = User.objects.create(
             first_name=data['first_name'],
@@ -83,8 +28,8 @@ def create_admin(data: dict):
         return None, str(e)
 
 
+# Admin Authentication
 def authenticate_admin(email: str, password: str, request):
-    """Authenticate and login admin"""
     try:
         user = User.objects.filter(email=email, role=Role.ADMIN).first()
         if user and check_password(password, user.password):
@@ -97,8 +42,8 @@ def authenticate_admin(email: str, password: str, request):
         return None, str(e)
 
 
+# Admin Logout
 def logout_admin(request):
-    """Logout admin"""
     try:
         request.session.flush()
         logout(request)
@@ -107,8 +52,8 @@ def logout_admin(request):
         return False, str(e)
 
 
+# Admin Update
 def update_admin(pk: int, data: dict):
-    """Update admin profile"""
     try:
         admin = get_object_or_404(User, pk=pk, role=Role.ADMIN)
         admin.first_name = data['first_name']
@@ -122,8 +67,8 @@ def update_admin(pk: int, data: dict):
         return None, str(e)
 
 
+# Admin Delete
 def delete_admin(pk: int):
-    """Delete admin account"""
     try:
         admin = get_object_or_404(User, pk=pk, role=Role.ADMIN)
         admin.delete()
@@ -132,18 +77,13 @@ def delete_admin(pk: int):
         return False, str(e)
 
 
-
-
-from user.models import User
-from constants.enums import Role
-from shop.models import Product, Category, Review, Shipment
-
-
+# Admin Dashboard
 def get_dashboard_data():
     """Fetch stats for admin dashboard"""
     try:
         # Admin Details
         admin = get_object_or_404(User, pk=request.session['user_id'], role=Role.ADMIN)
+
         # Users
         total_admins = User.objects.filter(role=Role.ADMIN).count()
         total_staff = User.objects.filter(role=Role.ENDUSER_STAFF).count()
@@ -154,6 +94,7 @@ def get_dashboard_data():
         total_categories = Category.objects.count()
         total_reviews = Review.objects.count()
         total_shipments = Shipment.objects.count()
+        total_orders = Order.objects.count()
 
         return {
             "admin": admin,
@@ -164,6 +105,8 @@ def get_dashboard_data():
             "total_categories": total_categories,
             "total_reviews": total_reviews,
             "total_shipments": total_shipments,
+            "total_orders": total_orders,
         }, None
     except Exception as e:
         return None, str(e)
+
