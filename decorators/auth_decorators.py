@@ -67,11 +67,9 @@ def login_admin_required(view_func):
     def wrapper(view_self, request, *args, **kwargs):
         if not request.session.get('is_authenticated'):
             return redirect('admin_login')
-
         user_role = request.session.get('user_role')
         if user_role != Role.ADMIN:
             return redirect('user_login')
-
         return view_func(view_self, request, *args, **kwargs)
     return wrapper
 

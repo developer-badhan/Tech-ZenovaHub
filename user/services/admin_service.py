@@ -79,7 +79,6 @@ def delete_admin(pk: int):
 
 # Admin Dashboard
 def get_dashboard_data():
-    """Fetch stats for admin dashboard"""
     try:
         # Admin Details
         admin = get_object_or_404(User, pk=request.session['user_id'], role=Role.ADMIN)
