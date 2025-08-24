@@ -5,7 +5,6 @@ from user.models import User
 
 
 # Authentication
-
 def authenticate_user(email, password):
     try:
         return authenticate(email=email, password=password)
@@ -14,7 +13,6 @@ def authenticate_user(email, password):
 
 
 # User Retrieval
-
 def get_user_by_id(user_id):
     try:
         return get_object_or_404(User, pk=user_id)
@@ -23,7 +21,6 @@ def get_user_by_id(user_id):
 
 
 # User Create
-
 def create_user(data):
     try:
         user = User(
@@ -45,7 +42,6 @@ def create_user(data):
 
 
 # User Update
-
 def update_user(user, data):
     try:
         user.first_name = data['first_name']
@@ -62,7 +58,6 @@ def update_user(user, data):
 
 
 # User Delete
-
 def delete_user(user_id):
     try:
         user = get_object_or_404(User, pk=user_id)
@@ -70,5 +65,4 @@ def delete_user(user_id):
     except Exception as e:
         raise Exception(f"Failed to delete user with ID {user_id}. Error: {str(e)}")
     
-
 
