@@ -4,54 +4,42 @@
 {% block title %}Delete Admin Account{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-danger text-white">
-            <h4 class="mb-0">Delete Admin Account</h4>
-        </div>
-        <div class="card-body">
-
-            <!-- Error Handling -->
-            {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-
-            <p class="mb-3">
-                Are you sure you want to <strong>delete</strong> your admin account (ID: {{ admin_id }})? 
-                <br>This action <span class="text-danger">cannot be undone</span>.
-            </p>
-
-            <!-- Confirmation Form -->
-            <form method="post">
-                {% csrf_token %}
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
-                    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="admin-card shadow-sm">
+            <div class="card-header bg-danger text-white d-flex align-items-center justify-content-between" style="border-radius:14px 14px 0 0;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <h4 class="mb-0">Delete Admin Account</h4>
                 </div>
-            </form>
+                <span class="badge bg-light text-danger">IRREVERSIBLE</span>
+            </div>
+            <div class="card-body p-4">
+                {% if error %}
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="fa-solid fa-circle-xmark me-2"></i>
+                        <div>{{ error }}</div>
+                    </div>
+                {% endif %}
+
+                <p class="mb-3">
+                    Are you sure you want to <strong>delete</strong> your admin account (ID: <code>{{ admin_id }}</code>)?
+                    <br>This action <span class="text-danger fw-semibold">cannot be undone</span>.
+                </p>
+
+                <form method="post" class="mt-3">
+                    {% csrf_token %}
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash-can me-2"></i>Yes, Delete My Account
+                        </button>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
-
-
-
-{% comment %} {% extends "admin/admin_base.html" %}
-{% block title %}Delete Admin Account{% endblock %}
-
-{% block content %}
-<div class="container mt-5">
-    <div class="card shadow-sm border-danger">
-        <div class="card-body">
-            <h3 class="text-danger">Confirm Account Deletion</h3>
-            <p>Are you sure you want to permanently delete your admin account <strong>{{ admin_user.email }}</strong>? This action cannot be undone.</p>
-
-            <form method="POST" action="{% url 'admin_delete' admin_user.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
-                <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
-            </form>
-        </div>
-    </div>
-</div>
-{% endblock %} {% endcomment %}

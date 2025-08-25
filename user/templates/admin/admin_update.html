@@ -4,29 +4,37 @@
 {% block title %}Update Admin Account{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0">Update Admin Profile</h4>
-        </div>
-        <div class="card-body">
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-9">
+        <div class="admin-card shadow-sm">
+            <div class="card-header bg-warning text-dark d-flex align-items-center gap-2" style="border-radius:14px 14px 0 0;">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <h4 class="mb-0">Update Admin Profile</h4>
+            </div>
+            <div class="card-body p-4">
+                {% if error %}
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i>
+                        <div>{{ error }}</div>
+                    </div>
+                {% endif %}
 
-            <!-- Error Handling -->
-            {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.as_p }}
+                    </div>
 
-            <!-- Update Form -->
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-
-                <div class="d-flex gap-2 mt-3">
-                    <button type="submit" class="btn btn-success">Save Changes</button>
-                    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
-                </div>
-            </form>
-
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>Save Changes
+                        </button>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-xmark me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -34,20 +42,5 @@
 
 
 
-{% comment %} {% extends 'admin/admin_base.html' %}
-{% block content %}
-<h2>Update Admin Account</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
 
-    <button type="submit">Update</button>
-</form>
-<form method="POST" action="{% url 'admin_delete' admin_user.id %}">
-    {% csrf_token %}
-    <button type="submit" onclick="return confirm('Are you sure you want to delete your account?');">
-        Delete Account
-    </button>
-</form>
-<a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
-{% endblock %} {% endcomment %}
+
