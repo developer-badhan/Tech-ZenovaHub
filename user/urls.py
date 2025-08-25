@@ -33,6 +33,9 @@ urlpatterns = [
     path('user/<int:user_id>/addresses/create/', views.AddressCreateView.as_view(), name='user_address_create'),
     path('user/<int:user_id>/addresses/update/<int:address_id>/', views.AddressUpdateView.as_view(), name='user_address_update'),
 
+    # Help Routes
+    path('help/', views.EnduserHelpView.as_view(), name='help'),
+
 ] 
 
 

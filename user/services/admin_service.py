@@ -1,4 +1,3 @@
-from urllib import request
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404

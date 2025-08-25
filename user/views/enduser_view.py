@@ -8,8 +8,7 @@ from user.services import enduser_service,address_service
 from decorators.auth_decorators import signin_required, customer_required, staff_required
 
 
-# User Authentication Views
-
+# User Authentication View
 class EndUserLoginView(View):
     def get(self, request):
         try:
@@ -50,6 +49,7 @@ class EndUserLoginView(View):
             return redirect('user_login')
 
 
+# User Logout View
 class EndUserLogoutView(View):
     def get(self, request):
         try:
@@ -61,8 +61,8 @@ class EndUserLogoutView(View):
 
 
 
-# User Dashboard Views
 
+# Enduser Customer Dashboard View
 class CustomerDashboardView(View):
     @signin_required
     @customer_required
@@ -81,6 +81,7 @@ class CustomerDashboardView(View):
             return redirect('user_login')
 
 
+# Enduser Staff Dashboard View
 class StaffDashboardView(View):
     @signin_required
     @staff_required
@@ -101,7 +102,7 @@ class StaffDashboardView(View):
 
 
 
-# User Profile Management Views
+# Enduser Profile Management Views
 class EndUserProfileCreateView(View):
     def get(self, request):
         try:
@@ -131,6 +132,7 @@ class EndUserProfileCreateView(View):
             return redirect('user_login')
 
 
+# Enduser Profile View
 class EndUserProfileView(View):
     @signin_required
     def get(self, request, user_id):
@@ -149,6 +151,7 @@ class EndUserProfileView(View):
             return redirect('user_login')
 
 
+# Enduser Profile Update View
 class EndUserProfileUpdateView(View):
     @signin_required
     def get(self, request, user_id):
@@ -179,6 +182,7 @@ class EndUserProfileUpdateView(View):
             return redirect('user_profile', user_id=user_id)
 
 
+# Enduser Account Deletion View
 class EndUserDeleteView(View):
     @signin_required
     def get(self, request, user_id):
@@ -204,6 +208,8 @@ class EndUserDeleteView(View):
             return redirect('user_profile', user_id=user_id)
 
 
-
-
-
+# Enduser Help View
+class EnduserHelpView(View):
+    @signin_required
+    def get(self, request):
+        return render(request, 'help/help.html')

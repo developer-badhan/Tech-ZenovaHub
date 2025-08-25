@@ -3,34 +3,44 @@
 {% block title %}Customer Dashboard - Tech-ZenovaHub{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid mt-5 mb-5"> <!-- Added outer margin for spacing -->
   <div class="row g-3">
-    <!-- Sidebar -->
+    
+    <!-- Sidebar Section: Displays user profile and account-related links -->
     {% if request.session.is_authenticated %}
     <aside class="col-12 col-md-4 col-lg-3">
-      <div class="tzh-sidebar">
+      <div class="tzh-sidebar p-3"> <!-- Added padding for better spacing -->
         <ul class="nav flex-column">
+          <!-- Profile Link -->
           <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_profile' user_id=request.session.user_id %}"><i class="fas fa-user me-2"></i>Profile</a></li>
+          
           {% if default_address %}
+          <!-- Address Management Link -->
           <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_address_update' user_id=request.session.user_id address_id=default_address.id %}"><i class="fas fa-map-marker-alt me-2"></i>Update Address</a></li>
           {% endif %}
+          
+          <!-- Delete Account Link -->
           <li class="nav-item mb-2"><a class="nav-link text-danger" href="{% url 'user_delete' user_id=request.session.user_id %}"><i class="fas fa-user-times me-2"></i>Delete Account</a></li>
+          
+          <!-- Sign Out Link -->
           <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a></li>
         </ul>
       </div>
     </aside>
     {% endif %}
 
-    <!-- Main content -->
+    <!-- Main Content Section: User dashboard with profile and address management -->
     <section class="col-12 {% if request.session.is_authenticated %}col-md-8 col-lg-9{% endif %}">
-      <div class="tzh-card">
+      <div class="tzh-card p-4"> <!-- Added padding to the card for inner space -->
         <div class="mb-3">
           <h4 class="mb-0">Welcome, {{ request.session.user_role|title }}</h4>
           <p class="tzh-muted">Manage your profile, addresses and orders from here.</p>
         </div>
 
-        <!-- Placeholder content -->
+        <!-- Placeholder Content: Section for managing profile and addresses -->
         <div class="row">
+          
+          <!-- Profile Management Card -->
           <div class="col-12 col-md-6 mb-3">
             <div class="p-3 tzh-card">
               <h6>Profile</h6>
@@ -38,13 +48,34 @@
               <a href="{% url 'user_profile' user_id=request.session.user_id %}" class="btn btn-sm btn-outline-primary">Manage</a>
             </div>
           </div>
+          
+          <!-- Address Management Card -->
           <div class="col-12 col-md-6 mb-3">
             <div class="p-3 tzh-card">
               <h6>Addresses</h6>
-              <p class="tzh-muted small">Add or edit your saved addresses.</p>
+              <p class="tzh-muted small">View and update your saved addresses.</p>
               <a href="{% url 'user_address_update' user_id=request.session.user_id address_id=default_address.id %}" class="btn btn-sm btn-outline-primary">Manage</a>
             </div>
           </div>
+
+          <!-- Card Management Card -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Card</h6>
+              <p class="tzh-muted small">Add or edit or delete items into shopping card.</p>
+              <a href="" class="btn btn-sm btn-outline-primary">Manage</a>
+            </div>
+          </div>
+          
+          <!-- Coupones-->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Coupons</h6>
+              <p class="tzh-muted small">View and use your coupons.</p>
+              <a href="" class="btn btn-sm btn-outline-primary">Manage</a>
+            </div>
+          </div>
+          
         </div>
       </div>
     </section>

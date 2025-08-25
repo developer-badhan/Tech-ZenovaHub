@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Help | Tech-ZenovaHub{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 900px;">
+    <h1 class="mb-4 text-center fw-bold"><i class="fa-solid fa-circle-question me-2 text-primary"></i>Help & Support</h1>
+
+    <div class="accordion" id="helpAccordion">
+
+        <!-- About the Platform -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingIntro">
+                <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIntro" aria-expanded="true" aria-controls="collapseIntro">
+                    <i class="fa-solid fa-rocket me-2 text-success"></i> What is Tech‑ZenovaHub?
+                </button>
+            </h2>
+            <div id="collapseIntro" class="accordion-collapse collapse show" aria-labelledby="headingIntro" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    Tech‑ZenovaHub is a dynamic tech-oriented platform designed to connect customers and staff for seamless service interaction. It allows users to manage profiles, view dashboards based on their role, and perform specific actions in a secure, modern environment.
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Related Help -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingAccount">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccount" aria-expanded="false" aria-controls="collapseAccount">
+                    <i class="fa-solid fa-user-circle me-2 text-info"></i> Account Management
+                </button>
+            </h2>
+            <div id="collapseAccount" class="accordion-collapse collapse" aria-labelledby="headingAccount" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul class="list-unstyled">
+                        <li><strong>🔑 Login:</strong> Click "Login" from the navbar and enter your credentials.</li>
+                        <li><strong>📝 Sign Up:</strong> New here? Register using the "Sign up" button to create your account.</li>
+                        <li><strong>🙋 Profile:</strong> Access your profile from the dropdown under your name once logged in.</li>
+                        <li><strong>🚪 Logout:</strong> Use the Sign Out option in the user menu to safely log out.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Help -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingDashboard">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
+                    <i class="fa-solid fa-chart-line me-2 text-warning"></i> Dashboard Overview
+                </button>
+            </h2>
+            <div id="collapseDashboard" class="accordion-collapse collapse" aria-labelledby="headingDashboard" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    Depending on your role:
+                    <ul>
+                        <li><strong>Customer Dashboard:</strong> View orders, status updates, and support tickets.</li>
+                        <li><strong>Staff Dashboard:</strong> Manage customers, respond to queries, and update progress.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customization Options -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingCustomization">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCustomization" aria-expanded="false" aria-controls="collapseCustomization">
+                    <i class="fa-solid fa-sliders me-2 text-secondary"></i> Theme & Accent Customization
+                </button>
+            </h2>
+            <div id="collapseCustomization" class="accordion-collapse collapse" aria-labelledby="headingCustomization" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li><strong>🎨 Accent Color:</strong> Use the palette icon in the navbar to change the site’s accent color instantly.</li>
+                        <li><strong>🌙 Theme Mode:</strong> Switch between light and dark mode using the moon/sun icon in the navbar.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingIssues">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIssues" aria-expanded="false" aria-controls="collapseIssues">
+                    <i class="fa-solid fa-triangle-exclamation me-2 text-danger"></i> Common Issues & Fixes
+                </button>
+            </h2>
+            <div id="collapseIssues" class="accordion-collapse collapse" aria-labelledby="headingIssues" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li><strong>Login Error:</strong> Ensure your username/password is correct and that your account is active.</li>
+                        <li><strong>Dashboard Not Loading:</strong> Try refreshing the page or clearing your browser cache.</li>
+                        <li><strong>Accent/Theme not saving:</strong> Preferences are saved temporarily. Persistent settings may require future updates.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Support -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSupport">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSupport" aria-expanded="false" aria-controls="collapseSupport">
+                    <i class="fa-solid fa-headset me-2 text-primary"></i> Contact & Support
+                </button>
+            </h2>
+            <div id="collapseSupport" class="accordion-collapse collapse" aria-labelledby="headingSupport" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    Need more help? Reach out to our support team!
+                    <ul>
+                        <li>Email: <a href="mailto:support@techzenovahub.com">support@techzenovahub.com</a></li>
+                        <li>Twitter: <a href="#" target="_blank">@TechZenovaHub</a></li>
+                        <li>GitHub: <a href="#" target="_blank">github.com/techzenovahub</a></li>
+                    </ul>
+                    Support hours: <strong>Mon–Fri, 9am–6pm GMT</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Back to Top -->
+    <div class="text-end mt-4">
+        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-up me-1"></i>Back to Top</a>
+    </div>
+</div>
+{% endblock %}
