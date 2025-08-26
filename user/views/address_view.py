@@ -7,8 +7,8 @@ from constants import Role
 from django.urls import reverse
 
 
-#  User Address Management Views
 
+# Enduser Address Creation View
 class AddressCreateView(View):
     @signin_required
     def get(self, request, user_id):
@@ -50,6 +50,7 @@ class AddressCreateView(View):
 
 
 
+# Enduser Address Update View
 class AddressUpdateView(View):
     @signin_required
     def get(self, request, user_id, address_id):

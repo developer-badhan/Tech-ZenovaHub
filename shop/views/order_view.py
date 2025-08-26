@@ -1,9 +1,8 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.http import HttpResponseNotFound
 from shop.services import order_service
-from shop.models import Order
 
 # class OrderListView(View):
 #     def get(self, request):
@@ -68,17 +67,17 @@ class OrderListView(View):
     def get(self, request):
         try:
             orders = order_service.get_all_orders(user=request.user)
-            return render(request, 'shop/order_list.html', {'orders': orders})
+            return render(request, 'order/order_list.html', {'orders': orders})
         except Exception as e:
             print(f"[OrderListView] Error: {e}")
             messages.error(request, "Failed to load orders.")
-            return render(request, 'shop/order_list.html', {'orders': []})
+            return render(request, 'order/order_list.html', {'orders': []})
 
 class OrderDetailView(View):
     def get(self, request, order_id):
         order = order_service.get_order_by_id(order_id)
         if order:
-            return render(request, 'shop/order_detail.html', {'order': order})
+            return render(request, 'order/order_detail.html', {'order': order})
         return HttpResponseNotFound("Order not found.")
 
 class OrderCreateView(View):
@@ -111,7 +110,7 @@ class OrderCreateView(View):
             print(f"[OrderCreateView] Error: {e}")
             messages.error(request, "Failed to place order.")
 
-        return redirect('shop:order_create')
+        return redirect('order_create')
 
 class OrderDeleteView(View):
     def post(self, request, order_id):
@@ -124,7 +123,7 @@ class OrderDeleteView(View):
         except Exception as e:
             print(f"[OrderDeleteView] Error: {e}")
             messages.error(request, "An error occurred while deleting the order.")
-        return redirect('shop:order_list')
+        return redirect('order_list')
 
 
 
