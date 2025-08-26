@@ -1,32 +1,121 @@
+
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Staff Dashboard - Tech-ZenovaHub{% endblock %}
+{% block title %}Delivery Staff Dashboard - Tech-ZenovaHub{% endblock %}
 
 {% block content %}
-<!-- identical structure as customer_dashboard with role-specific copy -->
-<div class="container-fluid">
+<div class="container-fluid mt-5 mb-5"> <!-- Outer margin for spacing -->
   <div class="row g-3">
+    
+    <!-- Sidebar Section: User options -->
     {% if request.session.is_authenticated %}
     <aside class="col-12 col-md-4 col-lg-3">
-      <div class="tzh-sidebar">      
-      <ul class="nav flex-column">
-          <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_profile' user_id=request.session.user_id %}"><i class="fas fa-user me-2"></i>Profile</a></li>
+      <div class="tzh-sidebar p-3">
+        <ul class="nav flex-column">
+          <!-- Profile -->
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="{% url 'user_profile' user_id=request.session.user_id %}">
+              <i class="fas fa-user me-2"></i>Profile
+            </a>
+          </li>
+
           {% if default_address %}
-          <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_address_update' user_id=request.session.user_id address_id=default_address.id %}"><i class="fas fa-map-marker-alt me-2"></i>Update Address</a></li>
+          <!-- Update Address -->
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="{% url 'user_address_update' user_id=request.session.user_id address_id=default_address.id %}">
+              <i class="fas fa-map-marker-alt me-2"></i>Update Address
+            </a>
+          </li>
           {% endif %}
-          <li class="nav-item mb-2"><a class="nav-link text-danger" href="{% url 'user_delete' user_id=request.session.user_id %}"><i class="fas fa-user-times me-2"></i>Delete Account</a></li>
-          <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a></li>
+
+          <!-- Delete Account -->
+          <li class="nav-item mb-2">
+            <a class="nav-link text-danger" href="{% url 'user_delete' user_id=request.session.user_id %}">
+              <i class="fas fa-user-times me-2"></i>Delete Account
+            </a>
+          </li>
+
+          <!-- Sign Out -->
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="{% url 'user_logout' %}">
+              <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+            </a>
+          </li>
         </ul>
       </div>
     </aside>
     {% endif %}
 
+    <!-- Main Content Section -->
     <section class="col-12 {% if request.session.is_authenticated %}col-md-8 col-lg-9{% endif %}">
-      <div class="tzh-card">
-        <h4>Welcome, {{ request.session.user_role|title }}</h4>
-        <p class="tzh-muted">Staff tools and links will appear here.</p>
+      <div class="tzh-card p-4">
+        <div class="mb-3">
+          <h4 class="mb-0">Welcome, {{ request.session.user_role|title }}</h4>
+          <p class="tzh-muted">Manage your delivery tasks and update order statuses here.</p>
+        </div>
+
+        <div class="row">
+
+          <!-- Profile Management Card -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Profile</h6>
+              <p class="tzh-muted small">View and update your profile details.</p>
+              <a href="{% url 'user_profile' user_id=request.session.user_id %}" class="btn btn-sm btn-outline-primary">Manage</a>
+            </div>
+          </div>
+          
+          <!-- Address Management Card -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Addresses</h6>
+              <p class="tzh-muted small">View and update your saved addresses.</p>
+              <a href="{% url 'user_address_update' user_id=request.session.user_id address_id=default_address.id %}" class="btn btn-sm btn-outline-primary">Manage</a>
+            </div>
+          </div>
+
+          
+          <!-- Assigned Deliveries -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Assigned Deliveries</h6>
+              <p class="tzh-muted small">View orders assigned to you for delivery.</p>
+              <a href="" class="btn btn-sm btn-outline-primary">View</a>
+            </div>
+          </div>
+
+          <!-- Update Delivery Status -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Update Delivery Status</h6>
+              <p class="tzh-muted small">Mark orders as delivered or failed.</p>
+              <a href="" class="btn btn-sm btn-outline-primary">Update</a>
+            </div>
+          </div>
+
+          <!-- Delivery Routes -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Delivery Routes</h6>
+              <p class="tzh-muted small">View optimized routes for today's deliveries.</p>
+              <a href="" class="btn btn-sm btn-outline-primary">View</a>
+            </div>
+          </div>
+
+          <!-- Support Requests -->
+          <div class="col-12 col-md-6 mb-3">
+            <div class="p-3 tzh-card">
+              <h6>Support</h6>
+              <p class="tzh-muted small">Request help or report delivery issues.</p>
+              <a href="" class="btn btn-sm btn-outline-primary">Get Help</a>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   </div>
 </div>
 {% endblock %}
+
+

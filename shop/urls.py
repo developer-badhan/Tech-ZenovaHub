@@ -63,6 +63,10 @@ urlpatterns = [
     path('tech-zenovahub.com/shipments/<int:order_id>/mark-delivered/', views.ShipmentMarkDeliveredView.as_view(), name='shipment_mark_delivered'),
 
 
+    # Product Search Routes
+    path('tech-zenovahub.com/products/search/', views.ProductSearchView.as_view(), name='product_search'),
+
+
 ]
 
 

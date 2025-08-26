@@ -26,11 +26,10 @@
                 <td>{{ category.description|default:"-" }}</td>
                 <td>
                     <a href="{% url 'category_update' category.id %}" class="btn btn-sm btn-warning">Edit</a>
-<a href="{% url 'category_delete' category.id %}" class="btn btn-danger">
-    Delete
-</a>
-
-                </td>
+                    <a href="{% url 'category_delete' category.id %}" class="btn btn-danger">
+                    Delete
+                 </a>
+             </td>
             </tr>
             {% endfor %}
         </tbody>

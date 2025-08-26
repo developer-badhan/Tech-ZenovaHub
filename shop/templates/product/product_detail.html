@@ -7,7 +7,7 @@
         {% if product.image %}
         <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.name }}">
         {% else %}
-        <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="No image">
+        <img src="https:/v/ia.placeholder.com/600x400" class="img-fluid rounded shadow" alt="No image">
         {% endif %}
     </div>
 
@@ -25,9 +25,9 @@
         </form>
 
         <!-- Add to Wishlist -->
-        <form method="post" action="{% url 'wishlist_add' product.id %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-outline-danger">Add to Wishlist</button>
+        <form method="post" action="{% url 'wishlist_add' product.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary">Add to wishlist</button>
         </form>
     </div>
 </div>

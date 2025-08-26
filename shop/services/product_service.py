@@ -2,6 +2,11 @@ from shop.models import Product
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from shop.models import Category
+from user.models import User
+
+
+
+# Fetch all Products
 def get_all_products(active_only=True):
     try:
         if active_only:
@@ -16,6 +21,8 @@ def get_all_products(active_only=True):
         print(f"[get_all_products] Error: {e}")
         return []
 
+
+# Fetch Products By ID
 def get_product_by_id(product_id):
     try:
         product = Product.objects.get(id=product_id)
@@ -28,11 +35,8 @@ def get_product_by_id(product_id):
         print(f"[get_product_by_id] Error retrieving product {product_id}: {e}")
         return None
 
-from user.models import User
 
-
-
-
+# Create a new Product
 def create_product(data, request, files=None):
     try:
         category_id = data.get('category')
@@ -67,20 +71,16 @@ def create_product(data, request, files=None):
         return None
 
 
-from user.models import User
+# Update the existing Product
 def update_product(product_id, data, request, files=None):
     try:
         product = Product.objects.get(id=product_id)
-
-        # Update fields
         product.name = data.get('name', product.name)
         product.description = data.get('description', product.description)
         product.price = data.get('price', product.price)
         product.stock = data.get('stock', product.stock)
         product.sku = data.get('sku', product.sku)
         product.tags = data.get('tags', product.tags)
-
-        # ✅ Handle checkbox safely
         product.is_active = bool(data.get('is_active'))
 
         if 'category' in data:
@@ -91,15 +91,12 @@ def update_product(product_id, data, request, files=None):
 
         if files and files.get('image'):
             product.image = files.get('image')
-
-        # Track updater
         user_id = request.session.get('user_id')
         if user_id:
             try:
                 product.updated_by = User.objects.get(id=user_id)
             except User.DoesNotExist:
                 print(f"User with ID {user_id} not found. Skipping updated_by.")
-
         product.save()
         return product
     except Product.DoesNotExist:
@@ -110,7 +107,7 @@ def update_product(product_id, data, request, files=None):
         return None
 
 
-
+# Delete an existing Product
 def delete_product(product_id):
     try:
         product = Product.objects.get(id=product_id)
@@ -123,6 +120,8 @@ def delete_product(product_id):
         print(f"Error deleting product: {e}")
         return False
 
+
+# Search for Products
 def search_products(query):
     try:
         return Product.objects.filter(

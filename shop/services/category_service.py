@@ -1,6 +1,9 @@
 from shop.models import Category
 from django.core.exceptions import ObjectDoesNotExist
 
+
+
+# Fetch all Categories
 def get_all_categories():
     try:
         return Category.objects.all().order_by('name')
@@ -8,6 +11,8 @@ def get_all_categories():
         print(f"Error fetching categories: {e}")
         return []
 
+
+# Fetch a Category by ID
 def get_category_by_id(category_id):
     try:
         return Category.objects.get(id=category_id)
@@ -18,6 +23,8 @@ def get_category_by_id(category_id):
         print(f"Error retrieving category: {e}")
         return None
 
+
+# Create a new Category
 def create_category(data):
     try:
         category = Category.objects.create(
@@ -31,6 +38,8 @@ def create_category(data):
         print(f"Error creating category: {e}")
         return None
 
+
+# Update an existing Category
 def update_category(category_id, data):
     try:
         category = Category.objects.get(id=category_id)
@@ -47,6 +56,8 @@ def update_category(category_id, data):
         print(f"Error updating category: {e}")
         return None
 
+
+# Delete an existing Category
 def delete_category(category_id):
     try:
         category = Category.objects.get(id=category_id)
@@ -58,3 +69,5 @@ def delete_category(category_id):
     except Exception as e:
         print(f"Error deleting category: {e}")
         return False
+    
+    
