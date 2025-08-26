@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block content %}
+<h2>Clear Your Cart</h2>
+<p>This will remove all items from your cart.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" style="color: red;">Clear Cart</button>
+</form>
+{% endblock %}
