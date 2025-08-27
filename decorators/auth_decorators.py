@@ -2,6 +2,7 @@ from functools import wraps
 from django.shortcuts import redirect
 from django.urls import resolve
 from constants.enums import Role
+from django.contrib.auth import get_user_model
 
 
 # Sign-in required decorator
@@ -52,7 +53,7 @@ def login_admin_required(view_func):
     return wrapper
 
 
-from django.contrib.auth import get_user_model
+
 
 # Inject authenticated user into request
 def inject_authenticated_user(view_func):
