@@ -19,12 +19,12 @@
         <p>Stock: {{ product.stock }}</p>
 
         <!-- Add to Cart -->
-<form method="post" action="{% url 'cart_add' %}" class="d-inline">
-    {% csrf_token %}
-    <input type="hidden" name="product_id" value="{{ product.id }}">
-    <input type="hidden" name="quantity" value="1">
-    <button type="submit" class="btn btn-sm btn-outline-success me-2">Add to Cart</button>
-</form>
+        <form method="post" action="{% url 'cart_add' %}" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn btn-sm btn-outline-success me-2">Add to Cart</button>
+        </form>
 
         <!-- Add to Wishlist -->
         <form method="post" action="{% url 'wishlist_add' product.id %}">
@@ -33,7 +33,6 @@
         </form>
     </div>
 </div>
-
 <hr>
 
 <!-- Reviews Section -->

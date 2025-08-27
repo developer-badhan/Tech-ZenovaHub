@@ -40,15 +40,12 @@ class CartAddItemView(View):
     def post(self, request):
         product_id = request.POST.get('product_id')
         quantity_raw = request.POST.get('quantity')
-
-        # Safely convert quantity to an integer, fallback to 1
         try:
             quantity = int(quantity_raw)
             if quantity <= 0:
                 quantity = 1
         except (TypeError, ValueError):
             quantity = 1
-
         try:
             item = cart_service.add_item(request.user, product_id, quantity)
             if item:
@@ -58,9 +55,7 @@ class CartAddItemView(View):
         except Exception as e:
             messages.error(request, "Unexpected error occurred while adding item.")
             print(e)
-
         return redirect('cart_detail')
-
 
 
 # Update Item in Cart
@@ -77,7 +72,6 @@ class CartUpdateItemView(View):
     def post(self, request):
         product_id = request.POST.get('product_id')
         quantity = request.POST.get('quantity')
-
         try:
             item = cart_service.update_item(request.user, product_id, quantity)
             if item:
@@ -87,7 +81,6 @@ class CartUpdateItemView(View):
         except Exception as e:
             messages.error(request, "Unexpected error occurred while updating item.")
             print(e)
-
         return redirect('cart_detail')
 
 
@@ -104,7 +97,6 @@ class CartRemoveItemView(View):
     @inject_authenticated_user
     def post(self, request):
         product_id = request.POST.get('product_id')
-
         try:
             success = cart_service.remove_item(request.user, product_id)
             if success:
@@ -114,7 +106,6 @@ class CartRemoveItemView(View):
         except Exception as e:
             messages.error(request, "Unexpected error occurred while removing item.")
             print(e)
-
         return redirect('cart_detail')
 
 
@@ -139,5 +130,4 @@ class CartClearView(View):
         except Exception as e:
             messages.error(request, "Unexpected error occurred while clearing cart.")
             print(e)
-
         return redirect('cart_detail')
