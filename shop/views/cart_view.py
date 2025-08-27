@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseServerError
 from shop.services import cart_service
 from decorators import signin_required,customer_required,inject_authenticated_user
-
+from shop.models import Product
 
 
 # Cart Detail View
@@ -31,14 +31,23 @@ class CartAddItemView(View):
     @customer_required
     @inject_authenticated_user
     def get(self, request):
-        return render(request, 'cart/cart_additem.html')
+        products = Product.objects.all()
+        return render(request, 'cart/cart_additem.html', {'products': products})
 
     @signin_required
     @customer_required
     @inject_authenticated_user
     def post(self, request):
         product_id = request.POST.get('product_id')
-        quantity = request.POST.get('quantity', 1)
+        quantity_raw = request.POST.get('quantity')
+
+        # Safely convert quantity to an integer, fallback to 1
+        try:
+            quantity = int(quantity_raw)
+            if quantity <= 0:
+                quantity = 1
+        except (TypeError, ValueError):
+            quantity = 1
 
         try:
             item = cart_service.add_item(request.user, product_id, quantity)
@@ -51,6 +60,7 @@ class CartAddItemView(View):
             print(e)
 
         return redirect('cart_detail')
+
 
 
 # Update Item in Cart

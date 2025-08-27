@@ -1,10 +1,9 @@
-# shop/views/wishlist_views.py
 from django.views import View
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from mixins.auth_mixins import CustomerRequiredMixin
 from shop.services import wishlist_service
-from shop.models import Product
+
 
 class WishlistListView(CustomerRequiredMixin, View):
     def get(self, request):
