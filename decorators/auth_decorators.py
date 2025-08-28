@@ -5,6 +5,7 @@ from constants.enums import Role
 from django.contrib.auth import get_user_model
 
 
+
 # Sign-in required decorator
 def signin_required(view_func):
     @wraps(view_func)
@@ -27,6 +28,7 @@ def customer_required(view_func):
                 return redirect('user_login')
         return view_func(view_self, request, *args, **kwargs)
     return wrapper
+
 
 # Staff role required decorator
 def staff_required(view_func):
@@ -53,15 +55,12 @@ def login_admin_required(view_func):
     return wrapper
 
 
-
-
 # Inject authenticated user into request
 def inject_authenticated_user(view_func):
     @wraps(view_func)
     def wrapper(view_self, request, *args, **kwargs):
         if not request.session.get('is_authenticated'):
             return redirect('user_login')
-
         user_id = request.session.get('user_id')
         if user_id:
             try:
@@ -71,6 +70,6 @@ def inject_authenticated_user(view_func):
                 return redirect('user_login')
         else:
             return redirect('user_login')
-
         return view_func(view_self, request, *args, **kwargs)
     return wrapper
+

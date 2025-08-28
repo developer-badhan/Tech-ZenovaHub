@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% block content %}
+
+<h2>Product Reviews</h2>
+<ul>
+    {% for review in reviews %}
+        <li>
+            {{ review.user.username }} - {{ review.rating }}★<br>
+            {{ review.comment }}<br>
+            {% if user == review.user %}
+                <form method="post" action="{% url 'review_delete' product_id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No reviews yet.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'review_create' product_id %}">Add Review</a>
+
+
+{% endblock %}
