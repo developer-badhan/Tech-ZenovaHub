@@ -1,41 +1,21 @@
-{% extends 'main.html' %}
-{% block title %}Your Wishlist{% endblock %}
-
+{% extends "main.html" %}
 {% block content %}
-<h3 class="mb-4">My Wishlist</h3>
-
-{% if wishlists %}
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for item in wishlists %}
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            {% if item.product.image %}
-            <img src="{{ item.product.image.url }}" class="card-img-top" alt="{{ item.product.name }}" style="object-fit: cover; height: 250px;">
-            {% else %}
-            <img src="https://via.placeholder.com/300x250" class="card-img-top" alt="No image">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ item.product.name }}</h5>
-                <p class="card-text text-truncate">{{ item.product.description|truncatechars:100 }}</p>
-                <p class="text-success fw-bold">₹{{ item.product.price }}</p>
-
-                <!-- Add to cart -->
-                <form method="post" action="{% url 'cart_add' item.product.id %}" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-success">Add to Cart</button>
-                </form>
-
-                <!-- Remove from wishlist -->
-                <form method="post" action="{% url 'wishlist_remove' item.product.id %}" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+<div class="container mt-4">
+  <h2>Your Wishlist</h2>
+  {% if wishlist %}
+    <ul class="list-group">
+      {% for item in wishlist %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ item.product.name }}
+          <form method="post" action="{% url 'wishlist_remove' item.product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">Your wishlist is empty.</p>
+  {% endif %}
 </div>
-{% else %}
-<p>You have no items in your wishlist.</p>
-{% endif %}
 {% endblock %}

@@ -1,23 +1,12 @@
-{% extends 'main.html' %}
-{% block title %}Add to Wishlist{% endblock %}
-
+{% extends "main.html" %}
 {% block content %}
-<div class="container mt-5">
-    <div class="col-md-6 offset-md-3">
-        <div class="card shadow-sm border-primary">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Add to Wishlist</h5>
-            </div>
-            <div class="card-body text-center">
-                <p>Do you want to add <strong>{{ product.name }}</strong> to your wishlist?</p>
-                
-                <form method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Yes, Add</button>
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary ms-2">Cancel</a>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="container mt-4">
+  <h2>Add to Wishlist</h2>
+  <p>Are you sure you want to add product ID <strong>{{ product_id }}</strong> to your wishlist?</p>
+  <form method="post" action="{% url 'wishlist_add' product_id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Add</button>
+    <a href="{% url 'wishlist' %}" class="btn btn-secondary">Cancel</a>
+  </form>
 </div>
 {% endblock %}
