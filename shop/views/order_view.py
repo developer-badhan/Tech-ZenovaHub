@@ -104,7 +104,7 @@ class OrderCreateView(View):
 
             if order:
                 messages.success(request, "Order placed successfully.")
-                return redirect('shop:order_detail', order_id=order.id)
+                return redirect('order_detail', order_id=order.id)
 
         except Exception as e:
             print(f"[OrderCreateView] Error: {e}")

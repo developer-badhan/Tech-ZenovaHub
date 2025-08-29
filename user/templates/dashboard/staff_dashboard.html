@@ -50,7 +50,7 @@
     <section class="col-12 {% if request.session.is_authenticated %}col-md-8 col-lg-9{% endif %}">
       <div class="tzh-card p-4">
         <div class="mb-3">
-          <h4 class="mb-0">Welcome, {{ request.session.user_role|title }}</h4>
+          <h4 class="mb-0">Welcome, {{ user.first_name }}</h4>
           <p class="tzh-muted">Manage your delivery tasks and update order statuses here.</p>
         </div>
 

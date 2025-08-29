@@ -72,10 +72,11 @@ class CustomerDashboardView(View):
             user = enduser_service.get_user_by_id(user_id)
             addresses = address_service.get_user_addresses(user)
             default_address = addresses.first() 
-
-            return render(request, 'dashboard/customer_dashboard.html', {
+            context = {
+                'user': user,
                 'default_address': default_address
-            })
+            }
+            return render(request, 'dashboard/customer_dashboard.html', context)
         except Exception as e:
             messages.error(request, f"Error loading dashboard: {str(e)}")
             return redirect('user_login')
@@ -91,9 +92,11 @@ class StaffDashboardView(View):
             user = enduser_service.get_user_by_id(user_id)
             addresses = address_service.get_user_addresses(user)
             default_address = addresses.first() 
-            return render(request, 'dashboard/staff_dashboard.html', {
+            context ={
+                'user': user,
                 'default_address': default_address
-            })
+            }
+            return render(request, 'dashboard/staff_dashboard.html', context)
         except Exception as e:
             messages.error(request, f"Error loading dashboard: {str(e)}")
             return redirect('user_login')
