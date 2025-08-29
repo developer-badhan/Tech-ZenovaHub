@@ -75,8 +75,12 @@
         {% if request.session.is_authenticated %}
           <div class="dropdown">
             <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="tzhUserDropdown" data-bs-toggle="dropdown" aria-expanded="false" href="#">
-              <i class="fas fa-user-circle fa-2x me-2"></i>
-              <strong>{{  user.first_name |default:"User" }}</strong>
+              {% if user.profile_photo %}
+                  <img src="{{ user.profile_photo.url }}" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+                {% else %}
+                  <i class="fas fa-user-circle fa-2x me-2"></i>
+                {% endif %}
+              <strong>{{ user.first_name|default:"User" }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="tzhUserDropdown">
               <li><a class="dropdown-item" href="{% url 'user_profile' user_id=request.session.user_id %}"><i class="fas fa-user me-2"></i>Profile</a></li>
