@@ -5,6 +5,9 @@ from django.http import HttpResponseNotFound
 from shop.services import order_service
 from decorators import signin_required,customer_required,inject_authenticated_user
 
+
+
+# View for listing orders
 class OrderListView(View):
     @signin_required
     @customer_required
@@ -18,6 +21,8 @@ class OrderListView(View):
             messages.error(request, "Failed to load orders.")
             return render(request, 'order/order_list.html', {'orders': []})
 
+
+# View for displaying order details
 class OrderDetailView(View):
     @signin_required
     @customer_required
@@ -28,6 +33,8 @@ class OrderDetailView(View):
             return render(request, 'order/order_detail.html', {'order': order})
         return HttpResponseNotFound("Order not found.")
 
+
+# View for creating a new order
 class OrderCreateView(View):
     @signin_required
     @customer_required
@@ -53,19 +60,17 @@ class OrderCreateView(View):
                     })
 
             coupon_code = request.POST.get('coupon_code')
-
             order = order_service.create_order(user=request.user, items=items, coupon_code=coupon_code)
-
             if order:
                 messages.success(request, "Order placed successfully.")
                 return redirect('order_detail', order_id=order.id)
-
         except Exception as e:
             print(f"[OrderCreateView] Error: {e}")
             messages.error(request, "Failed to place order.")
-
         return redirect('order_create')
 
+
+# View for deleting an existing order
 class OrderDeleteView(View):
     @signin_required
     @customer_required

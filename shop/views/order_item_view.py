@@ -7,6 +7,8 @@ from shop.services import order_item_service
 from shop.models import Order
 
 
+
+# View for listing order items
 class OrderItemListView(View):
     @signin_required
     @customer_required
@@ -24,6 +26,7 @@ class OrderItemListView(View):
             return redirect('order_list')
 
 
+# View for creating a new order item
 class OrderItemCreateView(View):
     @signin_required
     @customer_required
@@ -46,19 +49,18 @@ class OrderItemCreateView(View):
                 quantity=int(quantity),
                 price=float(price) if price else None
             )
-
             if item:
                 messages.success(request, "Order item added.")
                 return redirect('order_item_list', order_id=order_id)
-
         except Order.DoesNotExist:
             messages.error(request, "Order not found.")
         except Exception as e:
             print(f"[OrderItemCreateView] Error: {e}")
             messages.error(request, "Failed to add order item.")
-
         return redirect('order_item_create', order_id=order_id)
 
+
+# View for updating an existing order item
 class OrderItemUpdateView(View):
     @signin_required
     @customer_required
@@ -76,23 +78,21 @@ class OrderItemUpdateView(View):
         try:
             quantity = request.POST.get('quantity')
             price = request.POST.get('price')
-
             item = order_item_service.update_order_item(
                 item_id=item_id,
                 quantity=int(quantity) if quantity else None,
                 price=float(price) if price else None
             )
-
             if item:
                 messages.success(request, "Order item updated.")
                 return redirect('order_item_list', order_id=item.order.id)
-
         except Exception as e:
             print(f"[OrderItemUpdateView] Error: {e}")
             messages.error(request, "Failed to update order item.")
-
         return redirect('order_item_update', item_id=item_id)
+    
 
+# View for deleting an existing order item
 class OrderItemDeleteView(View):
     @signin_required
     @customer_required
@@ -102,7 +102,6 @@ class OrderItemDeleteView(View):
         if not item:
             messages.error(request, "Order item not found.")
             return redirect('order_list')
-
         order_id = item.order.id
         try:
             success = order_item_service.delete_order_item(item_id)

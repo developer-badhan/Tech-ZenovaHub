@@ -1,6 +1,8 @@
 from shop.models import OrderItem, Product
 from django.core.exceptions import ObjectDoesNotExist
 
+
+# Get all items for a specific order
 def get_items_by_order(order_id):
     try:
         return OrderItem.objects.filter(order__id=order_id)
@@ -8,6 +10,8 @@ def get_items_by_order(order_id):
         print(f"Error fetching order items for order {order_id}: {e}")
         return []
 
+
+# Get a specific order item by its ID
 def get_item_by_id(item_id):
     try:
         return OrderItem.objects.get(id=item_id)
@@ -18,6 +22,8 @@ def get_item_by_id(item_id):
         print(f"Error retrieving order item with ID {item_id}: {e}")
         return None
 
+
+# Create a new order item
 def create_order_item(order, product_id, quantity, price=None):
     try:
         product = Product.objects.get(id=product_id)
@@ -35,6 +41,8 @@ def create_order_item(order, product_id, quantity, price=None):
         print(f"Error creating order item: {e}")
         return None
 
+
+# Update an existing order item
 def update_order_item(item_id, quantity=None, price=None):
     try:
         item = OrderItem.objects.get(id=item_id)
@@ -43,7 +51,6 @@ def update_order_item(item_id, quantity=None, price=None):
             item.quantity = quantity
         if price is not None:
             item.price = price
-
         item.save()
         return item
     except OrderItem.DoesNotExist:
@@ -53,6 +60,8 @@ def update_order_item(item_id, quantity=None, price=None):
         print(f"Error updating order item with ID {item_id}: {e}")
         return None
 
+
+# Delete an existing order item
 def delete_order_item(item_id):
     try:
         item = OrderItem.objects.get(id=item_id)
