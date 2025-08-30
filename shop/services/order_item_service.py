@@ -1,4 +1,4 @@
-from shop.models import OrderItem, Order, Product
+from shop.models import OrderItem, Product
 from django.core.exceptions import ObjectDoesNotExist
 
 def get_items_by_order(order_id):
@@ -15,18 +15,19 @@ def get_item_by_id(item_id):
         print(f"Order item with ID {item_id} not found.")
         return None
     except Exception as e:
-        print(f"Error retrieving order item: {e}")
+        print(f"Error retrieving order item with ID {item_id}: {e}")
         return None
 
 def create_order_item(order, product_id, quantity, price=None):
     try:
         product = Product.objects.get(id=product_id)
-        return OrderItem.objects.create(
+        order_item = OrderItem.objects.create(
             order=order,
             product=product,
             quantity=quantity,
             price=price or product.price
         )
+        return order_item
     except Product.DoesNotExist:
         print(f"Product with ID {product_id} not found.")
         return None
@@ -37,17 +38,19 @@ def create_order_item(order, product_id, quantity, price=None):
 def update_order_item(item_id, quantity=None, price=None):
     try:
         item = OrderItem.objects.get(id=item_id)
+
         if quantity is not None:
             item.quantity = quantity
         if price is not None:
             item.price = price
+
         item.save()
         return item
-    except ObjectDoesNotExist:
+    except OrderItem.DoesNotExist:
         print(f"Order item with ID {item_id} not found.")
         return None
     except Exception as e:
-        print(f"Error updating order item: {e}")
+        print(f"Error updating order item with ID {item_id}: {e}")
         return None
 
 def delete_order_item(item_id):
@@ -55,9 +58,9 @@ def delete_order_item(item_id):
         item = OrderItem.objects.get(id=item_id)
         item.delete()
         return True
-    except ObjectDoesNotExist:
+    except OrderItem.DoesNotExist:
         print(f"Order item with ID {item_id} not found.")
         return False
     except Exception as e:
-        print(f"Error deleting order item: {e}")
+        print(f"Error deleting order item with ID {item_id}: {e}")
         return False
