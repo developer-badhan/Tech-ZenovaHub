@@ -51,11 +51,11 @@ urlpatterns = [
     path('tech-zenovahub.com/wishlist/remove/<int:product_id>/', views.WishlistRemoveView.as_view(), name='wishlist_remove'),
 
     # Product Coupon Routes
-    path('coupons/', views.CouponListView.as_view(), name='coupon_list'),
-    path('coupons/create/', views.CouponCreateView.as_view(), name='coupon_create'),
-    path('coupons/<int:coupon_id>/update/', views.CouponUpdateView.as_view(), name='coupon_update'),
-    path('coupons/<int:coupon_id>/delete/', views.CouponDeleteView.as_view(), name='coupon_delete'),
-    path('coupons/apply/', views.CouponApplyView.as_view(), name='coupon_apply'),
+    path('tech-zenovahub.com/coupons/', views.CouponListView.as_view(), name='coupon_list'),
+    path('tech-zenovahub.com/coupons/create/', views.CouponCreateView.as_view(), name='coupon_create'),
+    path('tech-zenovahub.com/coupons/<int:coupon_id>/update/', views.CouponUpdateView.as_view(), name='coupon_update'),
+    path('tech-zenovahub.com/coupons/<int:coupon_id>/delete/', views.CouponDeleteView.as_view(), name='coupon_delete'),
+    path('tech-zenovahub.com/coupons/<int:coupon_id>/apply/', views.CouponApplyView.as_view(), name='coupon_apply'),
 
     # Product Shipment Routes
     path('tech-zenovahub.com/shipments/<int:order_id>/', views.ShipmentDetailView.as_view(), name='shipment_detail'),

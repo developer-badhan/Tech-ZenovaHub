@@ -1,0 +1,20 @@
+<h1>Update Coupon</h1>
+<form method="post">
+  {% csrf_token %}
+  <label for="code">Coupon Code:</label>
+  <input type="text" name="code" value="{{ coupon.code }}" required><br>
+
+  <label for="discount_percent">Discount Percentage:</label>
+  <input type="number" name="discount_percent" value="{{ coupon.discount_percent }}" required><br>
+
+  <label for="valid_from">Valid From:</label>
+  <input type="datetime-local" name="valid_from" value="{{ coupon.valid_from|date:'Y-m-d H:i' }}" required><br>
+
+  <label for="valid_to">Valid To:</label>
+  <input type="datetime-local" name="valid_to" value="{{ coupon.valid_to|date:'Y-m-d H:i' }}" required><br>
+
+  <label for="usage_limit">Usage Limit:</label>
+  <input type="number" name="usage_limit" value="{{ coupon.usage_limit }}" required><br>
+
+  <button type="submit">Update Coupon</button>
+</form>
