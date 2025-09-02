@@ -67,6 +67,9 @@ urlpatterns = [
     # Product Search Routes
     path('tech-zenovahub.com/products/search/', views.ProductSearchView.as_view(), name='product_search'),
 
+    # Assign Coupon to User
+    path('tech-zenovahub.com/coupons/<int:coupon_id>/assign/', views.AssignCouponToUserView.as_view(), name='assign_coupon_to_user'),
+
 
 ]
 

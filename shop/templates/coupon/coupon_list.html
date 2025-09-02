@@ -1,32 +1,70 @@
-<h1>Coupon List</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Code</th>
-      <th>Discount (%)</th>
-      <th>Valid From</th>
-      <th>Valid To</th>
-      <th>Usage Limit</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for coupon in coupons %}
-    <tr>
-      <td>{{ coupon.code }}</td>
-      <td>{{ coupon.discount_percent }}</td>
-      <td>{{ coupon.valid_from }}</td>
-      <td>{{ coupon.valid_to }}</td>
-      <td>{{ coupon.usage_limit }}</td>
-      <td>
-        <a href="{% url 'coupon_update' coupon.id %}">Edit</a>
-        <form method="post" action="{% url 'coupon_delete' coupon.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% extends 'main.html' %}
+{% block content %}
+
+<h2>Coupon List</h2>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <a href="{% url 'coupon_create' %}">Create New Coupon</a>
+
+<table border="1" cellspacing="0" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Discount</th>
+            <th>Valid From</th>
+            <th>Valid To</th>
+            <th>Used / Limit</th>
+            <th>Created By</th>
+            <th>Actions</th>
+            <th>Assign to Customer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for coupon in coupons %}
+        <tr>
+            <td>{{ coupon.code }}</td>
+            <td>{{ coupon.discount_percent }}%</td>
+            <td>{{ coupon.valid_from|date:"Y-m-d H:i" }}</td>
+            <td>{{ coupon.valid_to|date:"Y-m-d H:i" }}</td>
+            <td>{{ coupon.used_count }}/{{ coupon.usage_limit }}</td>
+            <td>
+                {% if coupon.created_by %}
+                    {{ coupon.created_by.email }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'coupon_update' coupon.id %}">Edit</a> |
+                <form method="post" action="{% url 'coupon_delete' coupon.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this coupon?');">Delete</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="{% url 'assign_coupon_to_user' coupon.id %}">
+                    {% csrf_token %}
+                    <select name="user_id" required>
+                        <option value="">-- Select Customer --</option>
+                        {% for customer in customers %}
+                            <option value="{{ customer.id }}">{{ customer.email }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Assign</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -73,3 +73,22 @@ def inject_authenticated_user(view_func):
         return view_func(view_self, request, *args, **kwargs)
     return wrapper
 
+
+# Inject authenticated admin user into request
+def login_admin_required_with_user(view_func):
+    @wraps(view_func)
+    def wrapper(view_self, request, *args, **kwargs):
+        if not request.session.get('is_authenticated'):
+            return redirect('admin_login')
+        user_role = request.session.get('user_role')
+        if user_role != Role.ADMIN:
+            return redirect('user_login')
+
+        user_id = request.session.get('user_id')
+        user_model = get_user_model()
+        try:
+            request.user = user_model.objects.get(id=user_id)
+        except user_model.DoesNotExist:
+            return redirect('user_login')
+        return view_func(view_self, request, *args, **kwargs)
+    return wrapper

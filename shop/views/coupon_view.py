@@ -2,21 +2,27 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseNotFound
 from django.views import View
+from constants.enums import Role
 from shop.models import Coupon
 from shop.services import coupon_service
-from decorators import login_admin_required,customer_required
+from user.services import enduser_service
+from decorators import login_admin_required,customer_required,login_admin_required_with_user
 
 class CouponListView(View):
     def get(self, request):
         coupons = coupon_service.get_all_coupons()
-        return render(request, 'coupon/coupon_list.html', {'coupons': coupons})
+        customers = enduser_service.get_all_customers()
+        return render(request, 'coupon/coupon_list.html', {
+            'coupons': coupons,
+            'customers': customers
+        })
 
 class CouponCreateView(View):
-    @login_admin_required
+    @login_admin_required_with_user
     def get(self, request):
         return render(request, 'coupon/coupon_create.html')
 
-    @login_admin_required
+    @login_admin_required_with_user
     def post(self, request):
         code = request.POST.get('code')
         discount_percent = request.POST.get('discount_percent')
@@ -25,15 +31,18 @@ class CouponCreateView(View):
         usage_limit = request.POST.get('usage_limit')
 
         try:
-            coupon = coupon_service.create_coupon(code, discount_percent, valid_from, valid_to, usage_limit)
+            coupon_service.create_coupon(
+                code, discount_percent, valid_from, valid_to, usage_limit, created_by=request.user
+            )
             messages.success(request, "Coupon created successfully.")
             return redirect('coupon_list')
         except Exception as e:
             messages.error(request, f"Failed to create coupon: {e}")
             return render(request, 'coupon/coupon_create.html')
 
+
 class CouponUpdateView(View):
-    @login_admin_required
+    @login_admin_required_with_user
     def get(self, request, coupon_id):
         try:
             coupon = Coupon.objects.get(id=coupon_id)
@@ -41,7 +50,7 @@ class CouponUpdateView(View):
         except Coupon.DoesNotExist:
             return HttpResponseNotFound("Coupon not found.")
 
-    @login_admin_required
+    @login_admin_required_with_user
     def post(self, request, coupon_id):
         code = request.POST.get('code')
         discount_percent = request.POST.get('discount_percent')
@@ -50,7 +59,7 @@ class CouponUpdateView(View):
         usage_limit = request.POST.get('usage_limit')
 
         try:
-            coupon = coupon_service.update_coupon(coupon_id, code, discount_percent, valid_from, valid_to, usage_limit)
+            coupon_service.update_coupon(coupon_id, code, discount_percent, valid_from, valid_to, usage_limit)
             messages.success(request, "Coupon updated successfully.")
             return redirect('coupon_list')
         except Exception as e:
@@ -74,7 +83,32 @@ class CouponApplyView(View):
         try:
             discount = coupon_service.apply_coupon(request.user, coupon_code)
             messages.success(request, f"Coupon applied! You saved {discount}% off.")
-            return redirect('order_create')  # Assuming you're on the order creation page
+            return redirect('order_create')  
         except Exception as e:
             messages.error(request, f"Failed to apply coupon: {e}")
             return redirect('order_create')
+
+
+from django.contrib.auth import get_user_model
+
+
+class AssignCouponToUserView(View):
+    @login_admin_required_with_user
+    def post(self, request, coupon_id):
+        user_id = request.POST.get('user_id')
+        try:
+            coupon = Coupon.objects.get(id=coupon_id)
+            User = get_user_model()
+            user = User.objects.get(id=user_id)
+            
+            # Only assign to enduser customers
+            if user.role != Role.ENDUSER_CUSTOMER:
+                messages.error(request, "Only customers can be assigned coupons.")
+                return redirect('coupon_list')
+
+            coupon.used_by.add(user)
+            coupon.save()
+            messages.success(request, f"Coupon assigned to {user.email}.")
+        except Exception as e:
+            messages.error(request, f"Error assigning coupon: {e}")
+        return redirect('coupon_list')

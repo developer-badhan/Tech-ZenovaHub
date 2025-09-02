@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
+from constants.enums import Role
 from user.models import User
 
 
@@ -63,5 +64,13 @@ def delete_user(user_id):
         user.delete()
     except Exception as e:
         raise Exception(f"Failed to delete user with ID {user_id}. Error: {str(e)}")
-    
+
+
+# Get All Customers
+def get_all_customers():
+    try:
+        User = get_user_model()
+        return User.objects.filter(role=Role.ENDUSER_CUSTOMER)
+    except Exception as e:
+        raise Exception(f"Failed to retrieve customers. Error: {str(e)}")
 
