@@ -70,6 +70,9 @@ urlpatterns = [
     # Assign Coupon to User
     path('tech-zenovahub.com/coupons/<int:coupon_id>/assign/', views.AssignCouponToUserView.as_view(), name='assign_coupon_to_user'),
 
+    # Customer Routes for Coupon Management
+    path('customer/my-coupons/', views.CustomerCouponListView.as_view(), name='customer_coupon_list'),
+
 
 ]
 

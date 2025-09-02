@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.utils import timezone
 from shop.models import Coupon
+from user import models
 
 def get_all_coupons():
     return Coupon.objects.all()
@@ -65,3 +66,8 @@ def apply_coupon(user, coupon_code):
             raise ValueError("Coupon is not valid.")
     except Coupon.DoesNotExist:
         raise ValueError("Invalid coupon code.")
+
+
+
+def get_coupons_assigned_to_user(user):
+    return Coupon.objects.filter(used_by=user)

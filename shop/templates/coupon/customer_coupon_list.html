@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}My Coupons{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h3 class="mb-4">My Coupons</h3>
+
+  {% if messages %}
+    <ul class="messages" style="list-style: none; padding: 0;">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="margin-bottom: 10px;">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if coupons %}
+    <div class="row">
+      {% for coupon in coupons %}
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card h-100" style="border: 1px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+          <div class="card-body" style="padding: 1rem;">
+            <h5 class="card-title" style="font-weight: bold;">Code: {{ coupon.code }}</h5>
+            <p class="card-text" style="margin: 0.5rem 0;"><strong>Discount:</strong> {{ coupon.discount_percent }}%</p>
+            <p class="card-text" style="margin: 0.5rem 0;"><strong>Valid From:</strong> {{ coupon.valid_from|date:"Y-m-d H:i" }}</p>
+            <p class="card-text" style="margin: 0.5rem 0;"><strong>Valid To:</strong> {{ coupon.valid_to|date:"Y-m-d H:i" }}</p>
+            <p class="card-text" style="margin: 0.5rem 0;"><strong>Usage:</strong> {{ coupon.used_count }}/{{ coupon.usage_limit }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>You don’t have any coupons assigned yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

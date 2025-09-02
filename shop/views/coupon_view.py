@@ -6,7 +6,7 @@ from constants.enums import Role
 from shop.models import Coupon
 from shop.services import coupon_service
 from user.services import enduser_service
-from decorators import login_admin_required,customer_required,login_admin_required_with_user
+from decorators import login_admin_required,customer_required,login_admin_required_with_user,inject_authenticated_user
 
 class CouponListView(View):
     def get(self, request):
@@ -112,3 +112,13 @@ class AssignCouponToUserView(View):
         except Exception as e:
             messages.error(request, f"Error assigning coupon: {e}")
         return redirect('coupon_list')
+
+
+
+class CustomerCouponListView(View):
+    @inject_authenticated_user
+    @customer_required
+    def get(self, request):
+        user = request.user
+        coupons = coupon_service.get_coupons_assigned_to_user(user)
+        return render(request, 'coupon/customer_coupon_list.html', {'coupons': coupons})
