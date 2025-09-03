@@ -8,6 +8,7 @@ from user.services import enduser_service,address_service
 from decorators.auth_decorators import signin_required, customer_required, staff_required
 
 
+
 # User Authentication View
 class EndUserLoginView(View):
     def get(self, request):
@@ -32,11 +33,9 @@ class EndUserLoginView(View):
                     if user.role == Role.ADMIN:
                         messages.error(request, "Admins must use a separate login.")
                         return redirect('user_login')
-
                     request.session['user_id'] = user.id
                     request.session['user_role'] = user.role
                     request.session['is_authenticated'] = True
-
                     if user.role == Role.ENDUSER_CUSTOMER:
                         return redirect('customer_dashboard')
                     elif user.role == Role.ENDUSER_STAFF:
@@ -58,8 +57,6 @@ class EndUserLogoutView(View):
         except Exception as e:
             messages.error(request, f"Logout failed: {str(e)}")
         return redirect('user_login')
-
-
 
 
 # Enduser Customer Dashboard View
@@ -102,9 +99,6 @@ class StaffDashboardView(View):
             return redirect('user_login')
 
 
-
-
-
 # Enduser Profile Management Views
 class EndUserProfileCreateView(View):
     def get(self, request):
@@ -121,7 +115,6 @@ class EndUserProfileCreateView(View):
         try:
             if request.session.get('is_authenticated'):
                 return redirect('customer_dashboard')
-
             form = UserRegistrationForm(request.POST, request.FILES)
             if form.is_valid():
                 user = enduser_service.create_user(form.cleaned_data)
@@ -215,4 +208,5 @@ class EndUserDeleteView(View):
 class EnduserHelpView(View):
     @signin_required
     def get(self, request):
-        return render(request, 'help/help.html')
+        user = enduser_service.get_user_by_id(request.session.get('user_id'))
+        return render(request, 'help/help.html', {'user': user})
