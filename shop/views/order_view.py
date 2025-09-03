@@ -49,7 +49,6 @@ class OrderCreateView(View):
         try:
             items = []
             count = int(request.POST.get('item_count', 0))
-
             for i in range(1, count + 1):
                 product_id = request.POST.get(f'product_id_{i}')
                 quantity = request.POST.get(f'quantity_{i}')
@@ -58,7 +57,6 @@ class OrderCreateView(View):
                         'product_id': product_id,
                         'quantity': int(quantity)
                     })
-
             coupon_code = request.POST.get('coupon_code')
             order = order_service.create_order(user=request.user, items=items, coupon_code=coupon_code)
             if order:

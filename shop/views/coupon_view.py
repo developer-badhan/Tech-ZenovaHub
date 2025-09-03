@@ -7,7 +7,11 @@ from shop.models import Coupon
 from shop.services import coupon_service
 from user.services import enduser_service
 from decorators import login_admin_required,customer_required,login_admin_required_with_user,inject_authenticated_user
+from django.contrib.auth import get_user_model
 
+
+
+# Coupon list view
 class CouponListView(View):
     def get(self, request):
         coupons = coupon_service.get_all_coupons()
@@ -17,6 +21,8 @@ class CouponListView(View):
             'customers': customers
         })
 
+
+# Coupon creation view
 class CouponCreateView(View):
     @login_admin_required_with_user
     def get(self, request):
@@ -29,7 +35,6 @@ class CouponCreateView(View):
         valid_from = request.POST.get('valid_from')
         valid_to = request.POST.get('valid_to')
         usage_limit = request.POST.get('usage_limit')
-
         try:
             coupon_service.create_coupon(
                 code, discount_percent, valid_from, valid_to, usage_limit, created_by=request.user
@@ -41,6 +46,7 @@ class CouponCreateView(View):
             return render(request, 'coupon/coupon_create.html')
 
 
+# Coupon update view
 class CouponUpdateView(View):
     @login_admin_required_with_user
     def get(self, request, coupon_id):
@@ -57,7 +63,6 @@ class CouponUpdateView(View):
         valid_from = request.POST.get('valid_from')
         valid_to = request.POST.get('valid_to')
         usage_limit = request.POST.get('usage_limit')
-
         try:
             coupon_service.update_coupon(coupon_id, code, discount_percent, valid_from, valid_to, usage_limit)
             messages.success(request, "Coupon updated successfully.")
@@ -66,6 +71,8 @@ class CouponUpdateView(View):
             messages.error(request, f"Failed to update coupon: {e}")
             return redirect('coupon_update', coupon_id=coupon_id)
 
+
+# Coupon deletion view
 class CouponDeleteView(View):
     @login_admin_required
     def post(self, request, coupon_id):
@@ -76,6 +83,8 @@ class CouponDeleteView(View):
             messages.error(request, f"Failed to delete coupon: {e}")
         return redirect('coupon_list')
 
+
+# Coupon application view
 class CouponApplyView(View):
     @customer_required
     def post(self, request):
@@ -89,9 +98,7 @@ class CouponApplyView(View):
             return redirect('order_create')
 
 
-from django.contrib.auth import get_user_model
-
-
+# Assign coupon to user view
 class AssignCouponToUserView(View):
     @login_admin_required_with_user
     def post(self, request, coupon_id):
@@ -100,12 +107,9 @@ class AssignCouponToUserView(View):
             coupon = Coupon.objects.get(id=coupon_id)
             User = get_user_model()
             user = User.objects.get(id=user_id)
-            
-            # Only assign to enduser customers
             if user.role != Role.ENDUSER_CUSTOMER:
                 messages.error(request, "Only customers can be assigned coupons.")
                 return redirect('coupon_list')
-
             coupon.used_by.add(user)
             coupon.save()
             messages.success(request, f"Coupon assigned to {user.email}.")
@@ -114,7 +118,7 @@ class AssignCouponToUserView(View):
         return redirect('coupon_list')
 
 
-
+# Customer coupon list view
 class CustomerCouponListView(View):
     @inject_authenticated_user
     @customer_required
@@ -122,3 +126,4 @@ class CustomerCouponListView(View):
         user = request.user
         coupons = coupon_service.get_coupons_assigned_to_user(user)
         return render(request, 'coupon/customer_coupon_list.html', {'coupons': coupons})
+

@@ -41,12 +41,10 @@ class CategoryCreateView(View):
             'slug': request.POST.get('slug'),
             'image': request.FILES.get('image')
         }
-
         category = category_service.create_category(data)
         if category:
             messages.success(request, "Category created successfully.")
             return redirect('category_list')
-
         messages.error(request, "Failed to create category.")
         return render(request, 'category/category_create.html', {'data': data})
 
@@ -68,12 +66,10 @@ class CategoryUpdateView(View):
             'slug': request.POST.get('slug'),
             'image': request.FILES.get('image')
         }
-
         category = category_service.update_category(category_id, data)
         if category:
             messages.success(request, "Category updated successfully.")
             return redirect('category_list')
-
         messages.error(request, "Failed to update category.")
         return render(request, 'category/category_update.html', {'category': data, 'error': True})
 
@@ -98,6 +94,5 @@ class CategoryDeleteView(View):
         except Exception as e:
             messages.error(request, "Unexpected error occurred while deleting category.")
             print(e)
-
         return redirect('category_list')
 
