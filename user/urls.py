@@ -36,8 +36,11 @@ urlpatterns = [
     # Help Routes
     path('help/', views.EnduserHelpView.as_view(), name='help'),
 
-] 
-
+    # OTP
+    path("otp/request/",views.OTPRequestView.as_view(),name="otp_request"),
+    path("otp/verify/", views.OTPVerifyView.as_view(), name="otp_verify"),
+    path("otp/resend/", views.OTPResendView.as_view(), name="otp_resend"),
+]
 
 
 

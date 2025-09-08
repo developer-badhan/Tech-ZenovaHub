@@ -22,11 +22,13 @@ env = environ.Env(
     SESSION_COOKIE_SAMESITE=(str, 'Lax'),
 
     # Email settings
-    # EMAIL_HOST=(str, '')
-    # EMAIL_PORT=(int, 587)
-    # EMAIL_USE_TLS=(bool, True)
-    # EMAIL_HOST_USER=(str, '')
-    # EMAIL_HOST_PASSWORD=(str, '')
+    EMAIL_BACKEND=(str, ''),
+    EMAIL_HOST=(str, ''),
+    EMAIL_PORT=(int, 587),
+    EMAIL_USE_TLS=(bool, True),
+    EMAIL_HOST_USER=(str, ''),
+    EMAIL_HOST_PASSWORD=(str, ''),
+    DEFAULT_FROM_EMAIL=(str, ''),
 )
 
 # Read variables from a .env file located at the project root

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}OTP Verification{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 450px;">
+  <h3 class="text-center mb-4">OTP Verification</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
+  </form>
+  <div class="text-center mt-3">
+    <a href="{% url 'otp_resend' %}" class="btn btn-link">Resend OTP</a>
+  </div>
+</div>
+{% endblock %}

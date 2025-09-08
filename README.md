@@ -15,7 +15,7 @@ This project is being developed using the **Django web framework**, and it's aim
 
 ## 🔧 Tech Stack
 
-- **Backend**: Django (Python)
+- **Backend**: Django (Python) , Django-Rest_Framework
 - **Frontend**: HTML, CSS (Bootstrap), JavaScript 
 - **Database**: PostgreSQL
 
