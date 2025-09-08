@@ -16,16 +16,16 @@ env = environ.Env(
     PGSQL_PORT=(str, ''),              
 
     # Session cookie settings
-    SESSION_COOKIE_NAME=(str, 'zenovahub_sessionid'), 
-    SESSION_COOKIE_SECURE=(bool, True),
-    SESSION_COOKIE_HTTPONLY=(bool, True), 
-    SESSION_COOKIE_SAMESITE=(str, 'Lax'),
+    SESSION_COOKIE_NAME=(str, ''), 
+    SESSION_COOKIE_SECURE=(bool, ),
+    SESSION_COOKIE_HTTPONLY=(bool,), 
+    SESSION_COOKIE_SAMESITE=(str, ''),
 
     # Email settings
     EMAIL_BACKEND=(str, ''),
     EMAIL_HOST=(str, ''),
-    EMAIL_PORT=(int, 587),
-    EMAIL_USE_TLS=(bool, True),
+    EMAIL_PORT=(int, ),
+    EMAIL_USE_TLS=(bool,),
     EMAIL_HOST_USER=(str, ''),
     EMAIL_HOST_PASSWORD=(str, ''),
     DEFAULT_FROM_EMAIL=(str, ''),
