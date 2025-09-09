@@ -1,6 +1,20 @@
-<h2>Resend OTP</h2>
+{% extends "base.html" %}
+{% block title %}Resend OTP{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h4>Resend OTP</h4>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Resend</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% comment %} <h2>Resend OTP</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Resend</button>
-</form>
+</form> {% endcomment %}
