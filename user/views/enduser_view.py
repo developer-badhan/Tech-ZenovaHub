@@ -4,12 +4,12 @@ from django.shortcuts import render, redirect
 from user.forms.login_form import EndUserLoginForm
 from user.forms import UserRegistrationForm, UserUpdateForm
 from constants.enums import Role
-from user.services import enduser_service,address_service
+from user.services import enduser_service, address_service
 from decorators.auth_decorators import signin_required, customer_required, staff_required
 
 
 
-# User Authentication View
+# Enduser Login View
 class EndUserLoginView(View):
     def get(self, request):
         try:
@@ -30,6 +30,9 @@ class EndUserLoginView(View):
                     password=form.cleaned_data['password']
                 )
                 if user:
+                    if not hasattr(user, "otps") or not user.otps.is_verified:
+                        messages.warning(request, "Your email is not verified. Please verify via OTP.")
+                        return redirect("otp_request")
                     if user.role == Role.ADMIN:
                         messages.error(request, "Admins must use a separate login.")
                         return redirect('user_login')
@@ -37,8 +40,10 @@ class EndUserLoginView(View):
                     request.session['user_role'] = user.role
                     request.session['is_authenticated'] = True
                     if user.role == Role.ENDUSER_CUSTOMER:
+                        messages.success(request, f"Welcome {user.first_name}! You are logged in as Customer.")
                         return redirect('customer_dashboard')
                     elif user.role == Role.ENDUSER_STAFF:
+                        messages.success(request, f"Welcome {user.first_name}! You are logged in as Staff.")
                         return redirect('staff_dashboard')
                 else:
                     messages.error(request, "Invalid email or password.")
@@ -48,7 +53,7 @@ class EndUserLoginView(View):
             return redirect('user_login')
 
 
-# User Logout View
+# Enduser Logout View
 class EndUserLogoutView(View):
     def get(self, request):
         try:
@@ -59,7 +64,7 @@ class EndUserLogoutView(View):
         return redirect('user_login')
 
 
-# Enduser Customer Dashboard View
+# Customer Dashboard Views
 class CustomerDashboardView(View):
     @signin_required
     @customer_required
@@ -68,7 +73,8 @@ class CustomerDashboardView(View):
             user_id = request.session.get('user_id')
             user = enduser_service.get_user_by_id(user_id)
             addresses = address_service.get_user_addresses(user)
-            default_address = addresses.first() 
+            default_address = addresses.first()
+            messages.success(request, f"Welcome {user.first_name}! You are logged in as Customer.")
             context = {
                 'user': user,
                 'default_address': default_address
@@ -79,7 +85,7 @@ class CustomerDashboardView(View):
             return redirect('user_login')
 
 
-# Enduser Staff Dashboard View
+# Staff Dashboard Views
 class StaffDashboardView(View):
     @signin_required
     @staff_required
@@ -88,8 +94,9 @@ class StaffDashboardView(View):
             user_id = request.session.get('user_id')
             user = enduser_service.get_user_by_id(user_id)
             addresses = address_service.get_user_addresses(user)
-            default_address = addresses.first() 
-            context ={
+            default_address = addresses.first()
+            messages.success(request, f"Welcome {user.first_name}! You are logged in as Staff.")
+            context = {
                 'user': user,
                 'default_address': default_address
             }
@@ -99,7 +106,7 @@ class StaffDashboardView(View):
             return redirect('user_login')
 
 
-# Enduser Profile Management Views
+# Enduser Profile Creation View
 class EndUserProfileCreateView(View):
     def get(self, request):
         try:

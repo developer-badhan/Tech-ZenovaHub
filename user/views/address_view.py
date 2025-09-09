@@ -5,6 +5,7 @@ from user.forms import AddressForm
 from user.services import enduser_service, address_service
 from constants import Role
 from django.urls import reverse
+from django.contrib import messages
 
 
 
@@ -34,11 +35,9 @@ class AddressCreateView(View):
         form = AddressForm(request.POST)
         if form.is_valid():
             address_service.create_address(user, form.cleaned_data)
-            role = request.session.get('user_role')
-            if role == Role.ENDUSER_CUSTOMER:
-                return redirect('customer_dashboard')
-            elif role == Role.ENDUSER_STAFF:
-                return redirect('staff_dashboard')
+            messages.success(request, "Address added successfully. Please verify your account via OTP.")
+            return redirect('otp_request')
+
         return render(request, 'address/address_form.html', {'form': form, 'user': user})
 
 
@@ -71,7 +70,6 @@ class AddressUpdateView(View):
             elif role == Role.ENDUSER_STAFF:
                 return redirect('staff_dashboard')
         return render(request, 'address/address_update.html', {'form': form, 'address': address})
-
 
 
 
