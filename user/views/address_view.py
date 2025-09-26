@@ -37,7 +37,6 @@ class AddressCreateView(View):
             address_service.create_address(user, form.cleaned_data)
             messages.success(request, "Address added successfully. Please verify your account via OTP.")
             return redirect('otp_request')
-
         return render(request, 'address/address_form.html', {'form': form, 'user': user})
 
 
