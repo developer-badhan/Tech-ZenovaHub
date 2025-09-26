@@ -1,5 +1,6 @@
 # This file lists the Python dependencies for the project.
 
+# AMQP protocol client library (used by Celery)
 amqp==5.3.1
 
 # ASGI interface reference library – required for Django's asynchronous support
