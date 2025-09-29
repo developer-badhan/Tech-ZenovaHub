@@ -15,10 +15,34 @@ This project is being developed using the **Django web framework**, and it's aim
 
 ## 🔧 Tech Stack
 
-- **Backend**: Django (Python) , Django-Rest_Framework
-- **Frontend**: HTML, CSS (Bootstrap), JavaScript 
+- **Backend**: Django (Python) , Django-Rest_Framework(Python)
+- **Frontend**: HTML, CSS (Bootstrap), Vanila JavaScript 
 - **Database**: PostgreSQL
 
 ---
+
+## 🛠️ Setup the Project
+
+1) Clone the Repository
+=> git clone https://github.com/developer-badhan/Tech-ZenovaHub.git
+=> cd Tech-ZenovaHub
+
+2) Create Virtual Environment
+=> python -m venv venv
+
+3) Install All Dependencies
+=> pip install -r requirements.txt
+
+4) Activate Virtual Environment
+✅ Windows:
+=> venv\Scripts\activate
+
+✅ Mac/Linux:
+=> source venv/bin/activate
+
+5) Run the Project
+=> python manage.py runserver
+
+6) Open the url in browser 
 
 
