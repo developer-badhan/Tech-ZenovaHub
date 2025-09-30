@@ -1,0 +1,17 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}Admin Resend OTP{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h4 class="mb-3">Resend Admin OTP</h4>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-warning">Resend OTP</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

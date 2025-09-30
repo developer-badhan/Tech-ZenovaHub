@@ -23,6 +23,8 @@ class AdminUserSignupView(View):
             )
             if error:
                 return render(request, "admin/admin_signup.html", {"form": form, "error": error})
+            request.session["user_id"] = admin.id
+            request.session["user_role"] = admin.role
             messages.success(request, "Account created. Please request OTP to activate your account.")
             return redirect("otp_request")
         return render(request, "admin/admin_signup.html", {"form": form})
@@ -112,14 +114,6 @@ class AdminDashboardView(View):
             "admin_user": data["admin"],
             "stats": data,
         })
-
-
-
-
-
-
-
-
 
 
 

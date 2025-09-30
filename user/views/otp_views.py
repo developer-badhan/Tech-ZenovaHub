@@ -6,14 +6,25 @@ from user.forms import otp_forms
 from user.services import otp_service
 from constants.enums import Role
 from user.serializers import otp_serializers
+from user.utils import get_user_role
 
 
 
 # View to handle OTP requests
 class OTPRequestView(View):
+    def get_template(self, request):
+        role = get_user_role(request)
+        print(f"User role in session: {role}")
+        if role == Role.ADMIN:
+            return "admin/otp/otp_request.html"
+        elif role in [Role.ENDUSER_CUSTOMER, Role.ENDUSER_STAFF]:
+            return "otp/otp_request.html"
+        else:
+            return "otp/otp_request.html"
+
     def get(self, request):
         form = otp_forms.OTPRequestForm()
-        return render(request, "otp/otp_request.html", {"form": form})
+        return render(request, self.get_template(request), {"form": form})
 
     def post(self, request):
         form = otp_forms.OTPRequestForm(request.POST)
@@ -28,14 +39,24 @@ class OTPRequestView(View):
                 return redirect("otp_verify")
             except User.DoesNotExist:
                 form.add_error("email", "User not found.")
-        return render(request, "otp/otp_request.html", {"form": form})
+        return render(request, self.get_template(request), {"form": form})
 
 
 # View to handle OTP verification
 class OTPVerifyView(View):
+    def get_template(self, request):
+        role = get_user_role(request)
+        print(f"User role in session: {role}")
+        if role == Role.ADMIN:
+            return "admin/otp/otp_request.html"
+        elif role in [Role.ENDUSER_CUSTOMER, Role.ENDUSER_STAFF]:
+            return "otp/otp_request.html"
+        else:
+            return "otp/otp_request.html"
+        
     def get(self, request):
         form = otp_forms.OTPVerifyForm()
-        return render(request, "otp/otp_verify.html", {"form": form})
+        return render(request, self.get_template(request), {"form": form})
 
     def post(self, request):
         form = otp_forms.OTPVerifyForm(request.POST)
@@ -58,14 +79,24 @@ class OTPVerifyView(View):
                     form.add_error("otp_code", message)
             except User.DoesNotExist:
                 form.add_error("email", "User not found.")
-        return render(request, "otp/otp_verify.html", {"form": form})
+        return render(request, self.get_template(request), {"form": form})
 
 
 # View to handle OTP resend requests
 class OTPResendView(View):
+    def get_template(self, request):
+        role = get_user_role(request)
+        print(f"User role in session: {role}")
+        if role == Role.ADMIN:
+            return "admin/otp/otp_request.html"
+        elif role in [Role.ENDUSER_CUSTOMER, Role.ENDUSER_STAFF]:
+            return "otp/otp_request.html"
+        else:
+            return "otp/otp_request.html"
+        
     def get(self, request):
         form = otp_forms.OTPResendForm()
-        return render(request, "otp/otp_resend.html", {"form": form})
+        return render(request, self.get_template(request), {"form": form})
 
     def post(self, request):
         form = otp_forms.OTPResendForm(request.POST)
@@ -84,5 +115,5 @@ class OTPResendView(View):
                     form.add_error("email", "Failed to resend OTP.")
             except User.DoesNotExist:
                 form.add_error("email", "User not found.")
-        return render(request, "otp/otp_resend.html", {"form": form})
+        return render(request, self.get_template(request), {"form": form})
 
