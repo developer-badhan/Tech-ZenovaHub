@@ -2,7 +2,7 @@
 .venv/
 venv/
 env/
-.env  # Environment variable file
+.env
 
 
 # Python cache files
