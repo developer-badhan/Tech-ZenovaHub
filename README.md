@@ -1,7 +1,6 @@
 # Tech-ZenovaHub
 
-Tech-ZenovaHub is a tech-driven e-commerce platform focused on **electrical** and **smart home** products. It's designed to be **fast**, **scalable**, and **user-friendly** — the go-to hub for future-ready solutions.
-This project is being developed using the **Django web framework**, and it's aimed at delivering a modern, intuitive experience for both customers and administrators.
+Tech-ZenovaHub is a tech-driven e-commerce platform focused on **electrical** and **smart home** products. It's designed to be **fast**, **scalable**, and **user-friendly** — the go-to hub for future-ready solutions.This project is being developed using the **Django web framework**, and it's aimed at delivering a modern, intuitive experience for both customers and administrators.
 
 ---
 
@@ -23,26 +22,34 @@ This project is being developed using the **Django web framework**, and it's aim
 
 ## 🛠️ Setup the Project
 
-1) Clone the Repository
-=> git clone https://github.com/developer-badhan/Tech-ZenovaHub.git
-=> cd Tech-ZenovaHub
+1) **Clone the Repository**
 
-2) Create Virtual Environment
-=> python -m venv venv
+    => git clone https://github.com/developer-badhan/Tech-ZenovaHub.git  
+    => cd Tech-ZenovaHub
 
-3) Install All Dependencies
-=> pip install -r requirements.txt
 
-4) Activate Virtual Environment
-✅ Windows:
-=> venv\Scripts\activate
+2) **Create Virtual Environment**
 
-✅ Mac/Linux:
-=> source venv/bin/activate
+    => python -m venv venv
 
-5) Run the Project
-=> python manage.py runserver
 
-6) Open the url in browser 
+3) **Install All Dependencies**
+
+    => pip install -r requirements.txt
+
+
+4) **Activate Virtual Environment**
+
+    🪟Windows: => venv\Scripts\activate
+
+    📠 Mac/Linux: => source venv/bin/activate
+
+
+5) **Run the Project**
+
+    => python manage.py runserver
+
+6) **Open the url in browser**
+
 
 

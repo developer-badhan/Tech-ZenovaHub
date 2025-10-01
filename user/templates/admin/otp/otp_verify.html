@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-5">
   <div class="card shadow p-4">
-    <h4 class="mb-3">Admin Verify OTP</h4>
+    <h4 class="mb-3">Admin OTP Verification</h4>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
