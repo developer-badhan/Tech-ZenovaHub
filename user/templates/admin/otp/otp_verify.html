@@ -7,8 +7,12 @@
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button class="btn btn-success">Verify OTP</button>
+      <div class="d-flex justify-content-left gap-2">
+        <button type="submit" class="btn btn-success">Verify OTP</button>
+        <a href="{% url 'otp_resend' %}" class="btn btn-primary">Resend OTP</a>
+      </div>
     </form>
   </div>
 </div>
 {% endblock %}
+

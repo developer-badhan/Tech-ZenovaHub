@@ -1,4 +1,4 @@
-/* Color Variables */
+/* Existing Variables */
 :root {
     --admin-bg: #f8f9fa;
     --admin-card: #ffffff;
@@ -13,48 +13,18 @@
     --admin-border: #2a2f3a;
     --admin-brand: #4da3ff;
 }
-html, body {
-    height: 100%;
-}
+
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
     background-color: var(--admin-bg);
     color: var(--admin-text);
-    transition: background-color .25s ease, color .25s ease;
-}
-.admin-navbar {
-    backdrop-filter: saturate(180%) blur(6px);
-    border-bottom: 1px solid var(--admin-border);
-}
-.admin-brand {
-    font-weight: 800;
-    letter-spacing: .2px;
-}
-.admin-shell {
-    min-height: calc(100vh - 70px);
-}
-.admin-card {
-    background: var(--admin-card);
-    border: 1px solid var(--admin-border);
-    border-radius: 14px;
-}
-.admin-footer {
-    border-top: 1px solid var(--admin-border);
-    color: var(--admin-text);
-}
-.theme-toggle {
-    cursor: pointer;
-    line-height: 1;
-}
-.admin-container {
-    max-width: 1080px;
 }
 
-@media (max-width: 768px) {
-    .admin-card {
-        padding: 1rem !important;
-    }
-    .admin-navbar .navbar-brand {
-        font-size: 1rem;
-    }
+.card {
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }

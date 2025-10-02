@@ -3,8 +3,9 @@
 
 {% block content %}
 <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="col-12 col-md-8 col-lg-7">
+    <div class="col-12 col-md-8 col-lg-6">
         <div class="admin-card shadow-sm p-4">
+            <!-- Header -->
             <div class="text-center mb-4">
                 <div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width:64px;height:64px;background:rgba(25,135,84,.12);">
                     <i class="fa-solid fa-user-shield fa-lg text-success"></i>
@@ -13,44 +14,77 @@
                 <p class="text-secondary mb-0">Fill the details to get started</p>
             </div>
 
+            <!-- Form -->
             <form method="post" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
 
-                <!-- Render existing form fields -->
+                <!-- First Name -->
                 <div class="mb-3">
-                    {{ form.as_p }}
+                    <label for="id_first_name" class="form-label fw-medium">First Name</label>
+                    <input type="text" name="first_name" id="id_first_name" class="form-control" placeholder="Enter first name" required>
                 </div>
 
-                <!-- Passwords -->
-                <div class="row g-3">
-                    <div class="col-12 col-md-6">
-                        <label for="password" class="form-label fw-medium">Password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Create a strong password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="adminTogglePasswordSignup">
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
-                        </div>
-                        <div class="form-text">Use 8+ chars with letters & numbers.</div>
+                <!-- Last Name -->
+                <div class="mb-3">
+                    <label for="id_last_name" class="form-label fw-medium">Last Name</label>
+                    <input type="text" name="last_name" id="id_last_name" class="form-control" placeholder="Enter last name" required>
+                </div>
+
+                <!-- DOB -->
+                <div class="mb-3">
+                    <label for="id_dob" class="form-label fw-medium">Date of Birth</label>
+                    <input type="date" name="dob" id="id_dob" class="form-control" required>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="id_email" class="form-label fw-medium">Email</label>
+                    <input type="email" name="email" id="id_email" class="form-control" placeholder="example@domain.com" required>
+                </div>
+
+                <!-- Is Active -->
+                <div class="mb-3">
+                    <label for="id_is_active" class="form-label fw-medium">Is Active</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-toggle-on"></i></span>
+                        <input type="text" name="is_active" id="id_is_active" class="form-control" placeholder="Type true or false" required>
+                        <span class="input-group-text" id="isActiveStatus">❓</span>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <label for="confirm_password" class="form-label fw-medium">Confirm Password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-check-double"></i></span>
-                            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Re-enter password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="adminTogglePasswordConfirm">
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
-                        </div>
+                    <div class="form-text">Enter <strong>true</strong> or <strong>false</strong>.</div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-medium">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Create a strong password" required>
+                        <button class="btn btn-outline-secondary" type="button" id="adminTogglePasswordSignup">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-text">Use 8+ characters with letters & numbers.</div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                    <label for="confirm_password" class="form-label fw-medium">Confirm Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-check-double"></i></span>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Re-enter password" required>
+                        <button class="btn btn-outline-secondary" type="button" id="adminTogglePasswordConfirm">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success w-100 mt-4">
+                <!-- Submit -->
+                <button type="submit" class="btn btn-success w-100 mt-3">
                     <i class="fa-solid fa-user-plus me-2"></i>Sign Up
                 </button>
             </form>
 
+            <!-- Footer -->
             <div class="text-center mt-4">
                 <span class="text-secondary">Already have an account?</span>
                 <a href="{% url 'admin_login' %}" class="ms-1">Log in</a>
@@ -58,7 +92,39 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+    // Password toggle
+    document.getElementById('adminTogglePasswordSignup').addEventListener('click', function () {
+        const pwd = document.getElementById('password');
+        const icon = this.querySelector('i');
+        pwd.type = pwd.type === 'password' ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('adminTogglePasswordConfirm').addEventListener('click', function () {
+        const pwd = document.getElementById('confirm_password');
+        const icon = this.querySelector('i');
+        pwd.type = pwd.type === 'password' ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    });
+
+    // Is Active input - status indicator
+    const isActiveInput = document.getElementById('id_is_active');
+    const isActiveStatus = document.getElementById('isActiveStatus');
+
+    isActiveInput.addEventListener('input', function () {
+        const val = this.value.trim().toLowerCase();
+        if (val === 'true') {
+            isActiveStatus.textContent = '✅';
+        } else if (val === 'false') {
+            isActiveStatus.textContent = '❌';
+        } else {
+            isActiveStatus.textContent = '❓';
+        }
+    });
+</script>
 {% endblock %}
-
-
-

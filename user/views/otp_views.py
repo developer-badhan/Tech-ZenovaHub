@@ -48,11 +48,11 @@ class OTPVerifyView(View):
         role = get_user_role(request)
         print(f"User role in session: {role}")
         if role == Role.ADMIN:
-            return "admin/otp/otp_request.html"
+            return "admin/otp/otp_verify.html"
         elif role in [Role.ENDUSER_CUSTOMER, Role.ENDUSER_STAFF]:
-            return "otp/otp_request.html"
+            return "otp/otp_verify.html"
         else:
-            return "otp/otp_request.html"
+            return "otp/otp_verify.html"
         
     def get(self, request):
         form = otp_forms.OTPVerifyForm()
@@ -88,11 +88,11 @@ class OTPResendView(View):
         role = get_user_role(request)
         print(f"User role in session: {role}")
         if role == Role.ADMIN:
-            return "admin/otp/otp_request.html"
+            return "admin/otp/otp_resend.html"
         elif role in [Role.ENDUSER_CUSTOMER, Role.ENDUSER_STAFF]:
-            return "otp/otp_request.html"
+            return "otp/otp_resend.html"
         else:
-            return "otp/otp_request.html"
+            return "otp/otp_resend.html"
         
     def get(self, request):
         form = otp_forms.OTPResendForm()

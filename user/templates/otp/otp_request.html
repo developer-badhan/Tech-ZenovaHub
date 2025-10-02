@@ -2,7 +2,7 @@
 {% block title %}Request OTP{% endblock %}
 {% block content %}
 <div class="container mt-5">
-  <h4>OTP Verification</h4>
+  <h4>Request OTP</h4>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

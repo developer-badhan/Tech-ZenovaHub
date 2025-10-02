@@ -1,50 +1,43 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Admin Panel{% endblock %}</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Custom Responsive CSS -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- FontAwesome (local preferred later) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 
-    <!-- Custom Image Icon -->
     <link rel="icon" href="{% static 'images/shop.png' %}" type="image/png">
-    
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f8f9fa;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .navbar {
-            border-bottom: 1px solid #ddd;
-        }
-        .dark-mode {
-            background-color: #121212 !important;
-            color: #f8f9fa !important;
-        }
-        .dark-mode .navbar {
-            background-color: #1f1f1f !important;
-        }
-        .theme-toggle {
-            cursor: pointer;
-        }
-    </style>
 
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; transition: background-color .3s, color .3s; }
+        .navbar { background: var(--admin-card); border-bottom: 1px solid var(--admin-border); }
+        .theme-toggle { cursor: pointer; padding: .4rem .6rem; border-radius: 50%; }
+        .theme-toggle:hover { background: var(--admin-border); }
+        footer { background: var(--admin-card); border-top: 1px solid var(--admin-border); padding: 1rem; text-align: center; }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg px-3" style="background:#fff;">
-        <a class="navbar-brand fw-bold" href="#">Tech-ZenovaHub Admin</a>
-        <div class="ms-auto d-flex align-items-center">
-            <!-- Dark/Light Toggle -->
-            <i id="themeToggle" class="fas fa-moon theme-toggle fs-4 ms-3"></i>
+    <nav class="navbar navbar-expand-lg px-3 sticky-top">
+        <a class="navbar-brand fw-bold" href="#">Tech-ZenovaHub</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="adminNavbar">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="{% url 'admin_login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'admin_signup' %}">Signup</a></li>
+            </ul>
+            <i id="themeToggle" class="fas fa-moon theme-toggle ms-3"></i>
         </div>
     </nav>
 
@@ -53,13 +46,14 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Bootstrap JS -->
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Footer -->
+    <footer>
+        <small>&copy; 2025 Tech-ZenovaHub Admin Panel</small>
+    </footer>
 
-    <!-- Theme Switch JS -->
+    <!-- JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/admin.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
-</html>
-
 </html>

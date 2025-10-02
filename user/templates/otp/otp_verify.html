@@ -10,7 +10,14 @@
     <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
   </form>
   <div class="text-center mt-3">
-    <a href="{% url 'otp_resend' %}" class="btn btn-link">Resend OTP</a>
+<a href="{% url 'otp_resend' %}" id="resend-btn" class="btn btn-warning w-100">Resend OTP</a>
+  <style>
+    #resend-btn:hover {
+      background-color: #0d6efd !important; /* Bootstrap primary */
+      color: #fff !important;
+      border-color: #0d6efd !important;
+    }
+  </style>
   </div>
 </div>
 {% endblock %}

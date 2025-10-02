@@ -3,6 +3,7 @@ from user.models import User
 from constants import Gender,Role
 
 
+# Form for user registration
 class UserRegistrationForm(forms.ModelForm):
     profile_photo = forms.ImageField(max_length=200, required=False)
     first_name = forms.CharField(max_length=50, required=True)
@@ -56,6 +57,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 
+# Form for user registration update
 class UserUpdateForm(forms.ModelForm):
     profile_photo = forms.ImageField(max_length=200,required=False)
     first_name = forms.CharField(max_length=50, required=True)

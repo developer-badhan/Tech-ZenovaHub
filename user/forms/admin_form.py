@@ -1,6 +1,8 @@
 from django import forms
 from user.models import User
 
+
+# Admin form for adding users
 class AdminUserForm(forms.ModelForm):
     first_name = forms.CharField(max_length=50, required=True)
     last_name = forms.CharField(max_length=50, required=True)
@@ -25,12 +27,7 @@ class AdminUserForm(forms.ModelForm):
         self.fields['is_active'].initial = True
 
 
-
-# user/forms.py
-
-from django import forms
-from user.models import User
-
+# Admin form for updating users
 class AdminUserUpdateForm(forms.ModelForm):
     class Meta:
         model = User

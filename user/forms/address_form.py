@@ -1,6 +1,8 @@
 from django import forms
 from user.models import Address
 
+
+# Address form for adding/editing user addresses
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
