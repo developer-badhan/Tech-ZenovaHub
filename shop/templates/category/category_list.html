@@ -1,18 +1,22 @@
-{% extends 'main.html' %}
+{% extends 'admin/admin_base.html' %}
 {% block title %}All Categories{% endblock %}
 
 {% block content %}
 <div class="col-md-10 offset-md-1">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Category List</h3>
-        <a href="{% url 'category_create' %}" class="btn btn-primary">+ Add New Category</a>
+   <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Category List</h3>
+    <div>
+        <a href="{% url 'category_create' %}" class="btn btn-primary me-2">+ Add New Category</a>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-danger" style="text-decoration: none;">Return</a>
     </div>
+</div>
+
 
     {% if categories %}
     <table class="table table-bordered table-striped shadow-sm">
         <thead class="table-light">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">No.</th>
                 <th scope="col">Category Name</th>
                 <th scope="col">Description</th>
                 <th scope="col" style="width: 150px;">Actions</th>
