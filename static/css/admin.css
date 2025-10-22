@@ -28,3 +28,15 @@ body {
     transform: translateY(-4px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
+
+main {
+    padding-bottom: 2rem;
+}
+
+footer {
+    background: var(--admin-card);
+    border-top: 1px solid var(--admin-border);
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto; 
+}
