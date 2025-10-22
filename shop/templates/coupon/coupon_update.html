@@ -1,13 +1,50 @@
-{% extends 'main.html' %}
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+{% block title %}Update Coupon{% endblock %}
+
 {% block content %}
-<h2>Update Coupon</h2>
-<form method="post">
-    {% csrf_token %}
-    <label>Code:</label><input type="text" name="code" value="{{ coupon.code }}" required><br>
-    <label>Discount (%):</label><input type="number" step="0.01" name="discount_percent" value="{{ coupon.discount_percent }}" required><br>
-    <label>Valid From:</label><input type="text" name="valid_from" value="{{ coupon.valid_from|date:'Y-m-d H:i' }}" required><br>
-    <label>Valid To:</label><input type="text" name="valid_to" value="{{ coupon.valid_to|date:'Y-m-d H:i' }}" required><br>
-    <label>Usage Limit:</label><input type="number" name="usage_limit" value="{{ coupon.usage_limit }}" required><br>
-    <button type="submit">Update</button>
-</form>
+<div class="container mt-4 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-warning text-dark text-center py-3 rounded-top-4">
+          <h5 class="mb-0 fw-bold">Update Coupon</h5>
+        </div>
+        <div class="card-body p-4">
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+              <label class="fw-semibold">Code</label>
+              <input type="text" name="code" value="{{ coupon.code }}" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="fw-semibold">Discount (%)</label>
+              <input type="number" step="0.01" min="0" name="discount_percent" value="{{ coupon.discount_percent }}" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="fw-semibold">Valid From (YYYY-MM-DD HH:MM AM/PM)</label>
+              <input type="text" name="valid_from" value="{{ coupon.valid_from|date:'Y-m-d h:i A' }}" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="fw-semibold">Valid To (YYYY-MM-DD HH:MM AM/PM)</label>
+              <input type="text" name="valid_to" value="{{ coupon.valid_to|date:'Y-m-d h:i A' }}" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="fw-semibold">Usage Limit</label>
+              <input type="number" min="1" name="usage_limit" value="{{ coupon.usage_limit }}" class="form-control" required>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary py-2 fw-semibold">Update Coupon</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

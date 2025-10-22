@@ -71,17 +71,25 @@ class CouponUpdateView(View):
             messages.error(request, f"Failed to update coupon: {e}")
             return redirect('coupon_update', coupon_id=coupon_id)
 
-
-# Coupon deletion view
 class CouponDeleteView(View):
-    @login_admin_required
+    @login_admin_required_with_user
+    def get(self, request, coupon_id):
+        try:
+            coupon = Coupon.objects.get(id=coupon_id)
+            return render(request, 'coupon/coupon_delete.html', {'coupon': coupon})
+        except Coupon.DoesNotExist:
+            messages.error(request, "Coupon not found.")
+            return redirect('coupon_list')
+
+    @login_admin_required_with_user
     def post(self, request, coupon_id):
         try:
             coupon_service.delete_coupon(coupon_id)
             messages.success(request, "Coupon deleted successfully.")
+            return redirect('coupon_list')
         except Exception as e:
             messages.error(request, f"Failed to delete coupon: {e}")
-        return redirect('coupon_list')
+            return redirect('coupon_list')
 
 
 # Coupon application view
