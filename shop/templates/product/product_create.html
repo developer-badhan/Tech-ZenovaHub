@@ -1,54 +1,117 @@
-{% extends 'main.html' %}
-{% block title %}Add New Product{% endblock %}
+{% extends 'admin/admin_base.html' %}
+{% block title %}Create Product{% endblock %}
 
 {% block content %}
-<div class="col-md-8 offset-md-2">
-    <h3 class="mb-4">Add New Product</h3>
-
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="name" class="form-label">Product Name</label>
-            <input type="text" name="name" id="name" class="form-control" required value="{{ form.name.value }}">
+<div class="col-md-8 offset-md-2 mt-4 mb-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add New Product</h4>
         </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <select name="category" id="category" class="form-select" required>
-                <option value="">-- Select --</option>
-                {% for cat in categories %}
-                <option value="{{ cat.id }}" {% if form.category.value == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
-                {% endfor %}
-            </select>
+                <!-- Product Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter product name" required>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="category" id="category" class="form-select" required>
+                        <option value="">-- Select Category --</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- SKU -->
+                <div class="mb-3">
+                    <label for="sku" class="form-label">SKU</label>
+                    <input type="text" name="sku" id="sku" class="form-control" placeholder="Unique product SKU" required>
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" step="0.01" name="price" id="price" class="form-control" required>
+                </div>
+
+                <!-- Stock -->
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Stock Quantity</label>
+                    <input type="number" name="stock" id="stock" class="form-control" min="0" required>
+                </div>
+
+                <!-- Tags -->
+                <div class="mb-3">
+                    <label for="tags" class="form-label">Tags (optional)</label>
+                    <input type="text" name="tags" id="tags" class="form-control" placeholder="E.g. smart, energy, IoT">
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" id="description" rows="4" class="form-control" placeholder="Enter product description..."></textarea>
+                </div>
+
+                <!-- Image Upload with Preview -->
+                <div class="mb-3">
+                    <label for="image" class="form-label">Product Image (optional)</label>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImage(event)">
+                    <div class="mt-2 text-center">
+                        <img id="imagePreview" src="" alt="Preview" class="img-thumbnail rounded-3" style="max-width: 200px; display: none;">
+                    </div>
+                </div>
+
+                <!-- Active Status -->
+                <div class="mb-3">
+                    <label for="id_is_active" class="form-label fw-medium">Is Active</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fa-solid fa-toggle-on text-success"></i></span>
+                        <input type="text" name="is_active" id="id_is_active" class="form-control" placeholder="Type true or false" required value="true" oninput="updateStatusIcon()">
+                        <span class="input-group-text" id="isActiveStatus">✅</span>
+                    </div>
+                    <div class="form-text">Enter <strong>true</strong> or <strong>false</strong>.</div>
+                </div>
+
+                <!-- Buttons -->
+                <button type="submit" class="btn btn-success">Create Product</button>
+                <a href="{% url 'product_list_admin' %}" class="btn btn-secondary">Back to List</a>
+            </form>
         </div>
-
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="description" id="description" rows="4" class="form-control">{{ form.description.value }}</textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="price" class="form-label">Price (₹)</label>
-            <input type="number" step="0.01" name="price" id="price" class="form-control" required value="{{ form.price.value }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="stock" class="form-label">Stock</label>
-            <input type="number" name="stock" id="stock" class="form-control" required value="{{ form.stock.value }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="image" class="form-label">Product Image</label>
-            <input type="file" name="image" id="image" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label for="sku" class="form-label">Sku</label>
-            <input type="text" name="sku" id="sku" class="form-control" required value="{{ form.sku.value }}">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Create Product</button>
-        <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+    </div>
 </div>
+
+<script>
+function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const output = document.getElementById('imagePreview');
+        output.src = reader.result;
+        output.style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function updateStatusIcon() {
+    const input = document.getElementById('id_is_active');
+    const statusIcon = document.getElementById('isActiveStatus');
+    const value = input.value.trim().toLowerCase();
+
+    if (value === 'true') {
+        statusIcon.textContent = '✅';
+    } else if (value === 'false') {
+        statusIcon.textContent = '❌';
+    } else {
+        statusIcon.textContent = '❓';
+    }
+}
+</script>
+
+
+
 {% endblock %}

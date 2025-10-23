@@ -48,7 +48,7 @@ class ProductCreateView(View):
             product = product_service.create_product(data, request, files=files)
             if product:
                 messages.success(request, "Product created successfully.")
-                return redirect('product_list')
+                return redirect('product_list_admin')
         except Exception as e:
             print(f"[ProductCreateView] Error: {e}")
         
@@ -77,7 +77,7 @@ class ProductUpdateView(View):
             product = product_service.update_product(product_id, data, request, files=files)
             if product:
                 messages.success(request, "Product updated successfully.")
-                return redirect('product_detail', product_id=product.id)
+                return redirect('product_list_admin')
         except Exception as e:
             print(f"[ProductUpdateView] Error: {e}")
         
@@ -105,7 +105,20 @@ class ProductDeleteView(View):
         except Exception as e:
             print(f"[ProductDeleteView] Error (POST): {e}")
             messages.error(request, "An unexpected error occurred.")
-        return redirect('product_list')
+        return redirect('product_list_admin')
+
+
+# Product List Admin View
+class ProductLListAdminView(View):
+    @login_admin_required
+    def get(self, request):
+        try:
+            products = product_service.get_all_products(active_only=False)
+            return render(request, 'product/product_listadmin.html', {'products': products})
+        except Exception as e:
+            print(f"[ProductLListAdminView] Error: {e}")
+            messages.error(request, "Failed to load admin product list.")
+            return redirect('admin_dashboard')
 
 
 # Product Search View

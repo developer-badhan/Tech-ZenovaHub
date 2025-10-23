@@ -12,6 +12,7 @@ urlpatterns = [
     path('tech-zenovahub.com/products/<int:product_id>/', views.ProductDetailView.as_view(), name='product_detail'),
     path('tech-zenovahub.com/products/<int:product_id>/edit/', views.ProductUpdateView.as_view(), name='product_update'),
     path('tech-zenovahub.com/products/<int:product_id>/delete/', views.ProductDeleteView.as_view(), name='product_delete'),
+    path('teach-zenovahub.com/products/list',views.ProductLListAdminView.as_view(),name= 'product_list_admin'),
 
     # Product Category Routes
     path('tech-zenovahub.com/categories/', views.CategoryListView.as_view(), name='category_list'),

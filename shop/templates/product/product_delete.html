@@ -1,20 +1,51 @@
-{% extends 'main.html' %}
-{% block title %}Delete Product{% endblock %}
-
+{% extends 'admin/admin_base.html' %}
 {% block content %}
-<div class="col-md-8 offset-md-2">
-    <div class="card border-danger shadow-sm">
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 650px;">
         <div class="card-body">
-            <h4 class="card-title text-danger">Delete Product</h4>
-            <p class="card-text">
-                Are you sure you want to permanently delete the product
-                <strong>"{{ product.name }}"</strong>?
+            <h3 class="text-center text-danger fw-bold mb-4">
+                Delete Product
+            </h3>
+
+            <p class="text-muted text-center mb-4">
+                Are you sure you want to permanently delete this product?
             </p>
+
+            <div class="border rounded p-3 bg-light mb-4">
+                <!-- Product Image -->
+                {% if product.image %}
+                    <div class="text-center mb-3">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                             class="img-thumbnail rounded-3" style="max-width: 180px;">
+                    </div>
+                {% endif %}
+
+                <p><strong>Name:</strong> {{ product.name }}</p>
+                <p><strong>Category:</strong> {{ product.category.name }}</p>
+                <p><strong>SKU:</strong> {{ product.sku }}</p>
+                <p><strong>Price:</strong> ₹{{ product.price }}</p>
+                <p><strong>Stock:</strong> {{ product.stock }}</p>
+                <p><strong>Tags:</strong> {{ product.tags|default:"—" }}</p>
+                <p><strong>Status:</strong>
+                    {% if product.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inactive</span>
+                    {% endif %}
+                </p>
+                <p><strong>Description:</strong><br>{{ product.description|default:"No description available." }}</p>
+            </div>
 
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">Cancel</a>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger px-4">
+                       Confirm Delete
+                    </button>
+                    <a href="{% url 'product_list_admin' %}" class="btn btn-secondary ms-2">
+                        Cancel
+                    </a>
+                </div>
             </form>
         </div>
     </div>
