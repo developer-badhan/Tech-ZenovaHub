@@ -1,45 +1,75 @@
 {% extends 'admin/admin_base.html' %}
-{% block title %}All Categories{% endblock %}
+{% load static %}
+{% block title %}Category Management{% endblock %}
 
 {% block content %}
-<div class="col-md-10 offset-md-1">
-   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Category List</h3>
-    <div>
-        <a href="{% url 'category_create' %}" class="btn btn-primary me-2">+ Add New Category</a>
-        <a href="{% url 'admin_dashboard' %}" class="btn btn-danger" style="text-decoration: none;">Return</a>
+<div class="container mt-4 mb-5">
+
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <h4 class="fw-bold mb-0">All Categories</h4>
+    <div class="d-flex gap-2">
+      <a href="{% url 'category_create' %}" class="btn btn-success btn-sm px-3 py-2">
+        <i class="fa fa-plus me-1"></i> Add Category
+      </a>
+      <a href="{% url 'admin_dashboard' %}" class="btn btn-danger btn-sm px-3 py-2">
+        Return
+      </a>
     </div>
-</div>
+  </div>
 
+  <!-- Table Section -->
+  <div class="table-responsive shadow-sm rounded-4">
+    <table class="table table-bordered align-middle text-center">
+      <thead class="table-light">
+        <tr>
+          <th>No.</th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
 
-    {% if categories %}
-    <table class="table table-bordered table-striped shadow-sm">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Category Name</th>
-                <th scope="col">Description</th>
-                <th scope="col" style="width: 150px;">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in categories %}
-            <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description|default:"-" }}</td>
-                <td>
-                    <a href="{% url 'category_update' category.id %}" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="{% url 'category_delete' category.id %}" class="btn btn-danger">
-                    Delete
-                 </a>
-             </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+          <!-- Category Image -->
+          <td>
+            {% if category.image %}
+              <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-thumbnail rounded" style="width: 70px; height: 70px; object-fit: cover;">
+            {% else %}
+              <div class="bg-light d-flex justify-content-center align-items-center rounded" style="width: 70px; height: 70px;">
+                <i class="fa fa-image text-muted"></i>
+              </div>
+            {% endif %}
+          </td>
+
+          <td class="fw-semibold text-start">{{ category.name }}</td>
+          <td><span class="badge bg-light text-dark border">{{ category.slug }}</span></td>
+          <td class="text-start small text-muted">{{ category.description|default:"—" }}</td>
+
+          <!-- Action Buttons -->
+          <td>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+              <a href="{% url 'category_update' category.id %}" class="btn btn-sm btn-warning text-white" title="Edit">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="{% url 'category_delete' category.id %}" class="btn btn-sm btn-danger text-white" title="Delete">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-muted py-3">No categories found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-    {% else %}
-    <div class="alert alert-info">No categories available.</div>
-    {% endif %}
+  </div>
 </div>
 {% endblock %}
