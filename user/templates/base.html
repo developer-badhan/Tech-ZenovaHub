@@ -39,7 +39,6 @@
 
     <div class="collapse navbar-collapse" id="tzgNavbarContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         {% if request.session.is_authenticated %}
           {% if request.session.user_role == 1 %}
             <li class="nav-item"><a class="nav-link" href="{% url 'customer_dashboard' %}">Dashboard</a></li>
