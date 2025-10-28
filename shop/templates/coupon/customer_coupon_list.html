@@ -3,34 +3,60 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h3 class="mb-4">My Coupons</h3>
-
-  {% if messages %}
-    <ul class="messages" style="list-style: none; padding: 0;">
-      {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="margin-bottom: 10px;">{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
+  <h3 class="mb-4 text-center" style="font-weight: 600;">🎟️ My Coupons</h3>
   {% if coupons %}
     <div class="row">
       {% for coupon in coupons %}
       <div class="col-md-4 col-sm-6 mb-4">
-        <div class="card h-100" style="border: 1px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-          <div class="card-body" style="padding: 1rem;">
-            <h5 class="card-title" style="font-weight: bold;">Code: {{ coupon.code }}</h5>
-            <p class="card-text" style="margin: 0.5rem 0;"><strong>Discount:</strong> {{ coupon.discount_percent }}%</p>
-            <p class="card-text" style="margin: 0.5rem 0;"><strong>Valid From:</strong> {{ coupon.valid_from|date:"Y-m-d H:i" }}</p>
-            <p class="card-text" style="margin: 0.5rem 0;"><strong>Valid To:</strong> {{ coupon.valid_to|date:"Y-m-d H:i" }}</p>
-            <p class="card-text" style="margin: 0.5rem 0;"><strong>Usage:</strong> {{ coupon.used_count }}/{{ coupon.usage_limit }}</p>
+        <div class="card h-100" 
+             style="border: none; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          <div class="card-body" 
+               style="padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-left: 6px solid #007bff;">
+            <h5 class="card-title text-primary" style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem;">
+              <i class="bi bi-ticket-perforated"></i> Code: {{ coupon.code }}
+            </h5>
+
+            <div style="margin-bottom: 0.75rem;">
+              <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5em 0.75em;">
+                {{ coupon.discount_percent }}% OFF
+              </span>
+            </div>
+
+            <p class="card-text mb-2"><strong>Valid From:</strong> 
+              <span style="color: #555;">{{ coupon.valid_from|date:"Y-m-d H:i" }}</span>
+            </p>
+
+            <p class="card-text mb-2"><strong>Valid To:</strong> 
+              <span style="color: #555;">{{ coupon.valid_to|date:"Y-m-d H:i" }}</span>
+            </p>
+
+            <p class="card-text mb-0"><strong>Usage:</strong> 
+              <span style="color: #007bff;">{{ coupon.used_count }}</span> / {{ coupon.usage_limit }}
+            </p>
+          </div>
+          <div class="card-footer text-center bg-light" style="font-size: 0.9rem; font-weight: 500;">
+            {% if coupon.used_count >= coupon.usage_limit %}
+              <span class="text-danger">Expired or Fully Used</span>
+            {% else %}
+              <span class="text-success">Available</span>
+            {% endif %}
           </div>
         </div>
       </div>
       {% endfor %}
     </div>
   {% else %}
-    <p>You don’t have any coupons assigned yet.</p>
+    <div class="text-center" style="padding: 40px 0;">
+      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="No Coupons" width="100" class="mb-3">
+      <p style="font-size: 1.1rem; color: #666;">You don’t have any coupons assigned yet.</p>
+    </div>
   {% endif %}
 </div>
+
+<style>
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+</style>
 {% endblock %}

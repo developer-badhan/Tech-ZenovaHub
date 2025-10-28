@@ -128,11 +128,6 @@
         "timeOut": "4000"
     };
 
-    {% if messages %}
-        {% for message in messages %}
-            toastr["{{ message.tags }}"]("{{ message|escapejs }}");
-        {% endfor %}
-    {% endif %}
 </script>
 
 <!-- App scripts -->
