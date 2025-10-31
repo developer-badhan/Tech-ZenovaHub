@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from shop.models import Category
 from user.models import User
-from shop.utils import slug_util
+from shop.utils import slug_util,validation_utils
 
 
 # Fetch all Products
@@ -49,6 +49,7 @@ def create_product(data, request, files=None):
         provided_sku = data.get('sku')
         name = data.get('name')
         sku = slug_util.generate_unique_skg(Product, name, provided_sku)
+        is_active = validation_utils.parse_boolean(data.get('is_active'))
         product = Product.objects.create(
             category=category,
             name=name,
@@ -58,9 +59,12 @@ def create_product(data, request, files=None):
             image=files.get('image') if files else None,
             sku=sku,
             tags=data.get('tags', ''),
+            is_active=is_active, 
             created_by=created_by
         )
+        print(f"[create_product] Created product {product.id} with is_active={product.is_active}")
         return product
+        
     except Category.DoesNotExist:
         print(f"Category with ID {category_id} not found.")
         return None
@@ -71,8 +75,6 @@ def create_product(data, request, files=None):
         print(f"Error creating product: {e}")
         return None
 
-
-
 # Update the existing Product
 def update_product(product_id, data, request, files=None):
     try:
@@ -82,7 +84,8 @@ def update_product(product_id, data, request, files=None):
         product.price = data.get('price', product.price)
         product.stock = data.get('stock', product.stock)
         product.tags = data.get('tags', product.tags)
-        product.is_active = bool(data.get('is_active', product.is_active))
+        product.is_active = validation_utils.parse_boolean(data.get('is_active'))
+        print(f"[update_product] Setting is_active to {product.is_active} (raw value: {data.get('is_active')})")
         new_sku_input = data.get('sku')
         new_name_input = data.get('name')
         if new_sku_input or (new_name_input and new_name_input != product.name):
@@ -101,6 +104,7 @@ def update_product(product_id, data, request, files=None):
             except User.DoesNotExist:
                 print(f"User with ID {user_id} not found. Skipping updated_by.")
         product.save()
+        print(f"[update_product] Updated product {product.id}, is_active={product.is_active}")
         return product
     except Product.DoesNotExist:
         print(f"Product with ID {product_id} not found.")
@@ -108,7 +112,6 @@ def update_product(product_id, data, request, files=None):
     except Exception as e:
         print(f"Error updating product: {e}")
         return None
-
 
 # Delete an existing Product
 def delete_product(product_id):
@@ -135,6 +138,8 @@ def search_products(query):
     except Exception as e:
         print(f"Error searching products: {e}")
         return []
+
+
 
 
 
