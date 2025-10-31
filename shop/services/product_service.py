@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from shop.models import Category
 from user.models import User
-
+from shop.utils import slug_util
 
 
 # Fetch all Products
@@ -36,26 +36,27 @@ def get_product_by_id(product_id):
         return None
 
 
+
 # Create a new Product
 def create_product(data, request, files=None):
     try:
         category_id = data.get('category')
         category = Category.objects.get(id=category_id)
-
         user_id = request.session.get('user_id')
         if not user_id:
             raise ValueError("No user_id in session. Ensure login sets session values.")
-
         created_by = User.objects.get(id=user_id)
-
+        provided_sku = data.get('sku')
+        name = data.get('name')
+        sku = slug_util.generate_unique_skg(Product, name, provided_sku)
         product = Product.objects.create(
             category=category,
-            name=data.get('name'),
+            name=name,
             description=data.get('description'),
             price=data.get('price'),
             stock=data.get('stock'),
             image=files.get('image') if files else None,
-            sku=data.get('sku'),
+            sku=sku,
             tags=data.get('tags', ''),
             created_by=created_by
         )
@@ -71,6 +72,7 @@ def create_product(data, request, files=None):
         return None
 
 
+
 # Update the existing Product
 def update_product(product_id, data, request, files=None):
     try:
@@ -79,16 +81,17 @@ def update_product(product_id, data, request, files=None):
         product.description = data.get('description', product.description)
         product.price = data.get('price', product.price)
         product.stock = data.get('stock', product.stock)
-        product.sku = data.get('sku', product.sku)
         product.tags = data.get('tags', product.tags)
-        product.is_active = bool(data.get('is_active'))
-
+        product.is_active = bool(data.get('is_active', product.is_active))
+        new_sku_input = data.get('sku')
+        new_name_input = data.get('name')
+        if new_sku_input or (new_name_input and new_name_input != product.name):
+            product.sku = slug_util.generate_unique_skg(Product, new_name_input or product.name, new_sku_input)
         if 'category' in data:
             try:
                 product.category = Category.objects.get(id=data.get('category'))
             except Category.DoesNotExist:
                 print(f"Category with ID {data.get('category')} not found. Keeping existing category.")
-
         if files and files.get('image'):
             product.image = files.get('image')
         user_id = request.session.get('user_id')
@@ -132,3 +135,7 @@ def search_products(query):
     except Exception as e:
         print(f"Error searching products: {e}")
         return []
+
+
+
+
