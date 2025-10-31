@@ -1,6 +1,6 @@
 from shop.models import Category
 from django.core.exceptions import ObjectDoesNotExist
-
+from shop.utils import slug_util
 
 
 # Fetch all Categories
@@ -27,26 +27,34 @@ def get_category_by_id(category_id):
 # Create a new Category
 def create_category(data):
     try:
+        name = data.get('name')
+        provided_slug = data.get('slug')
+        slug = slug_util.generate_unique_slug(Category, name, provided_slug)
         category = Category.objects.create(
-            name=data.get('name'),
+            name=name,
             description=data.get('description', ''),
             image=data.get('image'),
-            slug=data.get('slug')
+            slug=slug
         )
         return category
     except Exception as e:
         print(f"Error creating category: {e}")
         return None
 
-
-# Update an existing Category
+# # Update an existing Category
 def update_category(category_id, data):
     try:
         category = Category.objects.get(id=category_id)
         category.name = data.get('name', category.name)
         category.description = data.get('description', category.description)
-        category.slug = data.get('slug', category.slug)
-        category.image = data.get('image', category.image)
+        new_image = data.get('image')
+        if new_image:
+            category.image = new_image
+        new_slug = data.get('slug')
+        if new_slug:
+            category.slug = slug_util.generate_unique_slug(Category, category.name, new_slug)
+        elif category.slug != slug_util.generate_unique_slug(Category, category.name, category.slug):
+            category.slug = slug_util.generate_unique_slug(Category, category.name)
         category.save()
         return category
     except ObjectDoesNotExist:
@@ -55,6 +63,7 @@ def update_category(category_id, data):
     except Exception as e:
         print(f"Error updating category: {e}")
         return None
+
 
 
 # Delete an existing Category
@@ -70,4 +79,26 @@ def delete_category(category_id):
         print(f"Error deleting category: {e}")
         return False
     
-    
+
+# Create a new Category
+def create_category(data):
+    try:
+        name = data.get('name')
+        provided_slug = data.get('slug')
+
+        slug = slug_util.generate_unique_slug(Category, name, provided_slug)
+
+        category = Category.objects.create(
+            name=name,
+            description=data.get('description', ''),
+            image=data.get('image'),
+            slug=slug
+        )
+        return category
+    except Exception as e:
+        print(f"Error creating category: {e}")
+        return None
+
+
+
+

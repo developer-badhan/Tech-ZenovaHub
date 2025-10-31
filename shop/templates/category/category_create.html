@@ -8,22 +8,7 @@
             <h4 class="mb-0">Add New Category</h4>
         </div>
         <div class="card-body">
-            {% comment %} <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="name" class="form-label">Category Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description (optional)</label>
-                    <textarea name="description" id="description" class="form-control" rows="3"></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-success">Create Category</button>
-                <a href="{% url 'category_list' %}" class="btn btn-secondary">Back to List</a>
-            </form> {% endcomment %}
-            <form method="post" enctype="multipart/form-data">  <!-- Also added enctype if image is ever used -->
+    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
         <label for="name" class="form-label">Category Name</label>
@@ -32,7 +17,7 @@
 
     <div class="mb-3">
         <label for="slug" class="form-label">Slug</label>
-        <input type="text" name="slug" id="slug" class="form-control" required>
+        <input type="text" name="slug" id="slug" class="form-control">
     </div>
 
     <div class="mb-3">
