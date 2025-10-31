@@ -79,26 +79,3 @@ def delete_category(category_id):
         print(f"Error deleting category: {e}")
         return False
     
-
-# Create a new Category
-def create_category(data):
-    try:
-        name = data.get('name')
-        provided_slug = data.get('slug')
-
-        slug = slug_util.generate_unique_slug(Category, name, provided_slug)
-
-        category = Category.objects.create(
-            name=name,
-            description=data.get('description', ''),
-            image=data.get('image'),
-            slug=slug
-        )
-        return category
-    except Exception as e:
-        print(f"Error creating category: {e}")
-        return None
-
-
-
-
