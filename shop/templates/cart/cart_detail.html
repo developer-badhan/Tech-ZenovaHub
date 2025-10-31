@@ -1,14 +1,102 @@
-{% extends 'main.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Cart{% endblock %}
+
 {% block content %}
-<h2>Your Cart</h2>
-{% if items %}
-  <ul>
-    {% for item in items %}
-      <li>{{ item.product.name }} — {{ item.quantity }} × ₹{{ item.product.price }}</li>
-    {% endfor %}
-  </ul>
-  <p><strong>Total:</strong> ₹{{ total_price }}</p>
-{% else %}
-  <p>Your cart is empty.</p>
-{% endif %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">
+        <i class="fas fa-shopping-cart text-primary"></i> {{ user.first_name }}'s Cart
+    </h2>
+
+    {% if items %}
+    <!-- Header Actions -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h4 class="fw-bold mb-0">Your Cart Items</h4>
+        <div class="d-flex gap-2">
+            <a href="{% url 'product_list' %}" class="btn btn-success btn-sm px-3 py-2">
+                <i class="fa fa-plus me-1"></i> Add More Items
+            </a>
+            <a href="{% url 'cart_clear' %}" class="btn btn-danger btn-sm px-3 py-2">
+                <i class="fa fa-trash me-1"></i> Clear Cart
+            </a>
+        </div>
+    </div>
+
+    <!-- Cart Table -->
+    <div class="table-responsive shadow-sm rounded-4">
+        <table class="table table-bordered align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>No.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <!-- Product Image -->
+                    <td>
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+                                 class="img-thumbnail rounded"
+                                 style="width: 70px; height: 70px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-light d-flex justify-content-center align-items-center rounded"
+                                 style="width: 70px; height: 70px;">
+                                <i class="fa fa-image text-muted"></i>
+                            </div>
+                        {% endif %}
+                    </td>
+
+                    <!-- Product Details -->
+                    <td class="fw-semibold text-start">
+                        <a href="{% url 'product_detail' item.product.id %}" class="text-decoration-none text-dark">
+                            {{ item.product.name }}
+                        </a>
+                    </td>
+
+                    <td>₹{{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.product.price|floatformat:2|add:item.product.price|floatformat:2 }}</td>
+
+                    <!-- Action Buttons -->
+                    <td>
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                            <a href="{% url 'cart_update' %}" class="btn btn-sm btn-warning text-white" title="Update Item">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{% url 'cart_remove' %}" class="btn btn-sm btn-secondary text-white" title="Remove Item">
+                                <i class="fa fa-minus-circle"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Total Section -->
+    <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
+        <h5 class="fw-bold mb-0">Total: ₹{{ total_price }}</h5>
+        <a href="#" class="btn btn-primary btn-sm px-4 py-2">
+            <i class="fa fa-credit-card me-1"></i> Proceed to Checkout
+        </a>
+    </div>
+    {% else %}
+    <!-- Keep this section as-is -->
+    <div class="alert alert-info text-center">
+        <i class="fas fa-info-circle"></i> Your cart is empty.
+        <a href="{% url 'product_list' %}" class="btn btn-primary">Add Item</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
