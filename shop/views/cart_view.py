@@ -32,7 +32,7 @@ class CartAddItemView(View):
     @inject_authenticated_user
     def get(self, request):
         products = Product.objects.all()
-        return render(request, 'cart/cart_additem.html', {'products': products})
+        return render(request, 'cart/cart_detail.html', {'products': products})
 
     @signin_required
     @customer_required

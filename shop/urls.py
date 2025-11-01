@@ -50,6 +50,8 @@ urlpatterns = [
     path('tech-zenovahub.com/wishlist/', views.WishlistListView.as_view(), name='wishlist'),
     path('tech-zenovahub.com/wishlist/add/<int:product_id>/', views.WishlistAddView.as_view(), name='wishlist_add'),
     path('tech-zenovahub.com/wishlist/remove/<int:product_id>/', views.WishlistRemoveView.as_view(), name='wishlist_remove'),
+    path('tech-zenovahub.com/wishlist/to/cart/<int:product_id>/', views.WishToCartView.as_view(), name='wishlist_cart'),
+
 
     # Product Coupon Routes
     path('tech-zenovahub.com/coupons/', views.CouponListView.as_view(), name='coupon_list'),

@@ -14,8 +14,8 @@
         <a href="{% url 'product_list' %}" class="btn btn-primary me-2">
             <i class="fas fa-plus me-1"></i> Add More
         </a>
-        <a href="{% url 'home' %}" class="btn btn-danger">
-            <i class="fas fa-arrow-left me-1"></i> Return
+        <a href="{% url 'customer_dashboard' %}" class="btn btn-danger">
+         Return
         </a>
     </div>
 
@@ -41,9 +41,15 @@
                         <a href="{% url 'wishlist_remove' item.product.id %}" class="btn btn-outline-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                        <a href="{% url 'cart_add' %}" class="btn btn-outline-primary btn-sm">
+                       
+                    <!-- Wishlist To Cart -->
+                    <form action="{% url 'wishlist_cart' item.product.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-cart-plus"></i>
-                        </a>
+                        </button>
+                    </form>
+
                     </div>
                 </div>
             </div>

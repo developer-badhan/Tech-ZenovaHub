@@ -39,13 +39,24 @@ class WishlistRemoveView(View):
     @customer_required
     @inject_authenticated_user
     def get(self, request, product_id):
-        return render(request, "wishlist/wishlist_remove.html", {"product_id": product_id})
+        product = wishlist_service.get_product(product_id)
+        return render(request, "wishlist/wishlist_remove.html", {"product": product})
 
     @signin_required
     @customer_required
     @inject_authenticated_user
     def post(self, request, product_id):
         success = wishlist_service.remove_from_wishlist(request.user, product_id)
+        return redirect("wishlist")
+
+
+# Wishlist To Cart
+class WishToCartView(View):
+    @signin_required
+    @customer_required
+    @inject_authenticated_user
+    def post(self, request, product_id):
+        success = wishlist_service.move_to_cart(request.user, product_id)
         return redirect("wishlist")
 
 
