@@ -12,7 +12,10 @@
     {% if items %}
     <!-- Header Actions -->
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-        <h4 class="fw-bold mb-0">Your Cart Items</h4>
+        <div>
+            <h4 class="fw-bold mb-0">Your Cart Items</h4>
+            <small class="text-muted">{{ items|length }} item{{ items|length|pluralize }} in your cart</small>
+        </div>
         <div class="d-flex gap-2">
             <a href="{% url 'product_list' %}" class="btn btn-success btn-sm px-3 py-2">
                 <i class="fa fa-plus me-1"></i> Add More Items
@@ -24,79 +27,375 @@
     </div>
 
     <!-- Cart Table -->
-    <div class="table-responsive shadow-sm rounded-4">
-        <table class="table table-bordered align-middle text-center">
-            <thead class="table-light">
+    <div class="table-responsive shadow-sm rounded-3 mb-4">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
                 <tr>
-                    <th>No.</th>
-                    <th>Image</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Actions</th>
+                    <th class="text-center" style="width: 5%;">No.</th>
+                    <th class="text-center" style="width: 10%;">Image</th>
+                    <th style="width: 25%;">Product Details</th>
+                    <th class="text-center" style="width: 12%;">Price</th>
+                    <th class="text-center" style="width: 10%;">Quantity</th>
+                    <th class="text-center" style="width: 13%;">Subtotal</th>
+                    <th class="text-center" style="width: 15%;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <td class="text-center fw-bold">{{ forloop.counter }}</td>
 
                     <!-- Product Image -->
-                    <td>
+                    <td class="text-center">
                         {% if item.product.image %}
                             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
-                                 class="img-thumbnail rounded"
-                                 style="width: 70px; height: 70px; object-fit: cover;">
+                                 class="img-thumbnail rounded shadow-sm"
+                                 style="width: 80px; height: 80px; object-fit: cover;">
                         {% else %}
-                            <div class="bg-light d-flex justify-content-center align-items-center rounded"
-                                 style="width: 70px; height: 70px;">
-                                <i class="fa fa-image text-muted"></i>
+                            <div class="bg-light d-flex justify-content-center align-items-center rounded shadow-sm"
+                                 style="width: 80px; height: 80px;">
+                                <i class="fa fa-image fa-2x text-muted"></i>
                             </div>
                         {% endif %}
                     </td>
 
-                    <!-- Product Details -->
-                    <td class="fw-semibold text-start">
-                        <a href="{% url 'product_detail' item.product.id %}" class="text-decoration-none text-dark">
-                            {{ item.product.name }}
-                        </a>
+                    <!-- Product Details with SKU -->
+                    <td>
+                        <div class="d-flex flex-column">
+                            <a href="{% url 'product_detail' item.product.id %}"
+                               class="text-decoration-none text-dark fw-semibold mb-1">
+                                {{ item.product.name }}
+                            </a>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1"
+                                      style="font-size: 0.75rem; font-family: 'Courier New', monospace;">
+                                    <i class="fa fa-barcode me-1"></i>SKU: {{ item.product.sku }}
+                                </span>
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-2"
+                                        onclick="copySKU('{{ item.product.sku }}')"
+                                        title="Copy SKU">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </div>
+                            {% if item.product.tags %}
+                            <small class="text-muted mt-1">
+                                <i class="fa fa-tags"></i> {{ item.product.tags }}
+                            </small>
+                            {% endif %}
+                        </div>
                     </td>
 
-                    <td>₹{{ item.product.price }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>₹{{ item.product.price|floatformat:2|add:item.product.price|floatformat:2 }}</td>
+                    <td class="text-center">
+                        <span class="fw-bold text-success">₹{{ item.product.price }}</span>
+                    </td>
 
-                    <!-- Action Buttons -->
-                    <td>
-                        <div class="d-flex justify-content-center gap-2 flex-wrap">
-                            <a href="{% url 'cart_update' %}" class="btn btn-sm btn-warning text-white" title="Update Item">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a href="{% url 'cart_remove' %}" class="btn btn-sm btn-secondary text-white" title="Remove Item">
-                                <i class="fa fa-minus-circle"></i>
-                            </a>
+                    <td class="text-center">
+                        <span class="badge bg-secondary rounded-pill px-3 py-2" style="font-size: 0.9rem;">
+                            {{ item.quantity }}
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        {% widthratio item.product.price 1 item.quantity as subtotal %}
+                        <span class="fw-bold text-primary">₹{{ subtotal|floatformat:2 }}</span>
+                    </td>
+
+                    <!-- Action Buttons: pass expected SKU and name into modal -->
+                    <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <button type="button"
+                                    class="btn btn-sm btn-warning text-white"
+                                    onclick="openUpdateModal('{{ item.product.sku }}', '{{ item.product.name|escapejs }}')"
+                                    title="Update Quantity">
+                                <i class="fa fa-edit"></i> Update
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-danger"
+                                    onclick="openRemoveModal('{{ item.product.sku }}', '{{ item.product.name|escapejs }}')"
+                                    title="Remove Item">
+                                <i class="fa fa-trash"></i> Remove
+                            </button>
                         </div>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="5" class="text-end fw-bold fs-5">Grand Total:</td>
+                    <td class="text-center fw-bold fs-5 text-success">₹{{ total_price|floatformat:2 }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
-    <!-- Total Section -->
-    <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
-        <h5 class="fw-bold mb-0">Total: ₹{{ total_price }}</h5>
-        <a href="#" class="btn btn-primary btn-sm px-4 py-2">
-            <i class="fa fa-credit-card me-1"></i> Proceed to Checkout
+    <!-- Bottom Actions -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+        <a href="{% url 'product_list' %}" class="btn btn-outline-primary px-4 py-2">
+            <i class="fa fa-arrow-left me-2"></i> Continue Shopping
+        </a>
+        <a href="#" class="btn btn-primary btn-lg px-5 py-2 shadow">
+            <i class="fa fa-credit-card me-2"></i> Proceed to Checkout
         </a>
     </div>
+
+    <!-- SKU Info Card -->
+    <div class="alert alert-info mt-4 shadow-sm" role="alert">
+        <div class="d-flex align-items-start">
+            <i class="fa fa-info-circle fa-2x me-3 mt-1"></i>
+            <div>
+                <h6 class="alert-heading mb-2"><strong>Quick Tip: Using SKU Codes</strong></h6>
+                <p class="mb-1">Each product has a unique <strong>SKU (Stock Keeping Unit)</strong> code displayed in blue badges.</p>
+                <ul class="mb-0 ps-3">
+                    <li>Click the <i class="fa fa-copy"></i> button to copy any SKU code</li>
+                    <li>Paste that SKU into the Update or Remove modal and submit the form</li>
+                    <li>Using SKU ensures you modify the exact product in your cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     {% else %}
-    <!-- Keep this section as-is -->
-    <div class="alert alert-info text-center">
-        <i class="fas fa-info-circle"></i> Your cart is empty.
-        <a href="{% url 'product_list' %}" class="btn btn-primary">Add Item</a>
+    <!-- Empty Cart State -->
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-shopping-cart fa-5x text-muted opacity-50"></i>
+        </div>
+        <h4 class="mb-3">Your cart is empty</h4>
+        <p class="text-muted mb-4">Looks like you haven't added any items to your cart yet.</p>
+        <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg px-5 py-3">
+            <i class="fa fa-shopping-bag me-2"></i> Start Shopping
+        </a>
     </div>
     {% endif %}
 </div>
+
+<!-- Update Item Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="updateModalLabel">
+          <i class="fa fa-edit me-2"></i> Update Cart Item
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form method="post" action="{% url 'cart_update' %}" id="updateForm">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="alert alert-light border" role="alert">
+            <strong>Target item:</strong> <span id="updateTargetName" class="fw-semibold"></span>
+            <div class="small text-muted">Paste the SKU you copied into the SKU field below to confirm.</div>
+          </div>
+
+          <!-- hidden expected SKU filled by JS -->
+          <input type="hidden" id="updateExpectedSKU" name="expected_sku">
+
+          <div class="mb-3">
+            <label for="updateSKUInput" class="form-label">Product SKU (paste here)</label>
+            <input type="text" class="form-control" id="updateSKUInput" name="product_sku"
+                   placeholder="Paste SKU here (e.g. ABC123)" required autocomplete="off">
+            <div id="updateValidation" class="invalid-feedback" style="display:none;"></div>
+            <div class="form-text">Tip: use the copy button beside any product in the cart.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="updateQuantity" class="form-label">New Quantity</label>
+            <input type="number" class="form-control" id="updateQuantity" name="quantity" min="1" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-warning text-white">
+            <i class="fa fa-check me-1"></i> Update Item
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Item Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="removeModalLabel">
+          <i class="fa fa-trash me-2"></i> Remove Cart Item
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form method="post" action="{% url 'cart_remove' %}" id="removeForm">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="alert alert-warning" role="alert">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            You must paste the SKU of the item you want to remove. This prevents accidental deletions.
+          </div>
+
+          <div class="mb-2">
+            <strong>Target item:</strong> <span id="removeTargetName" class="fw-semibold"></span>
+          </div>
+
+          <!-- hidden expected SKU filled by JS -->
+          <input type="hidden" id="removeExpectedSKU" name="expected_sku">
+
+          <div class="mb-3">
+            <label for="removeSKUInput" class="form-label">Product SKU (paste here)</label>
+            <input type="text" class="form-control" id="removeSKUInput" name="product_sku"
+                   placeholder="Paste SKU here (e.g. ABC123)" required autocomplete="off">
+            <div id="removeValidation" class="invalid-feedback" style="display:none;"></div>
+            <div class="form-text">Paste the SKU copied from the product badge and then confirm removal.</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">
+            <i class="fa fa-trash me-1"></i> Remove Item
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast for Copy Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fa fa-check-circle me-2"></i> SKU copied to clipboard!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Copy SKU to clipboard
+function copySKU(sku) {
+    navigator.clipboard.writeText(sku).then(function() {
+        var toast = new bootstrap.Toast(document.getElementById('copyToast'));
+        toast.show();
+    }).catch(function(err) {
+        alert('Failed to copy SKU: ' + err);
+    });
+}
+
+// opener functions bind expected SKU + product name to modal
+function openUpdateModal(expectedSku, productName) {
+    document.getElementById('updateTargetName').textContent = productName || '';
+    document.getElementById('updateExpectedSKU').value = expectedSku || '';
+    document.getElementById('updateSKUInput').value = '';
+    document.getElementById('updateQuantity').value = 1;
+    document.getElementById('updateValidation').style.display = 'none';
+    document.getElementById('updateSKUInput').classList.remove('is-invalid');
+
+    var updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+    updateModal.show();
+    setTimeout(function(){ document.getElementById('updateSKUInput').focus(); }, 200);
+}
+
+function openRemoveModal(expectedSku, productName) {
+    document.getElementById('removeTargetName').textContent = productName || '';
+    document.getElementById('removeExpectedSKU').value = expectedSku || '';
+    document.getElementById('removeSKUInput').value = '';
+    document.getElementById('removeValidation').style.display = 'none';
+    document.getElementById('removeSKUInput').classList.remove('is-invalid');
+
+    var removeModal = new bootstrap.Modal(document.getElementById('removeModal'));
+    removeModal.show();
+    setTimeout(function(){ document.getElementById('removeSKUInput').focus(); }, 200);
+}
+
+// client-side validation to avoid obvious mistakes
+document.getElementById('updateForm').addEventListener('submit', function(e){
+    var expected = (document.getElementById('updateExpectedSKU').value || '').trim();
+    var pasted = (document.getElementById('updateSKUInput').value || '').trim();
+    if (!pasted) {
+        e.preventDefault();
+        showUpdateValidation('Please paste the SKU for the item you want to update.');
+        return;
+    }
+    if (pasted.toLowerCase() !== expected.toLowerCase()) {
+        e.preventDefault();
+        showUpdateValidation('SKU mismatch. Make sure you pasted the SKU displayed for the target item.');
+        return;
+    }
+    // allowed to submit
+});
+
+function showUpdateValidation(msg) {
+    var el = document.getElementById('updateValidation');
+    el.style.display = 'block';
+    el.textContent = msg;
+    document.getElementById('updateSKUInput').classList.add('is-invalid');
+}
+
+document.getElementById('updateSKUInput').addEventListener('input', function(){
+    document.getElementById('updateSKUInput').classList.remove('is-invalid');
+    document.getElementById('updateValidation').style.display = 'none';
+});
+
+document.getElementById('removeForm').addEventListener('submit', function(e){
+    var expected = (document.getElementById('removeExpectedSKU').value || '').trim();
+    var pasted = (document.getElementById('removeSKUInput').value || '').trim();
+    if (!pasted) {
+        e.preventDefault();
+        showRemoveValidation('Please paste the SKU for the item you want to remove.');
+        return;
+    }
+    if (pasted.toLowerCase() !== expected.toLowerCase()) {
+        e.preventDefault();
+        showRemoveValidation('SKU mismatch. Make sure you pasted the SKU displayed for the target item.');
+        return;
+    }
+    // allowed to submit
+});
+
+function showRemoveValidation(msg) {
+    var el = document.getElementById('removeValidation');
+    el.style.display = 'block';
+    el.textContent = msg;
+    document.getElementById('removeSKUInput').classList.add('is-invalid');
+}
+
+document.getElementById('removeSKUInput').addEventListener('input', function(){
+    document.getElementById('removeSKUInput').classList.remove('is-invalid');
+    document.getElementById('removeValidation').style.display = 'none';
+});
+</script>
+
+<style>
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+.badge {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.btn-group .btn {
+    font-size: 0.85rem;
+}
+
+.img-thumbnail {
+    border: 2px solid #dee2e6;
+}
+
+code {
+    font-size: 0.9rem;
+    padding: 2px 6px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+</style>
 {% endblock %}

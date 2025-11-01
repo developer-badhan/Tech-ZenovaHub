@@ -1,7 +1,5 @@
 from shop.models import Cart, CartItem, Product
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import get_user_model
-
 
 
 # User Validation
@@ -63,7 +61,7 @@ def add_item(user, product_id, quantity=1):
         item.quantity = item.quantity + int(quantity) if not created else int(quantity)
         item.save()
         return item
-    except Product.DoesNotExist:
+    except ObjectDoesNotExist:
         print(f"Product with ID {product_id} not found.")
         return None
     except Exception as e:
@@ -71,41 +69,193 @@ def add_item(user, product_id, quantity=1):
         return None
 
 
-# Update Item in Cart
-def update_item(user, product_id, quantity):
-    if not is_valid_user(user) or not is_valid_id(product_id) or not is_valid_quantity(quantity):
+
+def is_valid_sku(sku):
+    """
+    Returns True for a non-empty string SKU. Strips whitespace.
+    """
+    if not sku:
+        return False
+    if not isinstance(sku, str):
+        return False
+    return bool(sku.strip())
+
+
+# def update_item(user, product_sku, quantity):
+#     """
+#     Update quantity of a cart item identified by product SKU.
+#     Returns the updated CartItem on success, or None on failure.
+#     """
+#     if not is_valid_user(user) or not is_valid_sku(product_sku) or not is_valid_quantity(quantity):
+#         print("Invalid input for updating item.")
+#         return None
+
+#     sku = product_sku.strip()
+#     try:
+#         cart = get_cart(user)
+#         if not cart:
+#             print("Could not fetch cart for user.")
+#             return None
+
+#         # ensure product exists and is active
+#         try:
+#             product = Product.objects.get(sku=sku, is_active=True)
+#         except Product.DoesNotExist:
+#             print(f"Product not found for SKU: {sku}")
+#             return None
+
+#         # ensure cart item exists
+#         try:
+#             item = CartItem.objects.get(cart=cart, product=product)
+#         except CartItem.DoesNotExist:
+#             print(f"Cart item not found for product SKU: {sku}")
+#             return None
+
+#         item.quantity = int(quantity)
+#         item.save()
+#         return item
+
+#     except Exception as e:
+#         # log unexpected exceptions
+#         print(f"Error updating cart item: {e}")
+#         return None
+
+
+# def remove_item(user, product_sku):
+#     """
+#     Remove a cart item identified by product SKU.
+#     Returns True on success, False on failure.
+#     """
+#     if not is_valid_user(user) or not is_valid_sku(product_sku):
+#         print("Invalid input for removing item.")
+#         return False
+
+#     sku = product_sku.strip()
+#     try:
+#         cart = get_cart(user)
+#         if not cart:
+#             print("Could not fetch cart for user.")
+#             return False
+
+#         # ensure product exists and is active
+#         try:
+#             product = Product.objects.get(sku=sku, is_active=True)
+#         except Product.DoesNotExist:
+#             print(f"Product not found for SKU: {sku}")
+#             return False
+
+#         # ensure cart item exists
+#         try:
+#             item = CartItem.objects.get(cart=cart, product=product)
+#         except CartItem.DoesNotExist:
+#             print(f"Cart item not found for product SKU: {sku}")
+#             return False
+
+#         item.delete()
+#         return True
+
+#     except Exception as e:
+#         print(f"Error removing item from cart: {e}")
+#         return False
+
+
+
+
+def update_item(user, product_sku, quantity, expected_sku=None):
+    """
+    Update quantity of a cart item identified by product SKU.
+    If expected_sku is provided, require it to match product_sku (case-insensitive).
+    Returns the updated CartItem on success, or None on failure.
+    """
+    if not is_valid_user(user) or not is_valid_sku(product_sku) or not is_valid_quantity(quantity):
         print("Invalid input for updating item.")
         return None
+
+    if expected_sku:
+        if not is_valid_sku(expected_sku):
+            print("Invalid expected_sku provided.")
+            return None
+        if product_sku.strip().lower() != expected_sku.strip().lower():
+            print("SKU mismatch between expected and provided SKU.")
+            return None
+
+    sku = product_sku.strip()
     try:
         cart = get_cart(user)
-        item = CartItem.objects.get(cart=cart, product_id=int(product_id))
+        if not cart:
+            print("Could not fetch cart for user.")
+            return None
+
+        # ensure product exists and is active
+        try:
+            product = Product.objects.get(sku=sku, is_active=True)
+        except Product.DoesNotExist:
+            print(f"Product not found for SKU: {sku}")
+            return None
+
+        # ensure cart item exists
+        try:
+            item = CartItem.objects.get(cart=cart, product=product)
+        except CartItem.DoesNotExist:
+            print(f"Cart item not found for product SKU: {sku}")
+            return None
+
         item.quantity = int(quantity)
         item.save()
         return item
-    except ObjectDoesNotExist:
-        print(f"Cart item not found for product ID {product_id}.")
-        return None
+
     except Exception as e:
         print(f"Error updating cart item: {e}")
         return None
 
 
-# Remove Item from Cart
-def remove_item(user, product_id):
-    if not is_valid_user(user) or not is_valid_id(product_id):
+def remove_item(user, product_sku, expected_sku=None):
+    """
+    Remove a cart item identified by product SKU.
+    If expected_sku is provided, require it to match product_sku (case-insensitive).
+    Returns True on success, False on failure.
+    """
+    if not is_valid_user(user) or not is_valid_sku(product_sku):
         print("Invalid input for removing item.")
         return False
+
+    if expected_sku:
+        if not is_valid_sku(expected_sku):
+            print("Invalid expected_sku provided.")
+            return False
+        if product_sku.strip().lower() != expected_sku.strip().lower():
+            print("SKU mismatch between expected and provided SKU.")
+            return False
+
+    sku = product_sku.strip()
     try:
         cart = get_cart(user)
-        item = CartItem.objects.get(cart=cart, product_id=int(product_id))
+        if not cart:
+            print("Could not fetch cart for user.")
+            return False
+
+        # ensure product exists and is active
+        try:
+            product = Product.objects.get(sku=sku, is_active=True)
+        except Product.DoesNotExist:
+            print(f"Product not found for SKU: {sku}")
+            return False
+
+        # ensure cart item exists
+        try:
+            item = CartItem.objects.get(cart=cart, product=product)
+        except CartItem.DoesNotExist:
+            print(f"Cart item not found for product SKU: {sku}")
+            return False
+
         item.delete()
         return True
-    except ObjectDoesNotExist:
-        print(f"Cart item not found for product ID {product_id}.")
-        return False
+
     except Exception as e:
         print(f"Error removing item from cart: {e}")
         return False
+
+
 
 
 # Clear Cart
@@ -120,4 +270,5 @@ def clear_cart(user):
     except Exception as e:
         print(f"Error clearing cart: {e}")
         return False
+
 
