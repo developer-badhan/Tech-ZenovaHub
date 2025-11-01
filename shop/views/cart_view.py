@@ -66,26 +66,6 @@ class CartUpdateItemView(View):
     def get(self, request):
         return render(request, 'cart/cart_updateitem.html')
 
-    # @signin_required
-    # @customer_required
-    # @inject_authenticated_user
-    # def post(self, request):
-    #     product_sku = request.POST.get('product_sku') 
-    #     quantity = request.POST.get('quantity')
-    #     try:
-    #         item = cart_service.update_item(request.user, product_sku, quantity)
-    #         if item:
-    #             messages.success(request, "Cart updated.")
-    #         else:
-    #             messages.error(request, "Failed to update cart.")
-    #     except Exception as e:
-    #         messages.error(request, "Unexpected error occurred while updating item.")
-    #         print(e)
-    #     return redirect('cart_detail')
-
-
-
-    # in CartUpdateItemView.post
     @signin_required
     @customer_required
     @inject_authenticated_user
@@ -94,7 +74,6 @@ class CartUpdateItemView(View):
         expected_sku = (request.POST.get('expected_sku') or '').strip()
         quantity = request.POST.get('quantity')
         try:
-            # server-side verify expected vs provided SKU via service
             item = cart_service.update_item(request.user, product_sku, quantity, expected_sku=expected_sku)
             if item:
                 messages.success(request, "Cart updated.")
@@ -106,8 +85,6 @@ class CartUpdateItemView(View):
         return redirect('cart_detail')
 
 
-
-
 # Remove Item from Cart
 class CartRemoveItemView(View):
     @signin_required
@@ -116,25 +93,6 @@ class CartRemoveItemView(View):
     def get(self, request):
         return render(request, 'cart/cart_removeitem.html')
 
-    # @signin_required
-    # @customer_required
-    # @inject_authenticated_user
-    # def post(self, request):
-    #     product_sku = request.POST.get('product_sku') 
-    #     try:
-    #         success = cart_service.remove_item(request.user, product_sku)
-    #         if success:
-    #             messages.success(request, "Item removed from cart.")
-    #         else:
-    #             messages.error(request, "Failed to remove item.")
-    #     except Exception as e:
-    #         messages.error(request, "Unexpected error occurred while removing item.")
-    #         print(e)
-    #     return redirect('cart_detail')
-
-
-
-    # in CartRemoveItemView.post
     @signin_required
     @customer_required
     @inject_authenticated_user
@@ -151,8 +109,6 @@ class CartRemoveItemView(View):
             messages.error(request, "Unexpected error occurred while removing item.")
             print(e)
         return redirect('cart_detail')
-
-
 
 
 # Clear Cart
