@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
 
@@ -76,10 +78,14 @@ urlpatterns = [
     # Customer Routes for Coupon Management
     path('customer/my-coupons/', views.CustomerCouponListView.as_view(), name='customer_coupon_list'),
 
+    # Policy Terms
+    path('terms-of-use/', TemplateView.as_view(template_name="policies/terms_of_use.html"), name="terms_of_use"),
+    path('privacy-policy/', TemplateView.as_view(template_name="policies/privacy_policy.html"), name="privacy_policy"),
+    path('payment-policy/', TemplateView.as_view(template_name="policies/payment_policy.html"), name="payment_policy"),
+    path('warranty-service/', TemplateView.as_view(template_name="policies/warranty_service.html"), name="warranty_service"),
+
 
 ]
-
-
 
 
 
