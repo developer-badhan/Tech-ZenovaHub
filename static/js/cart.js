@@ -90,3 +90,5 @@ document.getElementById('removeSKUInput').addEventListener('input', function(){
     document.getElementById('removeSKUInput').classList.remove('is-invalid');
     document.getElementById('removeValidation').style.display = 'none';
 });
+
+

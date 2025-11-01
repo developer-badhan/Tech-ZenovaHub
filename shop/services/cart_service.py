@@ -71,9 +71,6 @@ def add_item(user, product_id, quantity=1):
 
 # SKU Validation
 def is_valid_sku(sku):
-    """
-    Returns True for a non-empty string SKU. Strips whitespace.
-    """
     if not sku:
         return False
     if not isinstance(sku, str):
@@ -81,39 +78,90 @@ def is_valid_sku(sku):
     return bool(sku.strip())
 
 
+# Check_Avaliabilty
+def check_avaliabilty(value):
+    if not is_valid_sku(value):
+        print(f"check_avaliabilty: Invalid SKU provided: {value!r}")
+        return False
+    sku = value.strip()
+    try:
+        product = Product.objects.get(sku=sku, is_active=True)
+    except Product.DoesNotExist:
+        print(f"check_avaliabilty: Product not found for SKU: {sku}")
+        return False
+    except Exception as e:
+        print(f"check_avaliabilty: Unexpected error fetching product for SKU {sku}: {e}")
+        return False
+    stock = product.stock
+    if stock is None:
+        print(f"check_avaliabilty: SKU {sku} => stock = unlimited (None)")
+        return None
+    try:
+        stock_int = int(stock)
+    except (TypeError, ValueError):
+        print(f"check_avaliabilty: SKU {sku} => invalid stock value: {stock!r}")
+        return False
+    print(f"check_avaliabilty: SKU {sku} => stock = {stock_int}")
+    return stock_int
+
+
 # Update  Item to the Cart 
 def update_item(user, product_sku, quantity, expected_sku=None):
-    if not is_valid_user(user) or not is_valid_sku(product_sku) or not is_valid_quantity(quantity):
-        print("Invalid input for updating item.")
+    if not is_valid_user(user):
+        print("update_item: Invalid user.")
+        return None
+    if not is_valid_sku(product_sku):
+        print(f"update_item: Invalid product_sku provided: {product_sku!r}")
+        return None
+    if not is_valid_quantity(quantity):
+        print(f"update_item: Invalid quantity provided: {quantity!r}")
         return None
     if expected_sku:
         if not is_valid_sku(expected_sku):
-            print("Invalid expected_sku provided.")
+            print("update_item: Invalid expected_sku provided.")
             return None
         if product_sku.strip().lower() != expected_sku.strip().lower():
-            print("SKU mismatch between expected and provided SKU.")
+            print(f"update_item: SKU mismatch between expected ({expected_sku}) and provided ({product_sku}).")
             return None
     sku = product_sku.strip()
     try:
+        qty_int = int(quantity)
+        if qty_int <= 0:
+            print(f"update_item: Quantity must be positive. Provided: {qty_int}")
+            return None
+    except (TypeError, ValueError):
+        print(f"update_item: Quantity is not an integer: {quantity!r}")
+        return None
+    try:
         cart = get_cart(user)
         if not cart:
-            print("Could not fetch cart for user.")
+            print("update_item: Could not fetch cart for user.")
             return None
         try:
             product = Product.objects.get(sku=sku, is_active=True)
         except Product.DoesNotExist:
-            print(f"Product not found for SKU: {sku}")
+            print(f"update_item: Product not found for SKU: {sku}")
             return None
+        stock_info = check_avaliabilty(sku)
+        if stock_info is False:
+            print(f"update_item: check_avaliabilty failed for SKU {sku}")
+            return None
+        if stock_info is not None:
+            if qty_int > stock_info:
+                print(f"update_item: Requested qty {qty_int} exceeds available stock {stock_info} for SKU {sku}")
+                return None
         try:
             item = CartItem.objects.get(cart=cart, product=product)
         except CartItem.DoesNotExist:
-            print(f"Cart item not found for product SKU: {sku}")
+            print(f"update_item: Cart item not found for product SKU: {sku}")
             return None
-        item.quantity = int(quantity)
+        item.quantity = qty_int
         item.save()
+        print(f"update_item: Updated SKU {sku} to quantity {qty_int} for user_id={user.id}")
         return item
+
     except Exception as e:
-        print(f"Error updating cart item: {e}")
+        print(f"update_item: Unexpected error updating cart item: {e}")
         return None
 
 
@@ -164,5 +212,7 @@ def clear_cart(user):
     except Exception as e:
         print(f"Error clearing cart: {e}")
         return False
+
+
 
 
