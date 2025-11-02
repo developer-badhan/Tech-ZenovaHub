@@ -1,0 +1,192 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}Home - Tech-ZenovaHub{% endblock %}
+
+{% block content %}
+<style>
+    /* === GENERAL STYLING === */
+    .section-title {
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        width: 70px;
+        height: 3px;
+        background-color: #007bff;
+        display: block;
+        margin: 0.5rem auto 0;
+        border-radius: 10px;
+    }
+
+    /* === CARD STYLING === */
+    .custom-card {
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+        background-color: #fff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .custom-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #f9fbfd, #eef3f8);
+    }
+
+    .custom-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #f1f1f1;
+        transition: transform 0.4s ease;
+    }
+
+    .custom-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .card-body h6, .card-body h5 {
+        font-weight: 600;
+    }
+
+    /* === EXPLORE BUTTON === */
+    .btn-explore {
+        display: block;
+        width: fit-content;
+        margin: 2.5rem auto 0;
+        font-weight: 600;
+        border-radius: 25px;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-explore:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    /* === CAROUSEL TWEAKS === */
+    .carousel-inner {
+        padding: 1rem 0.5rem;
+    }
+
+    .carousel-item {
+        transition: transform 1.2s ease-in-out;
+    }
+
+    .carousel-item .col {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+        .custom-card img {
+            height: 150px;
+        }
+    }
+</style>
+
+<div class="container my-5" style="margin-top: -2rem !important;">
+
+    <!-- ======= CATEGORY CAROUSEL ======= -->
+    <h3 class="section-title">Explore Categories</h3>
+    <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2500">
+        <div class="carousel-inner">
+
+            {% for category in categories %}
+                {% if forloop.first or forloop.counter0|divisibleby:3 %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="row justify-content-center g-4">
+                {% endif %}
+
+                        <div class="col-lg-4 col-md-6 col-sm-8 col-10">
+                            <div class="custom-card text-center">
+                                {% if category.image %}
+                                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/default-category.jpg' %}" alt="{{ category.name }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h6 class="mt-2">{{ category.name }}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+                <p class="text-center text-muted">No categories available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ======= PRODUCTS SECTION ======= -->
+    <h3 class="section-title mt-5">Latest Products</h3>
+    <div class="row g-4 justify-content-center">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 col-sm-6" style="height: 23em;">
+            <div class="custom-card h-100">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'images/default-product.jpg' %}" alt="{{ product.name }}">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">{{ product.name }}</h5>
+                    <p class="text-muted small">{{ product.category.name }}</p>
+                    <p class="fw-bold text-primary mb-3">₹{{ product.price }}</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-primary px-3">View</a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'wishlist_add' product.id %}" class="btn btn-sm btn-outline-danger px-3">❤️ Wishlist</a>
+                        {% else %}
+                            <a href="{% url 'user_login' %}" class="btn btn-sm btn-outline-danger px-3">❤️ Wishlist</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No products available.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'product_list' %}" class="btn btn-primary btn-explore">Explore All Products</a>
+</div>
+
+<!-- ======= LOGIN WELCOME MESSAGE ======= -->
+{% if user.is_authenticated %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const message = document.createElement('div');
+        message.innerHTML = "👋 Welcome back, {{ user.first_name|default:user.username }}!";
+        message.style.position = "fixed";
+        message.style.top = "20px";
+        message.style.right = "20px";
+        message.style.background = "#007bff";
+        message.style.color = "#fff";
+        message.style.padding = "10px 20px";
+        message.style.borderRadius = "25px";
+        message.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
+        message.style.zIndex = "9999";
+        message.style.opacity = "0";
+        message.style.transition = "opacity 0.5s ease";
+        document.body.appendChild(message);
+
+        setTimeout(() => { message.style.opacity = "1"; }, 200);
+        setTimeout(() => {
+            message.style.opacity = "0";
+            setTimeout(() => message.remove(), 600);
+        }, 3500);
+    });
+</script>
+{% endif %}
+{% endblock %}
