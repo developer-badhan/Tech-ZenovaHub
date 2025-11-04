@@ -60,7 +60,7 @@
         <h4 class="fw-semibold mb-4"><i class="fa-solid fa-star text-warning me-2"></i>Customer Reviews</h4>
 
         <!-- Review Form (Add or Edit) -->
-        {% if user.is_authenticated %}
+        {% if is_logged_in %}
         <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
             <form method="post" action="{% url 'review_create' product.id %}">
                 {% csrf_token %}
@@ -98,7 +98,7 @@
             </form>
         </div>
         {% else %}
-            <p class="text-muted">Please <a href="{% url 'user_login' %}" class="btn btn-primary">sign in</a> to add a review.</p>
+            <p class="text-muted">Please <a href="{% url 'user_login' %}" class="btn btn-sm btn-primary">sign in</a> to add a review.</p>
         {% endif %}
 
         <!-- Display All Reviews -->
@@ -109,17 +109,18 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <h6 class="fw-semibold mb-1">
-                                {{ review.user.username }}
-                                {% if user.is_authenticated and review.user.id == user.id %}
+                                {{ review.user.get_full_name|default:review.user.email|default:review.user.username }}
+                                {% if is_logged_in and active_user and review.user.id == active_user.id %}
                                     <span class="badge bg-info-subtle text-info ms-2">You</span>
                                 {% endif %}
                             </h6>
                             <div class="text-warning small mb-1">
-                                {% for i in "12345"|slice:":review.rating"|make_list %}
-                                    <i class="fa-solid fa-star"></i>
-                                {% endfor %}
-                                {% for i in "12345"|slice:"review.rating:"|make_list %}
-                                    <i class="fa-regular fa-star"></i>
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <i class="fa-solid fa-star"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-star"></i>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                             <p class="mb-0 text-muted">{{ review.comment|default:"No comment provided." }}</p>
@@ -133,7 +134,7 @@
             <p class="text-muted mt-3">No reviews yet. Be the first to share your thoughts!</p>
         {% endif %}
     </div>
-
+    
     {% else %}
     <div class="text-center mt-5">
         <h5 class="fw-semibold text-danger">Product not found.</h5>

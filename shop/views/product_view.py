@@ -2,9 +2,10 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import  HttpResponseNotFound
-from shop.services import product_service
+from shop.services import product_service,review_service
 from shop.models import Category
 from decorators.auth_decorators import login_admin_required,signin_required,customer_required
+from user.utils.auth_status import get_user_login_status
 
 
 
@@ -22,13 +23,28 @@ class ProductListView(View):
         return render(request, 'product/product_list.html', {'products': products})
 
 
+
 # Product Detail View
 class ProductDetailView(View):
     def get(self, request, product_id):
         product = product_service.get_product_by_id(product_id)
-        if product:
-            return render(request, 'product/product_detail.html', {'product': product})
-        return HttpResponseNotFound("Product not found.")
+        if not product:
+            return HttpResponseNotFound("Product not found.")
+        reviews = review_service.get_product_reviews(product_id)
+        is_logged_in, active_user, user_role = get_user_login_status(request)
+        user_review = None
+        if is_logged_in and active_user:
+            user_review = reviews.filter(user=active_user).first()
+        context = {
+            "product": product,
+            "reviews": reviews,
+            "user_review": user_review,
+            "is_logged_in": is_logged_in,
+            "active_user": active_user,
+            "user_role": user_role,
+        }
+        return render(request, "product/product_detail.html", context)
+
 
 
 # Product Create View
