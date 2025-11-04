@@ -1,6 +1,3 @@
-
-
-
 # Helper function to convert checkbox value to boolean
 def parse_boolean(value):
     if value is None:

@@ -17,7 +17,7 @@
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
 
-    <!-- Project styles -->
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="{% static 'css/shop.css' %}">
 </head>
 <body>
@@ -49,7 +49,7 @@
 
                 <!-- Wishlist -->
                 <li class="nav-item me-3">
-                    {% if user.is_authenticated %}
+                    {% if is_logged_in %}
                         <a class="nav-link" href="{% url 'wishlist' %}">
                             <i class="fa-regular fa-heart"></i> Wishlist
                             {% if wishlist_count > 0 %}
@@ -65,7 +65,7 @@
 
                 <!-- Cart -->
                 <li class="nav-item me-3">
-                    {% if user.is_authenticated %}
+                    {% if is_logged_in %}
                         <a class="nav-link" href="{% url 'cart_detail' %}">
                             <i class="fa-solid fa-cart-shopping"></i> Cart
                         </a>
@@ -77,21 +77,25 @@
                 </li>
 
                 <!-- User Dropdown / Auth Buttons -->
-                {% if user.is_authenticated %}
+                {% if is_logged_in %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
-                            {% if user.profile_photo %}
-                                <img src="{{ user.profile_photo.url }}" alt="User" class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
+                            {% if active_user.profile_photo %}
+                                <img src="{{ active_user.profile_photo.url }}" alt="User" class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
                             {% else %}
                                 <i class="fa-regular fa-user me-1"></i>
                             {% endif %}
-                            {{ user.first_name|default:user.username }}
+                            {{ active_user.first_name|default:active_user.email }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                            <li><a class="dropdown-item" href="{% url 'customer_dashboard' %}">Dashboard</a></li>
+                            {% if user_role == 1 %}
+                                <li><a class="dropdown-item" href="{% url 'customer_dashboard' %}">My Dashboard</a></li>
+                            {% elif user_role == 2 %}
+                                <li><a class="dropdown-item" href="{% url 'staff_dashboard' %}">My Dashboard</a></li>
+                            {% endif %}
                             <li><a class="dropdown-item" href="{% url 'order_list' %}">My Orders</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="{% url 'user_logout' %}">Sign Out</a></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'user_logout' %}">Logout</a></li>
                         </ul>
                     </li>
                 {% else %}
@@ -107,8 +111,6 @@
     </div>
 </nav>
 <!-- ======= END HEADER ======= -->
-
-<!-- ======= MESSAGES ======= -->
 
 <!-- ======= MAIN CONTENT ======= -->
 <main class="container mt-4">
@@ -133,6 +135,7 @@
                     <li><a href="#">Shipping Info</a></li>
                 </ul>
             </div>
+
             <div class="col-md-3 col-sm-6 mb-4">
                 <h5>Our Policies</h5>
                 <ul class="list-unstyled">
@@ -142,6 +145,7 @@
                     <li><a href="{% url 'warranty_service' %}">Warranty & Service</a></li>
                 </ul>
             </div>
+
             <div class="col-md-3 col-sm-6 mb-4">
                 <h5>Follow Us</h5>
                 <div class="social-icons">
@@ -165,20 +169,6 @@
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'js/toastr.min.js' %}"></script>
 <script src="{% static 'js/shop.js' %}"></script>
-
-<!-- Auto-hide welcome message -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const msg = document.getElementById("welcome-message");
-    if (msg) {
-        setTimeout(() => {
-            msg.style.transition = "opacity 1s";
-            msg.style.opacity = "0";
-            setTimeout(() => msg.remove(), 1000);
-        }, 3000);
-    }
-});
-</script>
 
 </body>
 </html>
