@@ -130,17 +130,26 @@ def delete_product(product_id):
 # Search for Products
 def search_products(query):
     try:
-        return Product.objects.filter(
-            Q(name__icontains=query) |
-            Q(description__icontains=query) |
-            Q(tags__icontains=query)
-        ).filter(is_active=True)
+        if not query or query.strip() == "":
+            return Product.objects.none()
+        products = (
+            Product.objects.filter(
+                Q(name__icontains=query)
+                | Q(description__icontains=query)
+                | Q(tags__icontains=query)
+                | Q(category__name__icontains=query)
+                | Q(sku__icontains=query)
+            )
+            .filter(is_active=True)
+            .select_related("category", "created_by")
+            .order_by("-created_at")
+        )
+        print(f"[search_products] Found {products.count()} results for '{query}'")
+        return products
+
     except Exception as e:
-        print(f"Error searching products: {e}")
-        return []
-
-
-
+        print(f"[search_products] Error: {e}")
+        return Product.objects.none()
 
 
 

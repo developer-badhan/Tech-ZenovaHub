@@ -126,17 +126,26 @@ class ProductSearchView(View):
     @signin_required
     @customer_required
     def get(self, request):
-        query = request.GET.get('q', '')
+        query = request.GET.get('q', '').strip()
+        filter_type = request.GET.get('filter', 'manual') 
         try:
             results = product_service.search_products(query)
+            if filter_type == "cheap":
+                results = results.order_by("price")  
+            elif filter_type == "expensive":
+                results = results.order_by("-price")
             return render(request, 'product/product_search.html', {
                 'query': query,
-                'results': results
+                'results': results,
+                'filter_type': filter_type
             })
         except Exception as e:
             print(f"[ProductSearchView] Error: {e}")
-            messages.error(request, "Search failed.")
-            return render(request, 'product/product_search.html', {'query': query, 'results': []})
-
+            messages.error(request, "Search failed. Please try again.")
+            return render(request, 'product/product_search.html', {
+                'query': query,
+                'results': [],
+                'filter_type': 'manual'
+            })
 
 

@@ -1,18 +1,51 @@
 {% extends 'home.html' %}
-{% block title %}Search Results{% endblock %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}"{% endblock %}
 
 {% block content %}
-<h3>Search Results for "{{ query }}"</h3>
+<div class="container my-5">
+    <h4 class="mb-4">
+        <i class="fas fa-search me-2"></i>Search Results for 
+        <span class="text-primary">“{{ query }}”</span>
+    </h4>
 
-{% if results %}
-    <ul class="list-group">
-        {% for product in results %}
-            <li class="list-group-item">
-                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No products found matching your search.</p>
-{% endif %}
+    {% if results %}
+        <div class="row g-4">
+            {% for product in results %}
+                <div class="col-md-4 col-lg-3 col-sm-6">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 hover-shadow transition">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 220px; object-fit: cover;">
+                        {% else %}
+                            <img src="{% static 'images/no_image_available.png' %}" class="card-img-top" alt="No Image" style="height: 220px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body text-center">
+                            <h6 class="fw-bold text-truncate">{{ product.name }}</h6>
+                            <p class="small text-muted mb-1">{{ product.category.name }}</p>
+                            <p class="text-success fw-bold mb-2">₹{{ product.price }}</p>
+
+                            {% if product.stock > 0 %}
+                                <span class="badge bg-success">In Stock</span>
+                            {% else %}
+                                <span class="badge bg-danger">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-light border-0 text-center">
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary btn-sm rounded-pill">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center mt-5">
+            <img src="{% static 'images/empty_search.png' %}" alt="No Results" style="width: 50%;">
+            <h5 class="mt-3 text-muted">No results found for “{{ query }}”</h5>
+            <p class="text-secondary small">Try checking your spelling or using different keywords.</p>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

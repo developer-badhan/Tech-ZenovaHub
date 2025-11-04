@@ -37,12 +37,16 @@
         <div class="collapse navbar-collapse" id="navbarContent">
 
             <!-- Search -->
-            <form class="d-flex mx-auto search-bar" action="{% url 'product_search' %}" method="get">
-                <input class="form-control search-input" type="search" name="q" placeholder="Search for electronics, smart devices..." aria-label="Search">
-                <button class="btn btn-primary search-btn" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
+            <form method="get" action="{% url 'product_search' %}" class="d-flex align-items-center" style="max-width: 450px;">
+                <input type="text" name="q" class="form-control me-2" placeholder="Search for products..." value="{{ query }}">
+                <select name="filter" class="form-select me-2" style="width: 150px;">
+                    <option value="manual" {% if filter_type == 'manual' %}selected{% endif %}>All Products</option>
+                    <option value="cheap" {% if filter_type == 'cheap' %}selected{% endif %}>Cheapest</option>
+                    <option value="expensive" {% if filter_type == 'expensive' %}selected{% endif %}>Expensive</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
+
 
             <!-- Right Links -->
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">

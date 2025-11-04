@@ -98,7 +98,7 @@
             </form>
         </div>
         {% else %}
-            <p class="text-muted">Please <a href="#" class="text-decoration-none">sign in</a> to add a review.</p>
+            <p class="text-muted">Please <a href="{% url 'user_login' %}" class="btn btn-primary">sign in</a> to add a review.</p>
         {% endif %}
 
         <!-- Display All Reviews -->
