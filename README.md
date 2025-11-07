@@ -30,28 +30,61 @@ Zenova is a tech-driven e-commerce platform focused on **electrical** and **smar
     => cd Zenova
 
 
-2) **Create Virtual Environment**
+2) **Open Terminal in VS Code**
 
-    => python -m venv venv
+    => ctrl + shift + ` (Window)
+
+    => Cmd + Shift + `` (Mac)
 
 
-3) **Install All Dependencies**
+3) **Create Virtual Environment**
 
-    => pip install -r requirements.txt
+    => python -m venv venv (Window)
+
+    => python3 -m venv venv
 
 
 4) **Activate Virtual Environment**
 
     🪟Windows: => venv\Scripts\activate
 
-    📠 Mac/Linux: => source venv/bin/activate
+    📠 Mac: => source venv/bin/activate
 
 
-5) **Run the Project**
+5) **Install All Dependencies**
+
+    => pip install -r requirements.txt  (Windows)
+
+    => pip3 install -r requirements.txt (Mac)
+
+
+6) **Database Setup**
+
+    => Open pgadmin 
+
+    => Create database <name> 
+
+
+7) **Add .env in root directory**
+
+    => .env (attached all requirements) | for additional help , we provide .env.sample
+
+
+8) **Makemigrations & Migare**
+
+    => python manage.py makemigrations
+
+    => python manage.py migrate
+
+    (If on Mac, use python3 instead of python if needed.)
+
+
+6) **Run the Project**
 
     => python manage.py runserver
 
-6) **Open the url in browser**
+7) **Open the url in browser**
 
+    => http://127.0.0.1:8000/
 
 
