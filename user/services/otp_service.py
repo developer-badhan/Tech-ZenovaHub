@@ -28,7 +28,7 @@ def generate_otp(user):
             "is_verified": False
         }
     )
-    subject = "Your Tech-ZenovaHub OTP Code"
+    subject = "Your Zenova OTP Code"
     message = f"""
     Hi {user.first_name},
 
@@ -37,7 +37,7 @@ def generate_otp(user):
 
     If you didn’t request this, please ignore.
 
-    – Tech-ZenovaHub Team
+    – Zenova Team
     """
 
     send_mail(
@@ -67,7 +67,7 @@ def verify_otp(user, entered_code):
     # Mark OTP as verified
     otp_obj.is_verified = True
     otp_obj.save()
-    subject = "🎉 Welcome to Tech-ZenovaHub"
+    subject = "🎉 Welcome to Zenova"
     html_content = render_to_string("email/welcome_email.html", {"user": user})
     text_content = strip_tags(html_content)
     email = EmailMultiAlternatives(

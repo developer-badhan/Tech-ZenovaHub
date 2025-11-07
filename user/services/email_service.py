@@ -2,48 +2,48 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 def send_welcome_email(user):
-    subject = "Welcome to Tech-ZenovaHub 🎉"
+    subject = "Welcome to Zenova 🎉"
 
     if user.role == 1:  # Customer
         message = f"""
 Hello {user.first_name},
 
-Welcome to Tech-ZenovaHub! 🚀  
+Welcome to Zenova! 🚀  
 Your customer account has been successfully created.
 
 You can now start exploring products, managing your cart, and placing orders.
 
 Thanks for joining us!  
-— Tech-ZenovaHub Team
+— Zenova Team
 """
     elif user.role == 2:  # Staff
         message = f"""
 Hello {user.first_name},
 
-Welcome aboard as our Delivery Staff at Tech-ZenovaHub! 🚚  
+Welcome aboard as our Delivery Staff at Zenova! 🚚  
 You can now manage deliveries, update statuses, and view assigned tasks.
 
 We’re excited to have you with us.  
-— Tech-ZenovaHub Team
+— Zenova Team
 """
     elif user.role == 3:  # Admin
         message = f"""
 Hello {user.first_name},
 
-Your Admin account has been created on Tech-ZenovaHub ⚡  
+Your Admin account has been created on Zenova ⚡  
 You now have access to manage users, products, and orders.
 
 Thank you for helping us grow!  
-— Tech-ZenovaHub Team
+— Zenova Team
 """
     else:
         message = f"""
 Hello {user.first_name},
 
-Welcome to Tech-ZenovaHub! 🚀  
+Welcome to Zenova! 🚀  
 
 We’re excited to have you onboard.  
-— Tech-ZenovaHub Team
+— Zenova Team
 """
 
     send_mail(
