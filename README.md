@@ -1,6 +1,6 @@
-# Tech-ZenovaHub
+# Zenova
 
-Tech-ZenovaHub is a tech-driven e-commerce platform focused on **electrical** and **smart home** products. It's designed to be **fast**, **scalable**, and **user-friendly** — the go-to hub for future-ready solutions.This project is being developed using the **Django web framework**, and it's aimed at delivering a modern, intuitive experience for both customers and administrators.
+Zenova is a tech-driven e-commerce platform focused on **electrical** and **smart home** products. It's designed to be **fast**, **scalable**, and **user-friendly** — the go-to hub for future-ready solutions.This project is being developed using the **Django web framework**, and it's aimed at delivering a modern, intuitive experience for both customers and administrators.
 
 ---
 
@@ -24,8 +24,8 @@ Tech-ZenovaHub is a tech-driven e-commerce platform focused on **electrical** an
 
 1) **Clone the Repository**
 
-    => git clone https://github.com/developer-badhan/Tech-ZenovaHub.git  
-    => cd Tech-ZenovaHub
+    => git clone https://github.com/developer-badhan/Zenova.git  
+    => cd Zenova
 
 
 2) **Create Virtual Environment**
