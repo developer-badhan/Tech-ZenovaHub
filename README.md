@@ -1,6 +1,6 @@
 # Zenova
 
-![image alt](https://github.com/developer-badhan/Tech-ZenovaHub/blob/32b1c66c1524691f3f1c939158a6e22f6b70266b/img.png)
+![image alt](https://github.com/developer-badhan/Tech-ZenovaHub/blob/573a1728bd765ddb385e12faec11f6716a38acd4/logo.png)
 
 Zenova is a tech-driven e-commerce platform focused on **electrical** and **smart home** products. It's designed to be **fast**, **scalable**, and **user-friendly** — the go-to hub for future-ready solutions.This project is being developed using the **Django web framework**, and it's aimed at delivering a modern, intuitive experience for both customers and administrators.
 
