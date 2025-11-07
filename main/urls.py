@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('tech-zenovahub.com/', include('user.urls')),
+    path('zenova.com/', include('user.urls')),
     path('',include('shop.urls')),
 ]
 
