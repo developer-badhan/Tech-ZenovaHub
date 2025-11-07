@@ -1,20 +1,22 @@
-{% extends "main.html" %}
+{% extends "home.html" %}
 {% block content %}
-
-<h2>Write a Review</h2>
-<form method="post">
-    {% csrf_token %}
-    <label>Rating:</label>
-    <select name="rating">
-        {% for i in "12345" %}
-        <option value="{{ i }}">{{ i }}</option>
-        {% endfor %}
-    </select><br>
-    <label>Comment:</label><br>
-    <textarea name="comment" rows="4" cols="50"></textarea><br>
-    <button type="submit">Submit</button>
-</form>
-
-
-
+<div class="container my-5">
+    <h3>{% if user_review %}Edit Your Review{% else %}Write a Review{% endif %}</h3>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Rating</label>
+            <select name="rating" class="form-select">
+                {% for i in "54321" %}
+                    <option value="{{ i }}" {% if user_review and user_review.rating|stringformat:"s" == i %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Comment</label>
+            <textarea name="comment" rows="4" class="form-control">{% if user_review %}{{ user_review.comment }}{% endif %}</textarea>
+        </div>
+        <button class="btn btn-success" type="submit">{% if user_review %}Update Review{% else %}Submit Review{% endif %}</button>
+    </form>
+</div>
 {% endblock %}

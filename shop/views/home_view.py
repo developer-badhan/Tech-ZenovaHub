@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.contrib import messages
 from shop.services.home_service import get_homepage_context
 
+
+# Home View For Shop
 class HomeView(TemplateView):
     template_name = "home_page.html"  
 

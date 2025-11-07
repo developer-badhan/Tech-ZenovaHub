@@ -1,24 +1,39 @@
-{% extends "main.html" %}
+{% extends "home.html" %}
 {% block content %}
-
 <h2>Product Reviews</h2>
-<ul>
+<ul class="list-unstyled">
     {% for review in reviews %}
-        <li>
-            {{ review.user.username }} - {{ review.rating }}★<br>
-            {{ review.comment }}<br>
-            {% if user == review.user %}
-                <form method="post" action="{% url 'review_delete' product_id %}">
-                    {% csrf_token %}
-                    <button type="submit">Delete</button>
-                </form>
+        <li class="mb-3">
+            <strong>{{ review.user.get_full_name|default:review.user.username }}</strong> — {{ review.rating }}★
+            <p class="mb-1">{{ review.comment }}</p>
+            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+
+            {% if is_logged_in and active_user and active_user.id == review.user.id %}
+                <div class="mt-2">
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'review_update' product_id %}">Edit</a>
+
+<form method="post"
+      action="{% url 'review_delete' product.id %}"
+      style="display:inline;"
+      onsubmit="return confirm('⚠️ Are you sure you want to delete your review? This cannot be undone.');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-sm btn-outline-danger">
+        <i class="fas fa-trash-alt"></i> Delete
+    </button>
+</form>
+
+
+                </div>
             {% endif %}
         </li>
     {% empty %}
         <li>No reviews yet.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'review_create' product_id %}">Add Review</a>
 
-
+{% if is_logged_in %}
+    <a class="btn btn-primary" href="{% url 'review_create' product_id %}">Add Review</a>
+{% else %}
+    <a class="btn btn-primary" href="{% url 'user_login' %}?next={% url 'product_detail' product_id %}">Login to Add Review</a>
+{% endif %}
 {% endblock %}

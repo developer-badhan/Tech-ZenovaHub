@@ -30,9 +30,16 @@ def create_or_update_review(user, product_id, rating, comment):
         return review
 
 
-# Delete a review
+# Delete existing review
 def delete_review(user, product_id):
-    if not _is_customer(user):
+    print(f"🧩 delete_review() called for user={user.id}, product={product_id}")
+    try:
+        review = Review.objects.get(user=user, product_id=product_id)
+        review.delete()
+        return True
+    except Review.DoesNotExist:
+        print("Product review deleting fail")
         return False
-    deleted, _ = Review.objects.filter(user=user, product_id=product_id).delete()
-    return deleted > 0
+    except Exception as e:
+        return False
+
