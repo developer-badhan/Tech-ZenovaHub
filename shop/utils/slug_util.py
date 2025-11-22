@@ -3,7 +3,7 @@ import random
 import string
 
 
-# # Auto generate slug 
+# Auto generate slug 
 def generate_unique_slug(model, name, provided_slug=None):
     base_slug = slugify(provided_slug or name)
     slug = base_slug
