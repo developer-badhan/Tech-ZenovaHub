@@ -3,111 +3,101 @@
 {% block title %}Product Management{% endblock %}
 
 {% block content %}
-<div class="container mt-4 mb-5">
+<div class="container-fluid py-4">
 
   <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-    <h4 class="fw-bold mb-0">All Products</h4>
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h4 class="fw-bold mb-0"><i class="fa fa-box me-2 text-primary"></i> All Products</h4>
+      <p class="text-muted small mb-0">Manage all products in your store</p>
+    </div>
     <div class="d-flex gap-2">
-      <a href="{% url 'product_create' %}" class="btn btn-success btn-sm px-3 py-2">
+      <a href="{% url 'product_create' %}" class="btn btn-success btn-sm shadow-sm px-3 py-2">
         <i class="fa fa-plus me-1"></i> Add Product
       </a>
-      <a href="{% url 'admin_dashboard' %}" class="btn btn-danger btn-sm px-3 py-2">
-        Return
+      <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-danger btn-sm shadow-sm px-3 py-2">
+        <i class="fa fa-arrow-left me-1"></i> Return
       </a>
     </div>
   </div>
 
   <!-- Table Section -->
-  <div class="table-responsive shadow-sm rounded-4">
-    <table class="table table-bordered align-middle text-center">
-      <thead class="table-light">
-        <tr>
-          <th>No.</th>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Category</th>
-          <th>SKU</th>
-          <th>Price (₹)</th>
-          <th>Stock</th>
-          <th>Tags</th>
-          <th>Created By</th>
-          <th>Created At</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for product in products %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-
-          <!-- Product Image -->
-          <td>
-            {% if product.image %}
-              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-thumbnail rounded" style="width: 70px; height: 70px; object-fit: cover;">
-            {% else %}
-              <div class="bg-light d-flex justify-content-center align-items-center rounded" style="width: 70px; height: 70px;">
-                <i class="fa fa-image text-muted"></i>
-              </div>
-            {% endif %}
-          </td>
-
-          <td class="fw-semibold text-start">{{ product.name }}</td>
-          <td>{{ product.category.name }}</td>
-          <td><span class="badge bg-light text-dark border">{{ product.sku }}</span></td>
-          <td>₹{{ product.price }}</td>
-          <td>
-            {% if product.stock > 10 %}
-              <span class="badge bg-success">{{ product.stock }}</span>
-            {% elif product.stock > 0 %}
-              <span class="badge bg-warning text-dark">{{ product.stock }}</span>
-            {% else %}
-              <span class="badge bg-danger">Out</span>
-            {% endif %}
-          </td>
-          <td>
-            {% if product.tags %}
-              <span class="text-muted small">{{ product.tags }}</span>
-            {% else %}
-              <span class="text-secondary small fst-italic">No tags</span>
-            {% endif %}
-          </td>
-          <td>
-            {% if product.created_by %}
-              <span class="small">{{ product.created_by.email }}</span>
-            {% else %}
-              <span class="text-secondary small">N/A</span>
-            {% endif %}
-          </td>
-          <td>{{ product.created_at|date:"Y-m-d h:i A" }}</td>
-          <td>
-            {% if product.is_active %}
-              <span class="badge bg-success">Active</span>
-            {% else %}
-              <span class="badge bg-danger">Inactive</span>
-            {% endif %}
-          </td>
-
-          <!-- Updated Action Buttons -->
-          <td>
-            <div class="d-flex justify-content-center gap-2 flex-wrap">
-              <a href="{% url 'product_update' product.id %}" class="btn btn-sm btn-warning text-white" title="Edit">
-                <i class="fa fa-edit"></i>
-              </a>
-              <a href="{% url 'product_delete' product.id %}" class="btn btn-sm btn-danger text-white" title="Delete">
-                <i class="fa fa-trash"></i>
-              </a>
-            </div>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="12" class="text-muted py-3">No products found.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="card shadow-sm border-0 rounded-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="bg-light text-secondary small text-uppercase">
+            <tr>
+              <th>No.</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>SKU</th>
+              <th>Price (₹)</th>
+              <th>Stock</th>
+              <th>Tags</th>
+              <th>Created By</th>
+              <th>Created At</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr class="align-middle">
+              <td>{{ forloop.counter }}</td>
+              <td>
+                {% if product.image %}
+                  <img src="{{ product.image.url }}" class="rounded shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+                {% else %}
+                  <div class="bg-light d-flex justify-content-center align-items-center rounded" style="width: 60px; height: 60px;">
+                    <i class="fa fa-image text-muted"></i>
+                  </div>
+                {% endif %}
+              </td>
+              <td class="fw-semibold text-start">{{ product.name }}</td>
+              <td>{{ product.category.name }}</td>
+              <td><span class="badge bg-secondary-subtle text-dark border">{{ product.sku }}</span></td>
+              <td class="fw-semibold">₹{{ product.price }}</td>
+              <td>
+                {% if product.stock > 10 %}
+                  <span class="badge bg-success-subtle text-success fw-semibold">{{ product.stock }}</span>
+                {% elif product.stock > 0 %}
+                  <span class="badge bg-warning-subtle text-dark fw-semibold">{{ product.stock }}</span>
+                {% else %}
+                  <span class="badge bg-danger-subtle text-danger fw-semibold">Out</span>
+                {% endif %}
+              </td>
+              <td class="text-muted small">{{ product.tags|default:"—" }}</td>
+              <td class="small">{{ product.created_by.email|default:"N/A" }}</td>
+              <td class="small">{{ product.created_at|date:"Y-m-d h:i A" }}</td>
+              <td>
+                {% if product.is_active %}
+                  <span class="badge bg-success-subtle text-success fw-semibold">Active</span>
+                {% else %}
+                  <span class="badge bg-danger-subtle text-danger fw-semibold">Inactive</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                  <a href="{% url 'product_update' product.id %}" class="btn btn-sm btn-warning text-white shadow-sm">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <a href="{% url 'product_delete' product.id %}" class="btn btn-sm btn-danger text-white shadow-sm">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="12" class="text-muted py-4">No products found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

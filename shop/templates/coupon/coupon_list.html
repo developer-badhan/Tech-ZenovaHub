@@ -1,86 +1,93 @@
 {% extends 'admin/admin_base.html' %}
 {% load static %}
-{% block title %}Coupon List{% endblock %}
+{% block title %}Coupon Management{% endblock %}
 
 {% block content %}
-<div class="container mt-4 mb-5">
-  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-    <h4 class="fw-bold mb-0">All Coupons</h4>
-
-    <!-- Group both buttons together -->
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h4 class="fw-bold mb-0"><i class="fa fa-gift text-primary me-2"></i> All Coupons</h4>
+      <p class="text-muted small mb-0">Manage active and expired discount coupons</p>
+    </div>
     <div class="d-flex gap-2">
-      <a href="{% url 'coupon_create' %}" class="btn btn-success btn-sm px-3 py-2">
+      <a href="{% url 'coupon_create' %}" class="btn btn-success btn-sm shadow-sm px-3 py-2">
         <i class="fa fa-plus me-1"></i> Create Coupon
       </a>
-      <a href="{% url 'admin_dashboard' %}" class="btn btn-danger btn-sm px-3 py-2">
-       Return
+      <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-danger btn-sm shadow-sm px-3 py-2">
+        <i class="fa fa-arrow-left me-1"></i> Return
       </a>
     </div>
   </div>
 
-  <div class="table-responsive shadow-sm rounded-4">
-    <table class="table table-bordered align-middle text-center">
-      <thead class="table-light">
-        <tr>
-          <th>No.</th>
-          <th>Code</th>
-          <th>Discount (%)</th>
-          <th>Valid From</th>
-          <th>Valid To</th>
-          <th>Usage Limit</th>
-          <th>Used</th>
-          <th>Status</th>
-          <th>Actions</th>
-          <th>Assign to Customer</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for coupon in coupons %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ coupon.code }}</td>
-          <td>{{ coupon.discount_percent }}</td>
-          <td>{{ coupon.valid_from|date:"Y-m-d h:i A" }}</td>
-          <td>{{ coupon.valid_to|date:"Y-m-d h:i A" }}</td>
-          <td>{{ coupon.usage_limit }}</td>
-          <td>{{ coupon.used_count }}</td>
-          <td>
-            {% if coupon.active %}
-              <span class="badge bg-success">Active</span>
-            {% else %}
-              <span class="badge bg-secondary">Inactive</span>
-            {% endif %}
-          </td>
-          <td>
-            <a href="{% url 'coupon_update' coupon.id %}" class="btn btn-sm btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="{% url 'coupon_delete' coupon.id %}" class="btn btn-sm btn-danger">
-              <i class="fa fa-trash"></i>
-            </a>
-          </td>
-          <td>
-            <form method="post" action="{% url 'assign_coupon_to_user' coupon.id %}" class="d-flex gap-2 justify-content-center">
-              {% csrf_token %}
-              <select name="user_id" class="form-select form-select-sm" required>
-                <option value="">-- Select Customer --</option>
-                {% for customer in customers %}
-                  <option value="{{ customer.id }}">{{ customer.email }}</option>
-                {% endfor %}
-              </select>
-              <button type="submit" class="btn btn-sm btn-primary">
-                <i class="fa fa-user-plus"></i>
-              </button>
-            </form>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="10" class="text-muted py-3">No coupons found.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="card shadow-sm border-0 rounded-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="bg-light text-secondary small text-uppercase">
+            <tr>
+              <th>No.</th>
+              <th>Code</th>
+              <th>Discount (%)</th>
+              <th>Valid From</th>
+              <th>Valid To</th>
+              <th>Usage Limit</th>
+              <th>Used</th>
+              <th>Status</th>
+              <th>Actions</th>
+              <th>Assign to Customer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for coupon in coupons %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td class="fw-semibold">{{ coupon.code }}</td>
+              <td><span class="badge bg-info-subtle text-info">{{ coupon.discount_percent }}%</span></td>
+              <td>{{ coupon.valid_from|date:"Y-m-d h:i A" }}</td>
+              <td>{{ coupon.valid_to|date:"Y-m-d h:i A" }}</td>
+              <td>{{ coupon.usage_limit }}</td>
+              <td>{{ coupon.used_count }}</td>
+              <td>
+                {% if coupon.active %}
+                  <span class="badge bg-success-subtle text-success fw-semibold">Active</span>
+                {% else %}
+                  <span class="badge bg-secondary-subtle text-secondary fw-semibold">Inactive</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                  <a href="{% url 'coupon_update' coupon.id %}" class="btn btn-sm btn-warning text-white shadow-sm">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <a href="{% url 'coupon_delete' coupon.id %}" class="btn btn-sm btn-danger text-white shadow-sm">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
+              </td>
+              <td>
+                <form method="post" action="{% url 'assign_coupon_to_user' coupon.id %}" class="d-flex gap-2 justify-content-center align-items-center">
+                  {% csrf_token %}
+                  <select name="user_id" class="form-select form-select-sm shadow-sm" required>
+                    <option value="">-- Select Customer --</option>
+                    {% for customer in customers %}
+                      <option value="{{ customer.id }}">{{ customer.email }}</option>
+                    {% endfor %}
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-primary shadow-sm">
+                    <i class="fa fa-user-plus"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="10" class="text-muted py-4">No coupons found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
